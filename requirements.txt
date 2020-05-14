@@ -2,6 +2,6 @@ wheel
 gym==0.17.1
 Keras==2.3.1
 keras-rl==0.4.2
-tensorflow==1.14.0
+tensorflow==1.15.2
 tensorflow_gpu==1.14.0
 
