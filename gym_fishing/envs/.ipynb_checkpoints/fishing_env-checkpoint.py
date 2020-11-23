@@ -51,8 +51,8 @@ class FishingEnv(gym.Env):
         
         if self.fish_population == 0:
             return self.fish_population, self.reward, True, {}
-        self.harvest_draw(action)
-        self.population_draw()
+        harvest_draw(self, action)
+        population_draw(self)
         self.reward += self.harvest / self.K
         if self.fish_population < 2e4:
             self.reward -= 10

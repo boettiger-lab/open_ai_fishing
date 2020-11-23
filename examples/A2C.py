@@ -6,7 +6,7 @@ from stable_baselines3.common.evaluation import evaluate_policy
 
 env = gym.make('fishing-v0')
 model = A2C('MlpPolicy', env, verbose=0)
-model.learn(total_timesteps=500000)
+model.learn(total_timesteps=50000)
 
 ## simulate and plot results
 df = env.simulate(model, reps=10)

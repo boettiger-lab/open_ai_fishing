@@ -1,4 +1,7 @@
-![Install & Train](https://github.com/boettiger-lab/open_ai_fishing/workflows/Install%20&%20Train/badge.svg) [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Install & Train](https://github.com/boettiger-lab/gym_fishing/workflows/Install%20&%20Train/badge.svg)](https://github.com/boettiger-lab/gym_fishing/runs/1323937050?check_suite_focus=true)
+[![PyPI Version](https://img.shields.io/pypi/v/gym_fishing)](https://pypi.org/project/gym-fishing/)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/gym-fishing)
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 
 
@@ -27,34 +30,25 @@ pip install -e .
 
 So far, we have: 
 
-A simple fishing model with logistic recruitment, defined in a continuous state space of fish biomass, with:
+A simple fishing model defined in a continuous state space of fish biomass, with:
 
-- `fishing-v0`: A discrete action space with three actions: maintain harvest level, increase harvest by 20%, decrease harvest by 20%. 
+- `fishing-v0`: A discrete action space with logistic growth, `n_actions` (default 100), and `quota = action / n_actions * K`.
 - `fishing-v1` A continuous action space, `action` = quota.
+- `fishing-v2`: A growth model that contains a tipping point. Uses continuous action space.  Set the tipping point parameter, `C`
+- `fishing-v4`: Includes parameter uncertainty. 
 
-`fishing-v0` can be configured to allow a discrete action space n > 3 actions, where the action is then treated as a fishing quota, `quota = action / n_actions * K`.  (most frameworks do not support this however.)
+
+Model parameters can be configured for each gym, including the choice of `r`, `K`, `sigma` (process noise).
+Note that the reward will depend on these parameters, making comparison between models more difficult.
+For simple models it is possible to rescale the reward by the known optimal strategy, given the parameters.
+Because this approach does not generalize to more complex models where the solution is not known, it is not implemented here.
 
 
 ## Examples
 
-Examples for running this gym environment in several frameworks:  
+### Known Solutions
 
-- [stable baselines3](/stable-baselines3)    
-- [tensorflow/agents](/tf-agents)
-- [stable baselines](/stable-baselines) (deprecated)
-- [keras-rl](/keras-rl)  (deprecated)
-
-
-**NOTES**: 
-
-- The [keras-rl](https://github.com/keras-rl/keras-rl) repository is no longer actively maintained.  It still depends on `tensorflow 1.14`, which is deprecated in favor of 1.15.  It's a nice implementation that is easy to learn, but not ideal for production.  Note that all tensorflow 1.x series are supported only on Python 3.7 and earlier.  
-- [stable-baselines](https://github.com/hill-a/stable-baselines) is a very popular fork of OpenAI's `baselines`.  Excellent documentation. Uses tensorflow 1.x, and is still actively maintained, though future development effort seems focused on [stable-baselines3](https://github.com/DLR-RM/stable-baselines3), a pytorch-based implementation.
-- [stable-baselines3](https://github.com/DLR-RM/stable-baselines3) is our prefered framework currently.  Well documented and actively developed. Notably, `pytorch` also supports shared GPU usage (eager execution), while tensorflow 1.x default execution reserves the whole GPU.
-- [tf-agents](https://github.com/tensorflow/tf-agents) Developed by Google's Tensorflow team (but not an "official" product), supports TF 2.x and 1.x.  Looks like a promising and powerful library, but documentation and ease of use lags behind stable-baselines.  
-
-- [spinning-up](https://github.com/openai/spinningup) is an education-focused implementation from OpenAI that might not be ideal for production use.  
-
-Note that different frameworks have seperate and often conflicting dependencies.  See the `requirements.txt` file in each example, or better, the official doucmentation for each framework.  Consider using virtual environments to avoid conflicts.
+MSY, Schaefer 1954: Asymptotic optimal solution
 
 ## Theory
 

@@ -1,5 +1,4 @@
 from gym_fishing.envs.fishing_env import FishingEnv
 from gym_fishing.envs.fishing_cts_env import FishingCtsEnv
 from gym_fishing.envs.fishing_tipping_env import FishingTippingEnv
-from gym_fishing.envs.fishing_obs_error import FishingObsError
 from gym_fishing.envs.fishing_model_error import FishingModelError

@@ -15,6 +15,9 @@ model.learn(total_timesteps=int(1e5))
 df = env.simulate(model, reps=10)
 env.plot(df, "results/dqn.png")
 
+df = env.estimate_policyfn(model, reps=10)
+
+
 # Evaluate the agent
 mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=50)
 print("mean reward:", mean_reward, "std:", std_reward)

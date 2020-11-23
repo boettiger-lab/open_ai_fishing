@@ -17,11 +17,6 @@ register(
 )
 
 register(
-    id='fishing-v3',
-    entry_point='gym_fishing.envs:FishingObsError',
-)
-
-register(
     id='fishing-v4',
     entry_point='gym_fishing.envs:FishingModelError',
 )
