@@ -19,7 +19,7 @@ class FishingTippingEnv(BaseFishingEnv):
 
     
     def population_draw(self):
-        self.fish_population = max(
+        self.fish_population = np.maximum(
           self.fish_population * np.exp(self.r *
                              (1 -self.fish_population / self.K) *
                              (self.fish_population - self.C) +

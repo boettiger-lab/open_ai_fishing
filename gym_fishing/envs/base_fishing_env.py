@@ -109,7 +109,7 @@ class BaseFishingEnv(gym.Env):
         """
         Select a value for population to grow or decrease at each time step.
         """
-        self.fish_population = max(
+        self.fish_population = np.maximum(
                                 self.fish_population + self.r * self.fish_population \
                                 * (1.0 - self.fish_population / self.K) \
                                 + self.fish_population * self.sigma * np.random.normal(0,1),
