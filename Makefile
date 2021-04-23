@@ -51,6 +51,6 @@ test-release:
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 install:
-	pip install -e .
+	pip install .[extra,tests,docs]
 
 .PHONY: clean spelling doc lint format check-codestyle commit-checks
