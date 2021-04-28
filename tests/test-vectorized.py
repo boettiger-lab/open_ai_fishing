@@ -22,4 +22,4 @@ def test_vectorized():
     plot_mdp(eval_env, df, "dqn-test.png")
 
     df = eval_env.policyfn(model)
-    plot_policyfn(eval_env, df, "policy-test_vectorized.png")
+    plot_policyfn(eval_env, df, "policy-vectorized-test.png")
