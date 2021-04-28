@@ -22,7 +22,3 @@ def test_dqn():
 
     df = env.policyfn(model)
     env.plot_policy(df, "policy-test.png")
-
-
-if __name__ == "__main__":
-    test_dqn()
