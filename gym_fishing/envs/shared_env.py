@@ -12,7 +12,7 @@ def csv_entry(env):
     return row_contents
 
 
-def df_entry_vec(df, env, rep, obs, action, reward, t):
+def df_entry_vec(df, rep, obs, action, reward, t):
     # Appending entry to the dataframe
     series = Series(
         [t, obs[0][0], action[0][0], reward[0], rep], index=df.columns
@@ -72,7 +72,7 @@ def simulate_mdp_vec(env, eval_env, model, n_eval_episodes):
         reward = [0 for _ in range(env.num_envs)]
         t = 0
         while True:
-            df = df_entry_vec(df, env, rep, obs, action, reward, t)
+            df = df_entry_vec(df, rep, obs, action, reward, t)
             t += 1
             # Using the vec env to do predictions
             action, state = model.predict(obs, state=state, mask=done)
@@ -87,7 +87,7 @@ def simulate_mdp_vec(env, eval_env, model, n_eval_episodes):
             obs[0] = e_obs
             if e_done:
                 break
-        df = df_entry_vec(df, env, rep, obs, action, reward, t)
+        df = df_entry_vec(df, rep, obs, action, reward, t)
 
     return df
 
