@@ -19,7 +19,7 @@ def test_vectorized():
     # Simulate a run with the trained model, visualize result
     eval_env = gym.make("fishing-v1")
     df = simulate_mdp_vec(env, eval_env, model, 5)
-    plot_mdp(eval_env, df, "dqn-test.png")
+    eval_env.plot(df, "a2c-vectorized-test.png")
 
     df = eval_env.policyfn(model)
-    plot_policyfn(eval_env, df, "policy-vectorized-test.png")
+    eval_env.plot_policy(df, "policy-vectorized-test.png")
