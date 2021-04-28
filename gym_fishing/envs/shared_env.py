@@ -76,9 +76,9 @@ def simulate_mdp_vec(env, eval_env, model, n_eval_episodes):
             t += 1
             # Using the vec env to do predictions
             action, state = model.predict(obs, state=state, mask=done)
-            obs, reward, done, info = env.step(action)
+            obs, reward, done, _ = env.step(action)
             # Stepping the eval env along with the vec env
-            e_obs, e_reward, e_done, e_info = eval_env.step(action[0])
+            e_obs, _, e_done, _ = eval_env.step(action[0])
             # Passing the evaluation env in for the first vec env's
             # observations. This is to avoid automatic resetting when
             # `done=True` which is a constraint of vectorized environments.
