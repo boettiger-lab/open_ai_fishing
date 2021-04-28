@@ -1,14 +1,14 @@
 import gym
-import gym_fishing
 from stable_baselines3 import A2C
 from stable_baselines3.common.env_util import make_vec_env
-from stable_baselines3.common.env_checker import check_env
-from stable_baselines3.common.evaluation import evaluate_policy
+
+import gym_fishing
 from gym_fishing.envs.shared_env import (
-        simulate_mdp_vec, 
-        plot_mdp, 
-        plot_policyfn,
+    plot_mdp,
+    plot_policyfn,
+    simulate_mdp_vec,
 )
+
 
 def test_vectorized():
     env = make_vec_env("fishing-v1", n_envs=4)
