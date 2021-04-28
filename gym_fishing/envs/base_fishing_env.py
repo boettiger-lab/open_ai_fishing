@@ -47,13 +47,15 @@ class BaseFishingEnv(gym.Env):
 
         # Best if cts actions / observations are normalized to a [-1, 1] domain
         self.action_space = spaces.Box(
-            np.array([-1], dtype=np.float32),
-            np.array([1], dtype=np.float32),
+            low=-1,
+            high=1,
+            shape=(1,),
             dtype=np.float32,
         )
         self.observation_space = spaces.Box(
-            np.array([-1], dtype=np.float32),
-            np.array([1], dtype=np.float32),
+            low=-1,
+            high=1,
+            shape=(1,),
             dtype=np.float32,
         )
 
@@ -97,14 +99,14 @@ class BaseFishingEnv(gym.Env):
         if self.file is not None:
             self.write_obj.close()
 
-    def simulate(env, model, reps=1):
-        return simulate_mdp(env, model, reps)
+    def simulate(self, model, reps=1):
+        return simulate_mdp(self, model, reps)
 
     def plot(self, df, output="results.png"):
         return plot_mdp(self, df, output)
 
-    def policyfn(env, model, reps=1):
-        return estimate_policyfn(env, model, reps)
+    def policyfn(self, model, reps=1):
+        return estimate_policyfn(self, model, reps)
 
     def plot_policy(self, df, output="results.png"):
         return plot_policyfn(self, df, output)
