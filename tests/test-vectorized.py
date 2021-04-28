@@ -4,8 +4,6 @@ from stable_baselines3.common.env_util import make_vec_env
 
 import gym_fishing
 from gym_fishing.envs.shared_env import (
-    plot_mdp,
-    plot_policyfn,
     simulate_mdp_vec,
 )
 
