@@ -45,6 +45,7 @@ setuptools.setup(
             # Type hints support
             "sphinx-autodoc-typehints",
         ],
+        "extra": ["twine"],
     },
     # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable"
     classifiers=[

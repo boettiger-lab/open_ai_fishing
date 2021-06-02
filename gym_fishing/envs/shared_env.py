@@ -72,7 +72,9 @@ def simulate_mdp_vec(env, model, n_eval_episodes):
         reward = [0 for _ in range(env.num_envs)]
         for t in range(env.get_attr("Tmax")[0]):
             df_entry_vec(df, env, rep, obs, action, reward, t)
-            action, state = model.predict(obs, state=state, mask=done, deterministic=True)
+            action, state = model.predict(
+                obs, state=state, mask=done, deterministic=True
+            )
             obs, reward, done, info = env.step(action)
         df_entry_vec(df, env, rep, obs, action, reward, t + 1)
 
