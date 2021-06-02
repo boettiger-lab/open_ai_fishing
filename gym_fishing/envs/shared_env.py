@@ -38,7 +38,7 @@ def simulate_mdp(env, model, reps=1):
             row.append([t, fish_population, quota, reward, int(rep)])
 
             # Predict and implement action
-            action, _state = model.predict(obs)
+            action, _state = model.predict(obs, deterministic=True)
             obs, reward, done, info = env.step(action)
 
             # discrete actions are not arrays, but cts actions are
@@ -72,7 +72,9 @@ def simulate_mdp_vec(env, model, n_eval_episodes):
         reward = [0 for _ in range(env.num_envs)]
         for t in range(env.get_attr("Tmax")[0]):
             df_entry_vec(df, env, rep, obs, action, reward, t)
-            action, state = model.predict(obs, state=state, mask=done)
+            action, state = model.predict(
+                obs, state=state, mask=done, deterministic=True
+            )
             obs, reward, done, info = env.step(action)
         df_entry_vec(df, env, rep, obs, action, reward, t + 1)
 
@@ -89,7 +91,7 @@ def estimate_policyfn(env, model, reps=1, n=50):
     )
     for rep in range(reps):
         for obs in state_range:
-            action, _state = model.predict(obs)
+            action, _state = model.predict(obs, deterministic=True)
             if isinstance(action, np.ndarray):
                 action = action[0]
 
