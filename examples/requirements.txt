@@ -6,7 +6,7 @@ decorator==4.4.2
 future==0.18.2
 gym==0.17.3
 -e git+https://github.com/boettiger-lab/gym_fishing@312fadd51834757842e95b8d1d80583997c13e55#egg=gym_fishing
-ipython==7.18.1
+ipython==7.31.1
 ipython-genutils==0.2.0
 jedi==0.17.2
 kiwisolver==1.2.0
