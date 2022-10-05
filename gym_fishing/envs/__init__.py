@@ -13,6 +13,12 @@ from gym_fishing.envs.growth_models import (
     NonStationary,
     Ricker,
 )
+from gym_fishing.envs.base_twospecies_fishing_env import BaseCompetingPairFishingEnv as ts_fishing_env
+
+register(
+  id="tsfishing-v0",
+  entry_point="gym_fishing.envs:ts_fishing_env"
+)
 
 register(
     id="fishing-v0",
