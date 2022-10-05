@@ -35,9 +35,9 @@ jobs:
 #    - name: Build the doc
 #      run: |
 #        make doc
-    - name: Type check
-      run: |
-        make type
+#    - name: Type check
+#      run: |
+#        make type
     - name: Check codestyle
       run: |
         make check-codestyle
