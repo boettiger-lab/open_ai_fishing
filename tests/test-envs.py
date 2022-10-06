@@ -7,6 +7,16 @@ from gym_fishing.models.policies import escapement, msy, user_action
 
 np.random.seed(0)
 
+def test_twospecies_fishing():
+    env = gym.make("tsfishing-v0")
+    check_env(env)
+    model = msy(env)
+    df = env.simulate(model)
+    env.plot(df, "tsfishing-v0_msy-test.png")
+    model = escapement(env)
+    df = env.simulate(model)
+    env.plot(df, "tsfishing-v0_escapement-test.png")
+
 
 def test_discrete():
     env = gym.make("fishing-v0")
