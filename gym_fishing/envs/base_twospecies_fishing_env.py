@@ -53,7 +53,7 @@ class BaseCompetingPairFishingEnv(gym.Env):
         self.a22 = params["a22"]
         self.sigma2 = params["sigma2"]
         self.n_actions = params["n_actions"]  # For discrete actions
-        
+
         # For the MSY test -> needs a self.sigma parameter.
         # Use the sigma of the harvested population.
         self.sigma = self.sigma1
