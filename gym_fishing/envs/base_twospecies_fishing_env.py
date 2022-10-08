@@ -180,7 +180,7 @@ class BaseCompetingPairFishingEnv(gym.Env):
             ],
             dtype=np.float32,
         )
-        self.smaller_population = min(self.fish_population)
+        self.smaller_population = np.min(self.fish_population)
         #
         return self.harvest
 
