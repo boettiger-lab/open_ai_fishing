@@ -217,7 +217,7 @@ class BaseCompetingPairFishingEnv(gym.Env):
             + self.fish_population[1] * self.sigma1 * np.random.normal(0, 1),
             0.0,
         )
-        self.smaller_population = min(self.fish_population)
+        self.smaller_population = np.min(self.fish_population)
         #
         # re-standardize to float32
         self.fish_population = np.array(
