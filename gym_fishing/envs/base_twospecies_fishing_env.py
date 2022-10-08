@@ -66,7 +66,7 @@ class BaseCompetingPairFishingEnv(gym.Env):
 
         # Preserve these for reset
         self.fish_population = self.init_state
-        self.smaller_population = min(
+        self.smaller_population = np.min(
             self.init_state
         )  # the smaller of the two populations
         self.reward = 0
