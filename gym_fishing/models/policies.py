@@ -65,6 +65,7 @@ def BMSY(env):
     env.sigma = sigma
     env.reset()
     return S
+
     
 def altBMSY(env):
     n = 10001  # ick should  be cts
@@ -86,10 +87,7 @@ def altBMSY(env):
     env.reset()
     return S
     
-    
-        
-        
-    
+
 # Note, this resets the environment
 # Two-species BMSY function (not sure why the single-species one gives no problems though)
 # def TS_BMSY(env):
