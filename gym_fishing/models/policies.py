@@ -4,7 +4,7 @@ import numpy as np
 class msy:
     def __init__(self, env, **kwargs):
         self.env = env
-        self.S = BMSY(env)
+        self.S = altBMSY(env)
         # use the built-in method to determine MSY
         env.fish_population = self.S
         sigma = env.sigma
@@ -65,6 +65,30 @@ def BMSY(env):
     env.sigma = sigma
     env.reset()
     return S
+    
+def altBMSY(env):
+    n = 10001  # ick should  be cts
+    state_range = np.linspace(
+        env.observation_space.low,
+        env.observation_space.high,
+        num=n,
+        dtype=env.observation_space.dtype,
+    )
+    growth = np.array([])
+    x_0 = np.asarray(list(map(env.get_fish_population, state_range)))
+    for xx in x_0:
+        sigma = env.sigma
+        env.sigma = 0
+        env.fish_population = xx
+        np.append(growth, [env.population_draw() - xx])    
+    S = x_0[np.argmax(growth)]
+    env.sigma = sigma
+    env.reset()
+    return S
+    
+    
+        
+        
     
 # Note, this resets the environment
 # Two-species BMSY function (not sure why the single-species one gives no problems though)
