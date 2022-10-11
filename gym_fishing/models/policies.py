@@ -66,7 +66,7 @@ def BMSY(env):
     env.reset()
     return S
 
-    
+
 def altBMSY(env):
     n = 10001  # ick should  be cts
     state_range = np.linspace(
@@ -81,12 +81,12 @@ def altBMSY(env):
         sigma = env.sigma
         env.sigma = 0
         env.fish_population = xx
-        np.append(growth, [env.population_draw() - xx])    
+        np.append(growth, [env.population_draw() - xx])
     S = x_0[np.argmax(growth)]
     env.sigma = sigma
     env.reset()
     return S
-    
+
 
 # Note, this resets the environment
 # Two-species BMSY function (not sure why the single-species one gives no problems though)
