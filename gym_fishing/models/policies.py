@@ -48,23 +48,23 @@ class user_action:
 
 
 # Note, this resets the environment
-def BMSY(env):
-    n = 10001  # ick should  be cts
-    state_range = np.linspace(
-        env.observation_space.low,
-        env.observation_space.high,
-        num=n,
-        dtype=env.observation_space.dtype,
-    )
-    x_0 = np.asarray(list(map(env.get_fish_population, state_range)))
-    env.fish_population = x_0
-    sigma = env.sigma
-    env.sigma = 0
-    growth = env.population_draw() - x_0
-    S = x_0[np.argmax(growth)]
-    env.sigma = sigma
-    env.reset()
-    return S
+# def BMSY(env):
+#     n = 10001  # ick should  be cts
+#     state_range = np.linspace(
+#         env.observation_space.low,
+#         env.observation_space.high,
+#         num=n,
+#         dtype=env.observation_space.dtype,
+#     )
+#     x_0 = np.asarray(list(map(env.get_fish_population, state_range)))
+#     env.fish_population = x_0
+#     sigma = env.sigma
+#     env.sigma = 0
+#     growth = env.population_draw() - x_0
+#     S = x_0[np.argmax(growth)]
+#     env.sigma = sigma
+#     env.reset()
+#     return S
 
 
 def altBMSY(env):
