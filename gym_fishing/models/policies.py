@@ -46,7 +46,8 @@ class user_action:
         action = self.env.get_action(float(quota))
         return action, obs
 
-
+# Line marked with ### gave an error
+#
 # Note, this resets the environment
 # def BMSY(env):
 #     n = 10001  # ick should  be cts
@@ -60,13 +61,13 @@ class user_action:
 #     env.fish_population = x_0
 #     sigma = env.sigma
 #     env.sigma = 0
-#     growth = env.population_draw() - x_0
+#     growth = env.population_draw() - x_0 ###
 #     S = x_0[np.argmax(growth)]
 #     env.sigma = sigma
 #     env.reset()
 #     return S
 
-
+# Note, this resets the environment
 def altBMSY(env):
     n = 10001  # ick should  be cts
     state_range = np.linspace(
