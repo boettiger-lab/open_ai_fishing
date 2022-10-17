@@ -3,6 +3,7 @@ from gym.envs.registration import register
 from gym_fishing.envs.base_twospecies_fishing_env import (
     BaseCompetingPairFishingEnv as ts_fishing_env,
 )
+from gym_fishing.envs.trophic_triangle_env import trophicTriangleEnv
 from gym_fishing.envs.fishing_cts_env import FishingCtsEnv
 from gym_fishing.envs.fishing_env import FishingEnv
 from gym_fishing.envs.fishing_model_error import FishingModelError
@@ -17,7 +18,15 @@ from gym_fishing.envs.growth_models import (
     Ricker,
 )
 
-register(id="tsfishing-v0", entry_point="gym_fishing.envs:ts_fishing_env")
+register(
+    id="trophic-triangle-v0", 
+    entry_point="gym_fishing.envs:trophicTriangleEnv",
+)
+
+register(
+    id="tsfishing-v0", 
+    entry_point="gym_fishing.envs:ts_fishing_env",
+)
 
 register(
     id="fishing-v0",

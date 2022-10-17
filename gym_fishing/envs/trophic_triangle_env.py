@@ -137,23 +137,21 @@ class trophicTriangleEnv(gym.Env):
         self.Jdraw(fish_dict)
     
     # fd is the fish dictionary (see population_draw and get_fish_dict)
-    def Adraw(self, fd):
+    def Adraw(self, fd) -> None:
         self.fish_population[0] += 0.01*(
             self.s*fd["J"]
             - (self.q+self.mA)*fd["A"]
         )
         self.fish_population[0] = np.max(0., self.fish_population[0])
-        return None
     
-    def Fdraw(self, fd):
+    def Fdraw(self, fd) -> None:
         self.fish_population[1] += 0.01*(
             self.DF*(self.Fo-fd["F"])
             - self.cFA*fd["F"]*fd["A"]
         )
         self.fish_population[1] = np.max(0., self.fish_population[1])
-        return None
     
-    def Jdraw(self, fd):
+    def Jdraw(self, fd) -> None:
         self.fish_population[2] += 0.01*(
             self.f*fd["A"]
             - self.cJA * fd["J"] * fd["A"]
@@ -161,7 +159,6 @@ class trophicTriangleEnv(gym.Env):
             - self.s*fd["J"]
         )
         self.fish_population[2] = np.max(0., self.fish_population[2])
-        return None
         
     def harvest_draw(self):
         self.harvest = min(self.fish_population[0], quota)
@@ -189,7 +186,7 @@ class trophicTriangleEnv(gym.Env):
         return (action/self.n_actions+1)*self.Ahalf
         
     def get_action(self, quota):
-        # same formula as the one to go from population to state
+        # inverse of get_quota
         return self.n_actions*(quota/self.Ahalf - 1)
         
     def get_fish_population(self, state):
@@ -204,7 +201,7 @@ class trophicTriangleEnv(gym.Env):
         J_st = fish_population[2]/self.Jhalf - 1
         return np.array([A_st,F_st,J_st], dtype=np.float32)
         
-    def test_state_boundaries(state):
+    def test_state_boundaries(state) -> None:
         M = np.max(state)
         m = np.min(state)
         if -1 <= m <= M <= 1:
@@ -227,7 +224,6 @@ class trophicTriangleEnv(gym.Env):
             #
             """.format(state)
             )
-            return None
         
     def simulate(env, model, reps=1):
         return simulate_mdp(env, model, reps)
