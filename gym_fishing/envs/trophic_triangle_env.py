@@ -48,5 +48,48 @@ class trophicTriangleEnv(gym.Env):
         self.J0 = params["J0"]
         self.F0 = params["F0"]
         
-        # enclose state space in a finite box: (TBC)
+        # enclose state space in a finite box: (artificial boundary chosen large enoug:
+        # for now, simply choose 2*maximum in the simulations of the reference)
+        self.Ahalf = 12. # Amax is 2*Ahalf
+        self.Fhalf = 200.
+        self.Jhalf = 8.
+        self.maxPops = np.array(
+            [2*self.Ahalf, 2*self.Fhalf, 2*self.Jhalf],
+            dtype = np.float32
+        )
         
+        self.initial_pop = np.array([A0, J0, F0], dtype=np.float32)
+        self.initial_state = np.array(
+            [self.A0/self.Ahalf - 1., 
+            self.F0/self.Fhalf - 1.,
+            self.J0/self.Jhalf - 1.],
+            dtype=np.float32
+        )
+
+        # Preserve these for reset
+        self.fish_population = self.initial_pop
+        self.smaller_population = np.min(
+            self.initial_pop
+        )  # the smaller of the populations
+        self.reward = 0
+        self.harvest = 0
+        self.years_passed = 0
+        self.Tmax = Tmax
+        self.file = file
+
+        # for render() method only
+        if file is not None:
+            self.write_obj = open(file, "w+")
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
