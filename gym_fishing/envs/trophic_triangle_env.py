@@ -34,7 +34,7 @@ class trophicTriangleEnv(gym.Env):
             "J0": 10, # initial Juvenile Bass pop, taken by eye from paper
             "n_actions":100, # number of possible actions (harvests) evenly spaced out
         },
-        Tmax=100,
+        Tmax=102000, # taken from reference (1020y with 0.01y steps)
         file=None,
     ):
         self.s = params["s"]
@@ -185,12 +185,12 @@ class trophicTriangleEnv(gym.Env):
         return fish_dict
     
     def get_quota(self, action):
-        # same formula as the one to go from state to population
-        return (action+1)*self.Ahalf
+        # actions are 0, ..., 99. Must be mapped to 0, 2*Ahalf
+        return (action/self.n_actions+1)*self.Ahalf
         
     def get_action(self, quota):
         # same formula as the one to go from population to state
-        return quota/self.Ahalf - 1
+        return self.n_actions*(quota/self.Ahalf - 1)
         
     def get_fish_population(self, state):
         A_pop = (self.state[0]+1)*self.Ahalf
