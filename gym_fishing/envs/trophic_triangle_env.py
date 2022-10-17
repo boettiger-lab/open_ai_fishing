@@ -32,6 +32,7 @@ class trophicTriangleEnv(gym.Env):
             "A0": 12, # initial Adult Bass pop, taken by eye from paper
             "J0": 10, # initial Juvenile Bass pop, taken by eye from paper
             "F0": 8, # initial Forage Fish pop , taken by eye from paper
+            "n_actions":100, # number of possible actions (harvests) evenly spaced out
         },
     ):
         self.s = params["s"]
@@ -58,8 +59,8 @@ class trophicTriangleEnv(gym.Env):
             dtype = np.float32
         )
         
-        self.initial_pop = np.array([A0, J0, F0], dtype=np.float32)
-        self.initial_state = np.array(
+        self.init_pop = np.array([A0, J0, F0], dtype=np.float32)
+        self.state = np.array(
             [self.A0/self.Ahalf - 1., 
             self.F0/self.Fhalf - 1.,
             self.J0/self.Jhalf - 1.],
@@ -67,9 +68,10 @@ class trophicTriangleEnv(gym.Env):
         )
 
         # Preserve these for reset
-        self.fish_population = self.initial_pop
+        self.init_state = self.state
+        self.fish_population = self.init_pop
         self.smaller_population = np.min(
-            self.initial_pop
+            self.init_pop
         )  # the smaller of the populations
         self.reward = 0
         self.harvest = 0
@@ -80,9 +82,64 @@ class trophicTriangleEnv(gym.Env):
         # for render() method only
         if file is not None:
             self.write_obj = open(file, "w+")
+
+        self.action_space = spaces.Discrete(self.n_actions)
+        # self.action_space = np.linspace(-1,1,num=self.n_actions,dtype=np,float32) # would this work?
+        self.observation_space = spaces.Box(
+            np.array([-1, -1, -1], dtype=np.float32),
+            np.array([1, 1, 1], dtype=np.float32),
+            dtype=np.float32,
+        )
         
+    def reset(self):
+        self.state = self.init_state
+        self.fish_population = self.init_pop
+        self.years_passed = 0
+
+        # for tracking only
+        self.reward = 0
+        self.harvest = 0
+        return self.state
+    
+    def step(self):
+        ...
         
+    def population_draw(self):
+        ...
+    
+    def harvest_draw(self):
+        ...
+    
+    def get_quota(self, action):
+        ...
         
+    def get_action(self, quota):
+        ...
+        
+    def get_fish_population(self, state):
+        ...
+        
+    def get_state(self, fish_population):
+        ...
+        
+    def simulate(env, model, reps=1):
+        return simulate_mdp(env, model, reps)
+        
+    def render(self, mode="human"):
+        return csv_entry(self)
+
+    def close(self):
+        if self.file is not None:
+            self.write_obj.close()
+    
+    def plot(self, df, output="results.png"):
+        return plot_mdp(self, df, output)
+
+    def policyfn(env, model, reps=1):
+        return estimate_policyfn(env, model, reps)
+
+    def plot_policy(self, df, output="results.png"):
+        return plot_policyfn(self, df, output)
 
 
 
