@@ -30,10 +30,12 @@ class trophicTriangleEnv(gym.Env):
             "v": 80, # Rate at which J enter a foraging arena, becoming vulnerable
             "h": 80, # Rate at which J hide in a refuge
             "A0": 12, # initial Adult Bass pop, taken by eye from paper
-            "J0": 10, # initial Juvenile Bass pop, taken by eye from paper
             "F0": 8, # initial Forage Fish pop , taken by eye from paper
+            "J0": 10, # initial Juvenile Bass pop, taken by eye from paper
             "n_actions":100, # number of possible actions (harvests) evenly spaced out
         },
+        Tmax=100,
+        file=None,
     ):
         self.s = params["s"]
         self.mA = params["mA"]
@@ -46,8 +48,8 @@ class trophicTriangleEnv(gym.Env):
         self.v = params["v"]
         self.h = params["h"]
         self.A0 = params["A0"]
-        self.J0 = params["J0"]
         self.F0 = params["F0"]
+        self.J0 = params["J0"]
         
         # enclose state space in a finite box: (artificial boundary chosen large enoug:
         # for now, simply choose 2*maximum in the simulations of the reference)
@@ -101,14 +103,71 @@ class trophicTriangleEnv(gym.Env):
         self.harvest = 0
         return self.state
     
-    def step(self):
-        ...
+    def step(self, action):
+        quota = self.get_quota(action)
+        self.get_fish_population(self.state)
+
+        # Apply harvest and population growth
+        self.harvest = self.harvest_draw(quota)
+        self.population_draw()
+
+        # Map population back to system state (normalized space):
+        self.get_state(self.fish_population)
+
+        # should be the instanteous reward, not discounted
+        self.reward = max(self.harvest, 0.0)
+        self.years_passed += 1
+        done = bool(self.years_passed > self.Tmax)
+
+        if self.fish_population <= 0.0:
+            done = True
+
+        return self.state, self.reward, done, {}
         
+    # use dt = 0.01 as in Carl's code (see bs-tipping/analysis/stability_report.R line 84)
     def population_draw(self):
-        ...
+        #
+        # gets snapshot of pop right before the draw, to use within the individual
+        # draw functions. Dictionary format used for readability.
+        fish_dict = self.get_fish_dict(self, fish_population)
+        self.Adraw(fish_dict)
+        self.Fdraw(fish_dict)
+        self.Jdraw(fish_dict)
     
+    # fd is the fish dictionary (see population_draw and get_fish_dict)
+    def Adraw(self, fd):
+        self.fish_population[0] += 0.01*(
+            self.s*fd["J"]
+            - (self.q+self.mA)*fd["A"]
+        )
+        return None
+    
+    def Fdraw(self, fd):
+        self.fish_population[1] += 0.01*(
+            self.DF*(self.Fo-fd["F"])
+            - self.cFA*fd["F"]*fd["A"]
+        )
+        return None
+    
+    def Jdraw(self, fd):
+        self.fish_population[2] += 0.01*(
+            self.f*fd["A"]
+            - self.cJA * fd["J"] * fd["A"]
+            - (self.cJF*self.v*fd["J"]*fd["F"]) / (self.h+self.v+self.cJF*fd["F"])
+            - self.s*fd["J"]
+        )
+        return None
+        
     def harvest_draw(self):
         ...
+    
+    def get_fish_dict(self, fish_population):
+        fish_dict = {
+            "A":self.fish_population[0],
+            "F":self.fish_population[1],
+            "J":self.fish_population[2],
+        }
+        return fish_dict
     
     def get_quota(self, action):
         ...
