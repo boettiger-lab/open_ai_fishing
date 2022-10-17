@@ -140,6 +140,7 @@ class trophicTriangleEnv(gym.Env):
             self.s*fd["J"]
             - (self.q+self.mA)*fd["A"]
         )
+        self.fish_population[0] = np.max(0., self.fish_population[0])
         return None
     
     def Fdraw(self, fd):
@@ -147,6 +148,7 @@ class trophicTriangleEnv(gym.Env):
             self.DF*(self.Fo-fd["F"])
             - self.cFA*fd["F"]*fd["A"]
         )
+        self.fish_population[1] = np.max(0., self.fish_population[1])
         return None
     
     def Jdraw(self, fd):
@@ -156,10 +158,21 @@ class trophicTriangleEnv(gym.Env):
             - (self.cJF*self.v*fd["J"]*fd["F"]) / (self.h+self.v+self.cJF*fd["F"])
             - self.s*fd["J"]
         )
+        self.fish_population[2] = np.max(0., self.fish_population[2])
         return None
         
     def harvest_draw(self):
-        ...
+        self.harvest = min(self.fish_population[0], quota)
+        self.fish_population = np.array(
+            [
+                max(self.fish_population[0] - self.harvest, 0.0),
+                self.fish_population[1],
+                self.fish_population[2]
+            ],
+            dtype=np.float32,
+        )
+        self.smaller_population = np.min(self.fish_population)
+        return self.harvest
     
     def get_fish_dict(self, fish_population):
         fish_dict = {
@@ -170,16 +183,23 @@ class trophicTriangleEnv(gym.Env):
         return fish_dict
     
     def get_quota(self, action):
-        ...
+        # same formula as the one to go from state to population
+        return (action+1)*self.Ahalf
         
     def get_action(self, quota):
-        ...
+        # same formula as the one to go from population to state
+        return quota/self.Ahalf - 1
         
     def get_fish_population(self, state):
-        ...
+        A_pop = (self.state[0]+1)*self.Ahalf
+        F_pop = (self.state[1]+1)*self.Fhalf
+        J_pop = (self.state[2]+1)*self.Jhalf
+        return np.array([A_pop,F_pop,J_pop], dtype=np.float32)
         
     def get_state(self, fish_population):
-        ...
+        A_st = fish_population[0]/self.Ahalf - 1
+        F_st = fish_population[1]/self.Fhalf - 1
+        J_st = fish_population[2]/self.Jhalf - 1
         
     def simulate(env, model, reps=1):
         return simulate_mdp(env, model, reps)
