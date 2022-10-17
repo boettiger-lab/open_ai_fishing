@@ -61,7 +61,7 @@ class trophicTriangleEnv(gym.Env):
             dtype = np.float32
         )
         
-        self.init_pop = np.array([A0, J0, F0], dtype=np.float32)
+        self.init_pop = np.array([self.A0, self.J0, self.F0], dtype=np.float32)
         self.state = np.array(
             [self.A0/self.Ahalf - 1., 
             self.F0/self.Fhalf - 1.,
