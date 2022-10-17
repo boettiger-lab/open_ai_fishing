@@ -112,12 +112,14 @@ class trophicTriangleEnv(gym.Env):
         self.population_draw()
 
         # Map population back to system state (normalized space):
-        self.get_state(self.fish_population)
+        self.state = self.get_state(self.fish_population)
 
         # should be the instanteous reward, not discounted
         self.reward = max(self.harvest, 0.0)
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
+        
+        self.test_state_boundaries(self.state)
 
         if self.fish_population <= 0.0:
             done = True
@@ -200,6 +202,32 @@ class trophicTriangleEnv(gym.Env):
         A_st = fish_population[0]/self.Ahalf - 1
         F_st = fish_population[1]/self.Fhalf - 1
         J_st = fish_population[2]/self.Jhalf - 1
+        return np.array([A_st,F_st,J_st], dtype=np.float32)
+        
+    def test_state_boundaries(state):
+        M = np.max(state)
+        m = np.min(state)
+        if -1 <= m <= M <= 1:
+            return None
+        else:
+            print("""
+            #
+            #
+            #
+            #
+            Following state is out of bounds: {}
+                
+            The state boundaries used by this environment are artificial and do not
+            follow naturally from the dynamics of the system.
+                
+            Consider increasing the magnitude of these boundaries.
+            #
+            #
+            #
+            #
+            """.format(state)
+            )
+            return None
         
     def simulate(env, model, reps=1):
         return simulate_mdp(env, model, reps)
