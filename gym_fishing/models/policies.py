@@ -46,6 +46,7 @@ class user_action:
         action = self.env.get_action(float(quota))
         return action, obs
 
+
 # Line marked with ### gave an error
 #
 # Note, this resets the environment

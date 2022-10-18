@@ -233,7 +233,7 @@ class BaseCompetingPairFishingEnv(gym.Env):
         # Discrete Actions:
         if isinstance(self.action_space, gym.spaces.discrete.Discrete):
             quota = (action / self.n_actions) * self.k1
-            # is this actually right? I think it should be the same formula as the 
+            # is this actually right? I think it should be the same formula as the
             # continuous case.
         # Continuous Actions:
         else:
