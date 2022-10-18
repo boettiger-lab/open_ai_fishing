@@ -33,7 +33,7 @@ class trophicTriangleEnv(gym.Env):
             "A0": 12,  # initial Adult Bass pop, taken by eye from paper
             "F0": 8,  # initial Forage Fish pop , taken by eye from paper
             "J0": 10,  # initial Juvenile Bass pop, taken by eye from paper
-            "n_actions": 100,  # number of possible actions (harvests) evenly spaced out
+            "n_actions": 200,  # number of possible actions (harvests) evenly spaced out
         },
         Tmax=102000,  # taken from reference (1020y with 0.01y steps)
         file=None,
@@ -54,11 +54,12 @@ class trophicTriangleEnv(gym.Env):
         self.n_actions = params["n_actions"]
         self.Tmax = Tmax
 
-        # enclose state space in a finite box: (artificial boundary chosen large enoug:
-        # for now, simply choose 2*maximum in the simulations of the reference)
-        self.Ahalf = 12.0  # Amax is 2*Ahalf
+        # test using temp-script.py gave an idea of how large can A, F and J get.
+        # It uses a constant quota policy, loops over possible quotas and outputs
+        # the largest. Here I use that guide and set the box as 2*that guide.
+        self.Ahalf = 88 # Amax is 2*Ahalf
         self.Fhalf = 200.0
-        self.Jhalf = 8.0
+        self.Jhalf = 19
         self.maxPops = np.array(
             [2 * self.Ahalf, 2 * self.Fhalf, 2 * self.Jhalf], dtype=np.float32
         )
@@ -76,7 +77,7 @@ class trophicTriangleEnv(gym.Env):
         # Preserve these for reset
         self.init_state = self.state
         self.fish_population = self.init_pop
-        self.smaller_population = np.min(
+        self.smaller_population = min(
             self.init_pop
         )  # the smaller of the populations
         self.reward = 0
@@ -108,24 +109,25 @@ class trophicTriangleEnv(gym.Env):
         return self.state
 
     def step(self, action):
-        quota = self.get_quota(action)
-        self.get_fish_population(self.state)
+        quota_normalized = self.get_quota(action)
+        quota = 2*self.Ahalf*quota_normalized
+        self.fish_population = self.get_fish_population()
 
         # Apply harvest and population growth
         self.harvest = self.harvest_draw(quota)
         self.population_draw()
 
         # Map population back to system state (normalized space):
-        self.state = self.get_state(self.fish_population)
+        self.state = self.get_state()
 
         # should be the instanteous reward, not discounted
         self.reward = max(self.harvest, 0.0)
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
 
-        self.test_state_boundaries(self.state)
+        # self.test_state_boundaries()
 
-        if self.fish_population <= 0.0:
+        if any(x <= 0.0 for x in self.fish_population):
             done = True
 
         return self.state, self.reward, done, {}
@@ -135,7 +137,7 @@ class trophicTriangleEnv(gym.Env):
         #
         # gets snapshot of pop right before the draw, to use within the individual
         # draw functions. Dictionary format used for readability.
-        fish_dict = self.get_fish_dict(self, fish_population)
+        fish_dict = self.get_fish_dict()
         self.Adraw(fish_dict)
         self.Fdraw(fish_dict)
         self.Jdraw(fish_dict)
@@ -143,15 +145,15 @@ class trophicTriangleEnv(gym.Env):
     # fd is the fish dictionary (see population_draw and get_fish_dict)
     def Adraw(self, fd) -> None:
         self.fish_population[0] += 0.01 * (
-            self.s * fd["J"] - (self.q + self.mA) * fd["A"]
+            self.s * fd["J"] - self.mA * fd["A"]
         )
-        self.fish_population[0] = np.max(0.0, self.fish_population[0])
+        self.fish_population[0] = max(0.0, self.fish_population[0])
 
     def Fdraw(self, fd) -> None:
         self.fish_population[1] += 0.01 * (
             self.DF * (self.Fo - fd["F"]) - self.cFA * fd["F"] * fd["A"]
         )
-        self.fish_population[1] = np.max(0.0, self.fish_population[1])
+        self.fish_population[1] = max(0.0, self.fish_population[1])
 
     def Jdraw(self, fd) -> None:
         self.fish_population[2] += 0.01 * (
@@ -161,7 +163,7 @@ class trophicTriangleEnv(gym.Env):
             / (self.h + self.v + self.cJF * fd["F"])
             - self.s * fd["J"]
         )
-        self.fish_population[2] = np.max(0.0, self.fish_population[2])
+        self.fish_population[2] = max(0.0, self.fish_population[2])
 
     def harvest_draw(self, quota):
         self.harvest = min(self.fish_population[0], quota)
@@ -173,10 +175,10 @@ class trophicTriangleEnv(gym.Env):
             ],
             dtype=np.float32,
         )
-        self.smaller_population = np.min(self.fish_population)
+        self.smaller_population = min(self.fish_population)
         return self.harvest
 
-    def get_fish_dict(self, fish_population):
+    def get_fish_dict(self):
         fish_dict = {
             "A": self.fish_population[0],
             "F": self.fish_population[1],
@@ -185,28 +187,28 @@ class trophicTriangleEnv(gym.Env):
         return fish_dict
 
     def get_quota(self, action):
-        # actions are 0, ..., 99. Must be mapped to 0, 2*Ahalf
-        return (action / self.n_actions + 1) * self.Ahalf
+        # actions are 0, ..., 99. Must be mapped to -0.01 to 0.01
+        return action / (50*self.n_actions) - 0.01
 
     def get_action(self, quota):
         # inverse of get_quota
-        return self.n_actions * (quota / self.Ahalf - 1)
+        return int(round((quota+0.01)*50*self.n_actions))
 
-    def get_fish_population(self, state):
+    def get_fish_population(self):
         A_pop = (self.state[0] + 1) * self.Ahalf
         F_pop = (self.state[1] + 1) * self.Fhalf
         J_pop = (self.state[2] + 1) * self.Jhalf
         return np.array([A_pop, F_pop, J_pop], dtype=np.float32)
 
-    def get_state(self, fish_population):
-        A_st = fish_population[0] / self.Ahalf - 1
-        F_st = fish_population[1] / self.Fhalf - 1
-        J_st = fish_population[2] / self.Jhalf - 1
+    def get_state(self):
+        A_st = self.fish_population[0] / self.Ahalf - 1
+        F_st = self.fish_population[1] / self.Fhalf - 1
+        J_st = self.fish_population[2] / self.Jhalf - 1
         return np.array([A_st, F_st, J_st], dtype=np.float32)
 
-    def test_state_boundaries(state) -> None:
-        M = np.max(state)
-        m = np.min(state)
+    def test_state_boundaries(self) -> None:
+        M = max(self.state)
+        m = min(self.state)
         if -1 <= m <= M <= 1:
             return None
         else:
@@ -227,7 +229,7 @@ class trophicTriangleEnv(gym.Env):
             #
             #
             """.format(
-                    state
+                    self.state
                 )
             )
 
