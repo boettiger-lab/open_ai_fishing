@@ -50,6 +50,8 @@ class trophicTriangleEnv(gym.Env):
         self.A0 = params["A0"]
         self.F0 = params["F0"]
         self.J0 = params["J0"]
+        self.n_actions = params["n_actions"]
+        self.Tmax = Tmax
         
         # enclose state space in a finite box: (artificial boundary chosen large enoug:
         # for now, simply choose 2*maximum in the simulations of the reference)
