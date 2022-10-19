@@ -3,9 +3,15 @@ import numpy as np
 from stable_baselines3.common.env_checker import check_env
 
 import gym_fishing
-from gym_fishing.models.policies import escapement, msy, user_action, multiSpecies_singleHarvest_msy
+from gym_fishing.models.policies import (
+    escapement,
+    msy,
+    multiSpecies_singleHarvest_msy,
+    user_action,
+)
 
 np.random.seed(0)
+
 
 def test_trophicTriangleRandEnv():
     env = gym.make("trophic-triangle-v1")
@@ -13,6 +19,7 @@ def test_trophicTriangleRandEnv():
     model = multiSpecies_singleHarvest_msy(env)
     df = env.simulate(model)
     env.plot(df, "trophic-triangle-v1_msy-test.png")
+
 
 def test_twospecies_fishing():
     env = gym.make("tsfishing-v0")
