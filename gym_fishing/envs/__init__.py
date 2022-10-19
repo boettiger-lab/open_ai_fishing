@@ -20,12 +20,12 @@ from gym_fishing.envs.trophic_triangle_env import trophicTriangleEnv
 from gym_fishing.envs.trophic_triangle_rand_env import trophicTriangleRandEnv
 
 register(
-    id="trophic-triangle-v0",
+    id="trophictriangle-v0",
     entry_point="gym_fishing.envs:trophicTriangleEnv",
 )
 
 register(
-    id="trophic-triangle-v1",
+    id="trophictriangle-v1",
     entry_point="gym_fishing.envs:trophicTriangleRandEnv",
 )
 
