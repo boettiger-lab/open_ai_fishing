@@ -254,8 +254,8 @@ class trophicTriangleEnv(gym.Env):
         return plot_policyfn(self, df, output)
 
     # for models used in tests (specifically, multiSpecies_singleHarvestBMSY)
-    def get_harvested_fish_population(self):
-        return (self.state[0] + 1) * self.Ahalf
+    def get_harvested_fish_population(self, Apop):
+        return (Apop + 1) * self.Ahalf
 
     def harvested_population_draw(self):
         self.population_draw()
