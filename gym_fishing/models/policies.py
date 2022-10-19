@@ -77,13 +77,13 @@ def altBMSY(env):
         num=n,
         dtype=env.observation_space.dtype,
     )
-    growth = np.array([])
+    growth = []
     x_0 = np.asarray(list(map(env.get_fish_population, state_range)))
     for xx in x_0:
         sigma = env.sigma
         env.sigma = 0
         env.fish_population = xx
-        np.append(growth, [env.population_draw() - xx])
+        growth.append(env.population_draw() - xx)
     S = x_0[np.argmax(growth)]
     env.sigma = sigma
     env.reset()
