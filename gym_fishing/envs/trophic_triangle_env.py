@@ -141,6 +141,7 @@ class trophicTriangleEnv(gym.Env):
         self.Adraw(fish_dict)
         self.Fdraw(fish_dict)
         self.Jdraw(fish_dict)
+        self.random_draw()
 
     # fd is the fish dictionary (see population_draw and get_fish_dict)
     def Adraw(self, fd) -> None:
