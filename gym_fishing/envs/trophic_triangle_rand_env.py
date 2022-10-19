@@ -1,7 +1,9 @@
 import gym
 import numpy as np
 from gym import spaces
+
 from gym_fishing.envs.trophic_triangle_env import trophicTriangleEnv
+
 
 class trophicTriangleRandEnv(trophicTriangleEnv):
     def __init__(
@@ -21,9 +23,9 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
             "F0": 8,  # initial Forage Fish pop , taken by eye from paper
             "J0": 10,  # initial Juvenile Bass pop, taken by eye from paper
             "n_actions": 200,  # number of possible actions (harvests) evenly spaced out
-            "sigmaA":0.1,
-            "sigmaF":0.1,
-            "sigmaJ":0.1,
+            "sigmaA": 0.1,
+            "sigmaF": 0.1,
+            "sigmaJ": 0.1,
         },
         Tmax=102000,  # taken from reference (1020y with 0.01y steps)
         file=None,
@@ -46,14 +48,14 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
         self.sigmaA = params["sigmaA"]
         self.sigmaF = params["sigmaF"]
         self.sigmaJ = params["sigmaJ"]
-        
+
         # for the tests in github's action
         self.sigma = self.sigmaA
 
         # test using temp-script.py gave an idea of how large can A, F and J get.
         # It uses a constant quota policy, loops over possible quotas and outputs
         # the largest. Here I use that guide and set the box as 2*that guide.
-        self.Ahalf = 88 # Amax is 2*Ahalf
+        self.Ahalf = 88  # Amax is 2*Ahalf
         self.Fhalf = 200.0
         self.Jhalf = 19
         self.maxPops = np.array(
@@ -93,21 +95,21 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
             np.array([1, 1, 1], dtype=np.float32),
             dtype=np.float32,
         )
-        
+
         # Redefine the dynamic functions to include a random term
         def Adraw(self, fd) -> None:
             self.fish_population[0] += 0.01 * (
-                self.s * fd["J"] 
-                - self.mA * fd["A"] 
-                + self.sigmaA*np.random.normal(0,1)
+                self.s * fd["J"]
+                - self.mA * fd["A"]
+                + self.sigmaA * np.random.normal(0, 1)
             )
             self.fish_population[0] = max(0.0, self.fish_population[0])
 
         def Fdraw(self, fd) -> None:
             self.fish_population[1] += 0.01 * (
-                self.DF * (self.Fo - fd["F"]) 
+                self.DF * (self.Fo - fd["F"])
                 - self.cFA * fd["F"] * fd["A"]
-                + self.sigmaF*np.random.normal(0,1)
+                + self.sigmaF * np.random.normal(0, 1)
             )
             self.fish_population[1] = max(0.0, self.fish_population[1])
 
@@ -118,6 +120,6 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
                 - (self.cJF * self.v * fd["J"] * fd["F"])
                 / (self.h + self.v + self.cJF * fd["F"])
                 - self.s * fd["J"]
-                + self.sigmaJ*np.random.normal(0,1)
+                + self.sigmaJ * np.random.normal(0, 1)
             )
             self.fish_population[2] = max(0.0, self.fish_population[2])

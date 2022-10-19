@@ -57,7 +57,7 @@ class trophicTriangleEnv(gym.Env):
         # test using temp-script.py gave an idea of how large can A, F and J get.
         # It uses a constant quota policy, loops over possible quotas and outputs
         # the largest. Here I use that guide and set the box as 2*that guide.
-        self.Ahalf = 88 # Amax is 2*Ahalf
+        self.Ahalf = 88  # Amax is 2*Ahalf
         self.Fhalf = 200.0
         self.Jhalf = 19
         self.maxPops = np.array(
@@ -110,7 +110,7 @@ class trophicTriangleEnv(gym.Env):
 
     def step(self, action):
         quota_normalized = self.get_quota(action)
-        quota = 2*self.Ahalf*quota_normalized
+        quota = 2 * self.Ahalf * quota_normalized
         self.fish_population = self.get_fish_population()
 
         # Apply harvest and population growth
@@ -189,11 +189,11 @@ class trophicTriangleEnv(gym.Env):
 
     def get_quota(self, action):
         # actions are 0, ..., 99. Must be mapped to -0.01 to 0.01
-        return action / (50*self.n_actions) - 0.01
+        return action / (50 * self.n_actions) - 0.01
 
     def get_action(self, quota):
         # inverse of get_quota
-        return int(round((quota+0.01)*50*self.n_actions))
+        return int(round((quota + 0.01) * 50 * self.n_actions))
 
     def get_fish_population(self):
         A_pop = (self.state[0] + 1) * self.Ahalf
