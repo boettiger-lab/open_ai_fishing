@@ -125,14 +125,14 @@ def multiSpecies_singleHarvestBMSY(env):
     x_0 = np.asarray(list(map(env.get_harvested_fish_population, state_range)))
     for xx in x_0:
         sigmaArr = []
-        if hasattr(env, turn_noise_off):
+        if hasattr(env, "turn_noise_off"):
             sigmaArr = env.turn_noise_off()
             # sigma = env.sigma
             # env.sigma = 0
         env.fish_population = xx
         growth.append(env.population_draw() - xx)
     S = x_0[np.argmax(growth)]
-    if hasattr(env, turn_noise_off):
+    if hasattr(env, "turn_noise_off"):
         # use same condition as before to enforce
         # the existence of turn_noise_on conditioned
         # on the existence of turn_noise_off
