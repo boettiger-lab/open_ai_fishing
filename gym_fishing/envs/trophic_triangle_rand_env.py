@@ -123,3 +123,23 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
                 + self.sigmaJ * np.random.normal(0, 1)
             )
             self.fish_population[2] = max(0.0, self.fish_population[2])
+        
+        # for BMSY model - set sigmas to zero
+        def turn_noise_off(self):
+            sigmaA = self.sigmaA
+            sigmaF = self.sigmaF
+            sigmaJ = self.sigmaJ
+            self.sigmaA = 0
+            self.sigmaF = 0
+            self.sigmaJ = 0
+            return [sigmaA, sigmaF, sigmaJ]
+        
+        def turn_noise_on(self, sigmaArr):
+            # notice that,
+            # sigmaArr = obj.turn_noise_off()
+            # obj.turn_noise_on(sigmaArr) 
+            # leaves the object as it began
+            self.sigmaA = sigmaArr[0]
+            self.sigmaF = sigmaArr[1]
+            self.sigmaJ = sigmaArr[2]
+

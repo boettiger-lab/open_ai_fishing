@@ -24,6 +24,11 @@ register(
 )
 
 register(
+    id="trophic-triangle-v1",
+    entry_point="gym_fishing.envs:trophicTriangleRandEnv",
+)
+
+register(
     id="tsfishing-v0",
     entry_point="gym_fishing.envs:ts_fishing_env",
 )

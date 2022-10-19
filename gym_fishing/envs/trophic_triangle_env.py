@@ -142,6 +142,7 @@ class trophicTriangleEnv(gym.Env):
         self.Fdraw(fish_dict)
         self.Jdraw(fish_dict)
         self.random_draw()
+        return self.fish_population
 
     # fd is the fish dictionary (see population_draw and get_fish_dict)
     def Adraw(self, fd) -> None:
@@ -252,3 +253,13 @@ class trophicTriangleEnv(gym.Env):
 
     def plot_policy(self, df, output="results.png"):
         return plot_policyfn(self, df, output)
+        
+    # for models used in tests (specifically, multiSpecies_singleHarvestBMSY)
+    def get_harvested_fish_population(self):
+        return (self.state[0] + 1) * self.Ahalf
+    
+    def harvested_population_draw(self):
+        self.population_draw()
+        return self.fish_population[0]
+        
+        
