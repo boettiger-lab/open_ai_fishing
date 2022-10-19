@@ -17,6 +17,7 @@ from gym_fishing.envs.growth_models import (
     Ricker,
 )
 from gym_fishing.envs.trophic_triangle_env import trophicTriangleEnv
+from gym_fishing.envs.trophic_triangle_env import trophicTriangleRandEnv
 
 register(
     id="trophic-triangle-v0",
