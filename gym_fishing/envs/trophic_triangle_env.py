@@ -167,7 +167,7 @@ class trophicTriangleEnv(gym.Env):
         self.fish_population[2] = max(0.0, self.fish_population[2])
 
     def harvest_draw(self, quota):
-        self.harvest = min(self.fish_population[0], quota)
+        harvest = min(self.fish_population[0], quota)
         self.fish_population = np.array(
             [
                 max(self.fish_population[0] - self.harvest, 0.0),
@@ -177,7 +177,7 @@ class trophicTriangleEnv(gym.Env):
             dtype=np.float32,
         )
         self.smaller_population = min(self.fish_population)
-        return self.harvest
+        return harvest
 
     def get_fish_dict(self):
         fish_dict = {
