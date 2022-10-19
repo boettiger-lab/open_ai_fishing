@@ -95,51 +95,52 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
             np.array([1, 1, 1], dtype=np.float32),
             dtype=np.float32,
         )
-        
+
+
         # for BMSY model - set sigmas to zero
-        def turn_noise_off(self):
-            sigmaA = self.sigmaA
-            sigmaF = self.sigmaF
-            sigmaJ = self.sigmaJ
-            self.sigmaA = 0
-            self.sigmaF = 0
-            self.sigmaJ = 0
-            return [sigmaA, sigmaF, sigmaJ]
+    def turn_noise_off(self):
+        sigmaA = self.sigmaA
+        sigmaF = self.sigmaF
+        sigmaJ = self.sigmaJ
+        self.sigmaA = 0
+        self.sigmaF = 0
+        self.sigmaJ = 0
+        return [sigmaA, sigmaF, sigmaJ]
 
-        def turn_noise_on(self, sigmaArr):
-            # notice that,
-            # sigmaArr = obj.turn_noise_off()
-            # obj.turn_noise_on(sigmaArr)
-            # leaves the object as it began
-            self.sigmaA = sigmaArr[0]
-            self.sigmaF = sigmaArr[1]
-            self.sigmaJ = sigmaArr[2]
+    def turn_noise_on(self, sigmaArr):
+        # notice that,
+        # sigmaArr = obj.turn_noise_off()
+        # obj.turn_noise_on(sigmaArr)
+        # leaves the object as it began
+        self.sigmaA = sigmaArr[0]
+        self.sigmaF = sigmaArr[1]
+        self.sigmaJ = sigmaArr[2]
 
-        # Redefine the dynamic functions to include a random term
-        def Adraw(self, fd) -> None:
-            self.fish_population[0] += 0.01 * (
-                self.s * fd["J"]
-                - self.mA * fd["A"]
-                + self.sigmaA * np.random.normal(0, 1)
-            )
-            self.fish_population[0] = max(0.0, self.fish_population[0])
+    # Redefine the dynamic functions to include a random term
+    def Adraw(self, fd) -> None:
+        self.fish_population[0] += 0.01 * (
+            self.s * fd["J"]
+            - self.mA * fd["A"]
+            + self.sigmaA * np.random.normal(0, 1)
+        )
+        self.fish_population[0] = max(0.0, self.fish_population[0])
 
-        def Fdraw(self, fd) -> None:
-            self.fish_population[1] += 0.01 * (
-                self.DF * (self.Fo - fd["F"])
-                - self.cFA * fd["F"] * fd["A"]
-                + self.sigmaF * np.random.normal(0, 1)
-            )
-            self.fish_population[1] = max(0.0, self.fish_population[1])
+    def Fdraw(self, fd) -> None:
+        self.fish_population[1] += 0.01 * (
+            self.DF * (self.Fo - fd["F"])
+            - self.cFA * fd["F"] * fd["A"]
+            + self.sigmaF * np.random.normal(0, 1)
+        )
+        self.fish_population[1] = max(0.0, self.fish_population[1])
 
-        def Jdraw(self, fd) -> None:
-            self.fish_population[2] += 0.01 * (
-                self.f * fd["A"]
-                - self.cJA * fd["J"] * fd["A"]
-                - (self.cJF * self.v * fd["J"] * fd["F"])
-                / (self.h + self.v + self.cJF * fd["F"])
-                - self.s * fd["J"]
-                + self.sigmaJ * np.random.normal(0, 1)
-            )
-            self.fish_population[2] = max(0.0, self.fish_population[2])
+    def Jdraw(self, fd) -> None:
+        self.fish_population[2] += 0.01 * (
+            self.f * fd["A"]
+            - self.cJA * fd["J"] * fd["A"]
+            - (self.cJF * self.v * fd["J"] * fd["F"])
+            / (self.h + self.v + self.cJF * fd["F"])
+            - self.s * fd["J"]
+            + self.sigmaJ * np.random.normal(0, 1)
+        )
+        self.fish_population[2] = max(0.0, self.fish_population[2])
 
