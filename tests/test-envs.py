@@ -14,9 +14,9 @@ def test_twospecies_fishing():
     # model = msy(env)
     # df = env.simulate(model)
     # env.plot(df, "tsfishing-v0_msy-test.png")
-    model = escapement(env)
-    df = env.simulate(model)
-    env.plot(df, "tsfishing-v0_escapement-test.png")
+    # model = escapement(env)
+    # df = env.simulate(model)
+    # env.plot(df, "tsfishing-v0_escapement-test.png")
 
 
 def test_discrete():
