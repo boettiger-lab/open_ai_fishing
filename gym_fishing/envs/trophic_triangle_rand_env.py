@@ -95,6 +95,25 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
             np.array([1, 1, 1], dtype=np.float32),
             dtype=np.float32,
         )
+        
+        # for BMSY model - set sigmas to zero
+        def turn_noise_off(self):
+            sigmaA = self.sigmaA
+            sigmaF = self.sigmaF
+            sigmaJ = self.sigmaJ
+            self.sigmaA = 0
+            self.sigmaF = 0
+            self.sigmaJ = 0
+            return [sigmaA, sigmaF, sigmaJ]
+
+        def turn_noise_on(self, sigmaArr):
+            # notice that,
+            # sigmaArr = obj.turn_noise_off()
+            # obj.turn_noise_on(sigmaArr)
+            # leaves the object as it began
+            self.sigmaA = sigmaArr[0]
+            self.sigmaF = sigmaArr[1]
+            self.sigmaJ = sigmaArr[2]
 
         # Redefine the dynamic functions to include a random term
         def Adraw(self, fd) -> None:
@@ -124,21 +143,3 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
             )
             self.fish_population[2] = max(0.0, self.fish_population[2])
 
-        # for BMSY model - set sigmas to zero
-        def turn_noise_off(self):
-            sigmaA = self.sigmaA
-            sigmaF = self.sigmaF
-            sigmaJ = self.sigmaJ
-            self.sigmaA = 0
-            self.sigmaF = 0
-            self.sigmaJ = 0
-            return [sigmaA, sigmaF, sigmaJ]
-
-        def turn_noise_on(self, sigmaArr):
-            # notice that,
-            # sigmaArr = obj.turn_noise_off()
-            # obj.turn_noise_on(sigmaArr)
-            # leaves the object as it began
-            self.sigmaA = sigmaArr[0]
-            self.sigmaF = sigmaArr[1]
-            self.sigmaJ = sigmaArr[2]
