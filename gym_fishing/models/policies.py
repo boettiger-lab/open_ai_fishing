@@ -22,7 +22,7 @@ class msy:
 class escapement:
     def __init__(self, env, **kwargs):
         self.env = env
-        self.S = BMSY(env)
+        self.S = altBMSY(env)
 
     def predict(self, obs, **kwargs):
         fish_population = self.env.get_fish_population(obs)
