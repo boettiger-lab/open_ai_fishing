@@ -114,8 +114,8 @@ def altBMSY(env):
 def multiSpecies_singleHarvestBMSY(env):
     n = 10001  # ick should  be cts
     state_range = np.linspace(
-        env.observation_space.low,
-        env.observation_space.high,
+        env.observation_space.low[0],
+        env.observation_space.high[0],
         num=n,
         dtype=env.observation_space.dtype,
     )
