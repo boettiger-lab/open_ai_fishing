@@ -133,6 +133,9 @@ def multiSpecies_singleHarvestBMSY(env):
         growth.append(env.population_draw() - xx)
     S = x_0[np.argmax(growth)]
     if hasattr(env, turn_noise_off):
+        # use same condition as before to enforce
+        # the existence of turn_noise_on conditioned
+        # on the existence of turn_noise_off
         env.turn_noise_on(sigmaArr)
         # env.sigma = sigma
     env.reset()
