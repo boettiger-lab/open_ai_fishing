@@ -17,8 +17,10 @@ from gym_fishing.envs.growth_models import (
     Ricker,
 )
 from gym_fishing.envs.trophic_triangle_env import trophicTriangleEnv
+from gym_fishing.envs.trophic_triangle_jconst_env import (
+    trophicTriangleJConstEnv,
+)
 from gym_fishing.envs.trophic_triangle_rand_env import trophicTriangleRandEnv
-from gym_fishing.envs.trophic_triangle_jconst_env import trophicTriangleJConstEnv
 
 register(
     id="trophictriangle-v0",

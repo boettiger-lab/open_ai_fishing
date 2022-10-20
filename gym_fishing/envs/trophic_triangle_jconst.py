@@ -18,6 +18,7 @@ A -> F, and thus F can be safely ignored for the sake of harvesting.
 
 from trophic_triangle_env import trophicTriangleEnv
 
+
 class trophicTriangleJConstEnv(trophicTriangleEnv):
     def Jdraw(self, fd) -> None:
         return self.fish_population[2]

@@ -237,7 +237,6 @@ class trophicTriangleEnv(gym.Env):
                     self.state
                 )
             )
-        
 
     def simulate(env, model, reps=1):
         return simulate_mdp(env, model, reps)
