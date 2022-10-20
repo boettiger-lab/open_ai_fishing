@@ -18,28 +18,31 @@ class msy:
         action = self.env.get_action(msy)
         return action, obs
 
+class 
 
-class multiSpecies_singleHarvest_msy:
-    def __init__(self, env, **kwargs):
-        self.env = env
-        self.S = multiSpecies_singleHarvestBMSY(env)
-        # use the built-in method to determine MSY
-        env.fish_population = self.S
-        if hasattr(env, "sigma"):
-            sigmaArr = env.turn_noise_off()
-        # sigma = env.sigma
-        # env.sigma = 0
-
-        self.msy = env.population_draw() - self.S
-        if hasattr(env, "sigma"):
-            env.turn_noise_on(sigmaArr)
-        # env.sigma = sigma
-        env.reset()
-
-    def predict(self, obs, **kwargs):
-        msy = self.msy
-        action = self.env.get_action(msy)
-        return action, obs
+# Obsolete
+# 
+# class multiSpecies_singleHarvest_msy:
+#     def __init__(self, env, **kwargs):
+#         self.env = env
+#         self.S = multiSpecies_singleHarvestBMSY(env)
+#         # use the built-in method to determine MSY
+#         env.fish_population = self.S
+#         if hasattr(env, "sigma"):
+#             sigmaArr = env.turn_noise_off()
+#         # sigma = env.sigma
+#         # env.sigma = 0
+# 
+#         self.msy = env.population_draw() - self.S
+#         if hasattr(env, "sigma"):
+#             env.turn_noise_on(sigmaArr)
+#         # env.sigma = sigma
+#         env.reset()
+# 
+#     def predict(self, obs, **kwargs):
+#         msy = self.msy
+#         action = self.env.get_action(msy)
+#         return action, obs
 
 
 class escapement:
