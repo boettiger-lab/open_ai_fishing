@@ -16,9 +16,9 @@ np.random.seed(0)
 def test_trophicTriangleRandEnv():
     env = gym.make("trophictriangle-v1")
     check_env(env)
-    model = multiSpecies_singleHarvest_msy(env)
-    df = env.simulate(model)
-    env.plot(df, "trophictriangle-v1_msy-test.png")
+    # model = multiSpecies_singleHarvest_msy(env)
+    # df = env.simulate(model)
+    # env.plot(df, "trophictriangle-v1_msy-test.png")
 
 
 def test_twospecies_fishing():
