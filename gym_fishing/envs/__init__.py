@@ -18,6 +18,7 @@ from gym_fishing.envs.growth_models import (
 )
 from gym_fishing.envs.trophic_triangle_env import trophicTriangleEnv
 from gym_fishing.envs.trophic_triangle_rand_env import trophicTriangleRandEnv
+from gym_fishing.envs.trophic_triangle_jconst_env import trophicTriangleJConstEnv
 
 register(
     id="trophictriangle-v0",
@@ -27,6 +28,11 @@ register(
 register(
     id="trophictriangle-v1",
     entry_point="gym_fishing.envs:trophicTriangleRandEnv",
+)
+
+register(
+    id="trophictriangle-v2",
+    entry_point="gym_fishing.envs:trophicTriangleJConstEnv",
 )
 
 register(
