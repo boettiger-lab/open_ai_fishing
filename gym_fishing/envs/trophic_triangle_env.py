@@ -238,6 +238,15 @@ class trophicTriangleEnv(gym.Env):
                 )
             )
 
+    def make_single_species(self):
+        """
+        Sets parameters to zero such that dJ/dt = 0. This considerably simplifies the
+        dynamics: A will now converge towards its stable fixed point s*J/mA.
+
+        This gives a simple test
+        """
+        return None
+
     def simulate(env, model, reps=1):
         return simulate_mdp(env, model, reps)
 
