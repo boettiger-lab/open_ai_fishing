@@ -120,7 +120,7 @@ def multiSpecies_singleHarvestBMSY(env):
     # TBD: can we do this for general n species nicely?
 
     # manual for now:
-    state_space = np.mgrid[-1:1.1:1001j, -1:1.1:1001j, -1:1.1:1001j]
+    state_space = np.mgrid[-1:1.1:101j, -1:1.1:101j, -1:1.1:101j]
     states_A = state_space[0]
     states_F = state_space[1]
     states_J = state_space[2]
