@@ -119,7 +119,9 @@ def multiSpecies_singleHarvestBMSY(env):
     # TBD: can we do this for general n species nicely?
     
     # manual for now:
-    state1_space, state2_space, state3_space = np.mgrid( env.observation_space.low[0]:env.observation_space.high[0]:n*j, env.observation_space.low[1]:env.observation_space.high[1]:n*j, env.observation_space.low[2]:env.observation_space.high[2]:n*j)
+    state1_space, state2_space, state3_space = np.mgrid( 
+        env.observation_space.low[0]:env.observation_space.high[0]:n*j, env.observation_space.low[1]:env.observation_space.high[1]:n*j, env.observation_space.low[2]:env.observation_space.high[2]:n*j,
+    )
     
     state_range = [np.array(
         state1_space[i],
