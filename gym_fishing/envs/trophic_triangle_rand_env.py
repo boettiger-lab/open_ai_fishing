@@ -75,6 +75,7 @@ class trophicTriangleRandEnv(trophicTriangleEnv):
         # Preserve these for reset
         self.init_state = self.state
         self.fish_population = self.init_pop
+        self.harvested_population = self.fish_population[0]
         self.smaller_population = min(
             self.init_pop
         )  # the smaller of the populations

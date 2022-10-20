@@ -112,17 +112,29 @@ def altBMSY(env):
     env.reset()
     return S
 
-
 def multiSpecies_singleHarvestBMSY(env):
-    n = 10001  # ick should  be cts
-    state_range = np.linspace(
-        env.observation_space.low[0],
-        env.observation_space.high[0],
-        num=n,
-        dtype=env.observation_space.dtype,
-    )
+    n = 1001  # ick should  be cts
+    env.reset()
+    varnames = env.variable_names()
+    # TBD: can we do this for general n species nicely?
+    
+    # manual for now:
+    state1_space, state2_space, state3_space = np.mgrid( env.observation_space.low[0]:env.observation_space.high[0]:n*j, env.observation_space.low[1]:env.observation_space.high[1]:n*j, env.observation_space.low[2]:env.observation_space.high[2]:n*j)
+    
+    state_range = [np.array(
+        state1_space[i],
+        state2_space[i],
+        state3_space[i],
+    ) for i in range(len(state1_space))]
+
+    # state_range = np.linspace(
+    #     env.observation_space.low[0],
+    #     env.observation_space.high[0],
+    #     num=n,
+    #     dtype=env.observation_space.dtype,
+    # )
     growth = []
-    x_0 = np.asarray(list(map(env.get_harvested_fish_population, state_range)))
+    x_0 = np.asarray(list(map(env.get_fish_population, state_range)))
     for xx in x_0:
         sigmaArr = []
         if hasattr(env, "sigma"):

@@ -107,11 +107,11 @@ class trophicTriangleEnv(gym.Env):
         self.reward = 0
         self.harvest = 0
         return self.state
-
+    
     def step(self, action):
         quota_normalized = self.get_quota(action)
         quota = 2 * self.Ahalf * quota_normalized
-        self.fish_population = self.get_fish_population()
+        self.fish_population = self.get_fish_population(self.state)
 
         # Apply harvest and population growth
         self.harvest = self.harvest_draw(quota)
@@ -179,6 +179,9 @@ class trophicTriangleEnv(gym.Env):
         self.smaller_population = min(self.fish_population)
         return harvest
 
+    def variable_names(self):
+        return ["A", "F", "J"]
+    
     def get_fish_dict(self):
         fish_dict = {
             "A": self.fish_population[0],
@@ -195,10 +198,11 @@ class trophicTriangleEnv(gym.Env):
         # inverse of get_quota
         return int(round((quota + 0.01) * 50 * self.n_actions))
 
-    def get_fish_population(self):
-        A_pop = (self.state[0] + 1) * self.Ahalf
-        F_pop = (self.state[1] + 1) * self.Fhalf
-        J_pop = (self.state[2] + 1) * self.Jhalf
+    def get_fish_population(self,state):
+        # include state for ease of writing test msy function
+        A_pop = (state[0] + 1) * self.Ahalf
+        F_pop = (state[1] + 1) * self.Fhalf
+        J_pop = (state[2] + 1) * self.Jhalf
         return np.array([A_pop, F_pop, J_pop], dtype=np.float32)
 
     def get_state(self):
