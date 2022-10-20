@@ -121,9 +121,13 @@ def multiSpecies_singleHarvestBMSY(env):
 
     # manual for now:
     state_space = np.mgrid[-1:1.1:101j, -1:1.1:101j, -1:1.1:101j]
-    states_A = state_space[0]
-    states_F = state_space[1]
-    states_J = state_space[2]
+    states_A = np.array(state_space[0], dtype=np.float32) #used to be just state_space[0]
+    states_F = np.array(state_space[1], dtype=np.float32)
+    states_J = np.array(state_space[2], dtype=np.float32)
+    # Flatten them for a single loop
+    states_A.flatten()
+    states_F.flatten()
+    states_J.flatten()
     state_range = [
         np.array([states_A[i], states_F[i], states_J[i]], dtype=np.float32)
         for i in range(n)
