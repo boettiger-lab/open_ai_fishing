@@ -125,7 +125,8 @@ def multiSpecies_singleHarvestBMSY(env):
     states_F = state_space[1]
     states_J = state_space[2]
     state_range = [
-        np.array([states_A[i], states_F[i], states_J[i]], dtype=np.float32) for i in range(n)
+        np.array([states_A[i], states_F[i], states_J[i]], dtype=np.float32)
+        for i in range(n)
     ]
 
     # state_range = np.linspace(
