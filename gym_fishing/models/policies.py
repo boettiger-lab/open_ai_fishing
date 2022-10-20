@@ -112,20 +112,21 @@ def altBMSY(env):
     env.reset()
     return S
 
+
 def multiSpecies_singleHarvestBMSY(env):
-    n = 1001  # ick should  be cts
+    n = 1001  # (replacing it manually in grid :( ) ick should  be cts
     env.reset()
     varnames = env.variable_names()
     # TBD: can we do this for general n species nicely?
-    
+
     # manual for now:
-    state1_space, state2_space, state3_space = np.mgrid(-1:1.1:n*j, -1:1.1:n*j, -1:1.1:n*j)
-    
-    state_range = [np.array(
-        state1_space[i],
-        state2_space[i],
-        state3_space[i],
-    ) for i in range(len(state1_space))]
+    state_space = np.mgrid[-1:1.1:1001j, -1:1.1:1001j, -1:1.1:1001j]
+    states_A = state_space[0]
+    states_F = state_space[1]
+    states_J = state_space[2]
+    state_range = [
+        np.array(states_A[i], states_F[i], states_J[i]) for i in range(n)
+    ]
 
     # state_range = np.linspace(
     #     env.observation_space.low[0],
