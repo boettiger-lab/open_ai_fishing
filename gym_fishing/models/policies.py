@@ -18,10 +18,9 @@ class msy:
         action = self.env.get_action(msy)
         return action, obs
 
-class 
 
 # Obsolete
-# 
+#
 # class multiSpecies_singleHarvest_msy:
 #     def __init__(self, env, **kwargs):
 #         self.env = env
@@ -32,13 +31,13 @@ class
 #             sigmaArr = env.turn_noise_off()
 #         # sigma = env.sigma
 #         # env.sigma = 0
-# 
+#
 #         self.msy = env.population_draw() - self.S
 #         if hasattr(env, "sigma"):
 #             env.turn_noise_on(sigmaArr)
 #         # env.sigma = sigma
 #         env.reset()
-# 
+#
 #     def predict(self, obs, **kwargs):
 #         msy = self.msy
 #         action = self.env.get_action(msy)

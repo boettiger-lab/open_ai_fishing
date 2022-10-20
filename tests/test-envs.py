@@ -16,7 +16,7 @@ np.random.seed(0)
 def test_trophicTriangleJConstEnv():
     env = gym.make("trophictriangle-v2")
     check_env(env)
-    
+
 
 def test_trophicTriangleRandEnv():
     env = gym.make("trophictriangle-v1")
