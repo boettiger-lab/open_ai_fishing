@@ -114,7 +114,7 @@ def altBMSY(env):
 
 
 def multiSpecies_singleHarvestBMSY(env):
-    n = 1001  # (replacing it manually in grid :( ) ick should  be cts
+    n = 101  # (replacing it manually in grid :( ) ick should  be cts
     env.reset()
     varnames = env.variable_names()
     # TBD: can we do this for general n species nicely?
