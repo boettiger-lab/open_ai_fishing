@@ -16,11 +16,6 @@ np.random.seed(0)
 def test_trophicTriangleJConstEnv():
     env = gym.make("trophictriangle-v2")
     check_env(env)
-
-
-def test_trophicTriangleRandEnv():
-    env = gym.make("trophictriangle-v1")
-    check_env(env)
     model = periodic_full_harvest(env)
     opt_harvest_t, opt_harvest = env.opt_harvest_timing(env, t_scale=1000)
     print(
@@ -28,6 +23,10 @@ def test_trophicTriangleRandEnv():
             opt_harvest_t, opt_harvest
         )
     )
+
+def test_trophicTriangleRandEnv():
+    env = gym.make("trophictriangle-v1")
+    check_env(env)
     # model = multiSpecies_singleHarvest_msy(env)
     # df = env.simulate(model)
     # env.plot(df, "trophictriangle-v1_msy-test.png")
