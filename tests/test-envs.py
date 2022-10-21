@@ -17,7 +17,7 @@ def test_trophicTriangleJConstEnv():
     env = gym.make("trophictriangle-v2")
     check_env(env)
     model = periodic_full_harvest(env)
-    opt_harvest_t, opt_harvest = env.opt_harvest_timing(env, t_scale=1000)
+    opt_harvest_t, opt_harvest = model.opt_harvest_timing(env, t_scale=1000)
     print(
         "opt harvest time = {}, yields {} per unit time".format(
             opt_harvest_t, opt_harvest
