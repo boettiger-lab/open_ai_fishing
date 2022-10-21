@@ -20,7 +20,7 @@ class msy:
 
 
 class periodic_full_harvest:
-    def __init__(self, env, t_harvest=1):
+    def __init__(self, env):
         self.env = env
         env.fish_population[0] = 0
         self.total_harvest = 0
@@ -36,7 +36,7 @@ class periodic_full_harvest:
         # return the harvest per unit time
         return self.total_harvest / t_harvest
 
-    def opt_harvest_time(self, env, t_scale):
+    def opt_harvest_timing(self, env, t_scale):
         max_t_harvest = 1
         max_norm_harvest = 0
         for t_harvest in range(1, t_scale + 1):
@@ -46,14 +46,13 @@ class periodic_full_harvest:
                 max_t_harvest = t_harvest
         return max_t_harvest, max_norm_harvest
 
-    def plot_norm_yields(self, env, t_scale):
+    def norm_yields(self, env, t_scale):
         harvest_times = []
         unit_time_yields = []
         for t_harvest in range(t_scale):
             harvest_times.append(t_harvest)
             unit_time_yields.append()
-
-        ...
+        return harvest_times, unit_time_yields
 
 
 # Obsolete

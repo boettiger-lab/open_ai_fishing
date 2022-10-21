@@ -3,7 +3,12 @@ import numpy as np
 from stable_baselines3.common.env_checker import check_env
 
 import gym_fishing
-from gym_fishing.models.policies import escapement, msy, user_action
+from gym_fishing.models.policies import (
+    escapement,
+    msy,
+    periodic_full_harvest,
+    user_action,
+)
 
 np.random.seed(0)
 
@@ -16,6 +21,13 @@ def test_trophicTriangleJConstEnv():
 def test_trophicTriangleRandEnv():
     env = gym.make("trophictriangle-v1")
     check_env(env)
+    model = periodic_full_harvest(env)
+    opt_harvest_t, opt_harvest = env.opt_harvest_timing(env, t_scale=1000)
+    print(
+        "opt harvest time = {}, yields {} per unit time".format(
+            opt_harvest_t, opt_harvest
+        )
+    )
     # model = multiSpecies_singleHarvest_msy(env)
     # df = env.simulate(model)
     # env.plot(df, "trophictriangle-v1_msy-test.png")
