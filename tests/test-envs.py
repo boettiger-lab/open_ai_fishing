@@ -6,7 +6,6 @@ import gym_fishing
 from gym_fishing.models.policies import (
     escapement,
     msy,
-    multiSpecies_singleHarvest_msy,
     user_action,
 )
 
