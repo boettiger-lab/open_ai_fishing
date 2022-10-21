@@ -3,11 +3,7 @@ import numpy as np
 from stable_baselines3.common.env_checker import check_env
 
 import gym_fishing
-from gym_fishing.models.policies import (
-    escapement,
-    msy,
-    user_action,
-)
+from gym_fishing.models.policies import escapement, msy, user_action
 
 np.random.seed(0)
 

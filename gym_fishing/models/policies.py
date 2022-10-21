@@ -52,7 +52,7 @@ class periodic_full_harvest:
         for t_harvest in range(t_scale):
             harvest_times.append(t_harvest)
             unit_time_yields.append()
-            
+
         ...
 
 
