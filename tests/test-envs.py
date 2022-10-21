@@ -24,6 +24,7 @@ def test_trophicTriangleJConstEnv():
         )
     )
 
+
 def test_trophicTriangleRandEnv():
     env = gym.make("trophictriangle-v1")
     check_env(env)
