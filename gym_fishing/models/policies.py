@@ -19,6 +19,36 @@ class msy:
         return action, obs
 
 
+class periodic_full_harvest:
+    def __init__(self, env, t_harvest=1):
+        self.env = env
+        env.fish_population[0] = 0
+        self.total_harvest = 0
+
+    def harvest(self, t_harvest, deterministic=True):
+        if deterministic and hasattr(env, "sigma"):
+            sigmaArr = env.turn_noise_off()
+        for t in range(t_harvest):
+            env.population_draw()
+        self.total_harvest += env.fish_population[0]
+        env.fish_population[0] = 0.0
+        # return the harvest per unit time
+        return self.total_harvest / t_harvest
+
+    def opt_harvest_time(self, t_scale):
+        max_t_harvest = 1
+        max_norm_harvest = 0
+        for t_harvest in range(1, t_scale + 1):
+            norm_harvest = self.harvest(t_harvest)
+            if norm_harvest > max_norm_harvest:
+                max_norm_harvest = norm_harvest
+                max_t_harvest = t_harvest
+        return max_t_harvest, max_norm_harvest
+
+    def plot_norm_yields(self, t_scale):
+        ...
+
+
 # Obsolete
 #
 # class multiSpecies_singleHarvest_msy:
