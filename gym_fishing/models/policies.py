@@ -25,7 +25,7 @@ class periodic_full_harvest:
         env.fish_population[0] = 0
         self.total_harvest = 0
 
-    def harvest(self, t_harvest, deterministic=True):
+    def harvest(self, env, t_harvest, deterministic=True):
         if deterministic and hasattr(env, "sigma"):
             sigmaArr = env.turn_noise_off()
         for t in range(t_harvest):
