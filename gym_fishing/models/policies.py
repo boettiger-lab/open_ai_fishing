@@ -26,13 +26,15 @@ class periodic_full_harvest:
         self.total_harvest = 0
 
     def harvest(self, env, t_harvest, deterministic=True):
+        sigmaArr = []
         if deterministic and hasattr(env, "sigma"):
             sigmaArr = env.turn_noise_off()
         for t in range(t_harvest):
             env.population_draw()
         self.total_harvest += env.fish_population[0]
         env.fish_population[0] = 0.0
-        env.turn_noise_on(sigmaArr)
+        if deterministic and hasattr(env, "sigma"):
+            env.turn_noise_on(sigmaArr)
         # return the harvest per unit time
         return self.total_harvest / t_harvest
 
