@@ -14,6 +14,7 @@ from gym_fishing.envs.shared_env import (
 class baseThreeSpeciesEnv(gym.Env):
     """
     Don't include dynamic parameters in the params dict.
+    Variable names A, B, C by default. Only A is harvested.
     """
 
     def __init__(
@@ -37,7 +38,14 @@ class baseThreeSpeciesEnv(gym.Env):
         self.n_actions = params["n_actions"]
         self.init_pop = np.array([0.5, 0.5, 0.5], dtype=np.float32)
         self.population = self.init_pop
+        self.init_state = self.pop_to_state(self.population)
+        self.state = self.init_state
         self.set_dynamics()
+
+        self.quota = 0
+        self.reward = 0
+        self.harvest = 0
+        self.years_passed = 0
 
     def set_dynamics(self) -> None:
         """
@@ -51,6 +59,15 @@ class baseThreeSpeciesEnv(gym.Env):
         )  # particular values tbd
         self.sigma = 0.05
         self.sigmas = np.array([0.05, 0.05, 0.05], dtype=np.float32)
+
+    def reset(self):
+        self.state = self.init_state
+        self.population = self.init_pop
+
+        self.reward = 0
+        self.harvest = 0
+        self.years_passed = 0
+        return self.state
 
     """
     Dynamic functions will be passed a copy of self.population -- this is because
@@ -95,6 +112,9 @@ class baseThreeSpeciesEnv(gym.Env):
         self.population += self.quad_interactions_all(pop) * self.dt
         self.population += self.rnd_all(pop) * self.dt
         return self.population
+
+    def harvest_draw(self, quota):
+        return self.population - np.array([quota, 0.0, 0.0], dtype=np.float32)
 
     def pop_to_state(self, pop):
         ...
