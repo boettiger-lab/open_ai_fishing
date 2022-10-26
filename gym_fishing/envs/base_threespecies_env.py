@@ -12,7 +12,7 @@ from gym_fishing.envs.shared_env import (
 
 
 class baseThreeSpeciesEnv(gym.Env):
-    varnames_index = {"A": 0, "B": 1, "C": 2}
+    varname_index = {"A": 0, "B": 1, "C": 2}
     """
     Don't include dynamic parameters in the params dict.
     """
