@@ -1,6 +1,6 @@
 from gym.envs.registration import register
 
-from gym_fishing.envs.base_threespecies_env.py import baseThreeSpeciesEnv
+from gym_fishing.envs.base_threespecies_env import baseThreeSpeciesEnv
 from gym_fishing.envs.base_twospecies_fishing_env import (
     BaseCompetingPairFishingEnv as ts_fishing_env,
 )
