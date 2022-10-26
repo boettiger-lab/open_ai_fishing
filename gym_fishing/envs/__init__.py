@@ -21,6 +21,12 @@ from gym_fishing.envs.trophic_triangle_jconst_env import (
     trophicTriangleJConstEnv,
 )
 from gym_fishing.envs.trophic_triangle_rand_env import trophicTriangleRandEnv
+from gym_fishing.envs.base_threespecies_env.py import baseThreeSpeciesEnv
+
+register(
+    id="threeFishing-v0",
+    entry_point="gym_fishing.envs:baseThreeSpeciesEnv"
+)
 
 register(
     id="trophictriangle-v0",

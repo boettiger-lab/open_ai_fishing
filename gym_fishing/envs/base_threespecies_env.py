@@ -137,7 +137,7 @@ class baseThreeSpeciesEnv(gym.Env):
         return self.population
 
     def harvest_draw(self, quota):
-        harvest = min(quota, self.population[0])
+        harvest = quota*self.population[0]
         return (
             self.population - np.array([harvest, 0.0, 0.0], dtype=np.float32),
             harvest,
@@ -163,8 +163,14 @@ class baseThreeSpeciesEnv(gym.Env):
         popC = (state[2] + 1) * self.boundA / 2
         return np.array([popA, popB, popC], dtype=np.float32)
 
-    def get_action(self, quota):
-        ...
-
     def get_quota(self, action):
-        ...
+        """
+        quota = fraction of population[0] to be fished, in [0,1]
+        """
+        return action/self.n_actions
+        
+    def get_action(self, quota):
+        """
+        Inverse of get_quota
+        """
+        return round(quota*n_actions)
