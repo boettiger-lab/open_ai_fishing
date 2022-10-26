@@ -69,6 +69,14 @@ class baseThreeSpeciesEnv(gym.Env):
         self.years_passed = 0
         return self.state
 
+    def step(self, action):
+        quota = self.get_quota(action)
+        self.population, self.reward = self.harvest_draw(quota)
+        pop = (
+            self.population
+        )  # copy to pass into dynamics (dyn. starts after harvest draw)
+        self.population = self.population_draw(pop)
+
     """
     Dynamic functions will be passed a copy of self.population -- this is because
     we will be updating self.population along the way in these functions.
@@ -114,10 +122,20 @@ class baseThreeSpeciesEnv(gym.Env):
         return self.population
 
     def harvest_draw(self, quota):
-        return self.population - np.array([quota, 0.0, 0.0], dtype=np.float32)
+        harvest = min(quota, self.population[0])
+        return (
+            self.population - np.array([harvest, 0.0, 0.0], dtype=np.float32),
+            harvest,
+        )
 
     def pop_to_state(self, pop):
         ...
 
     def state_to_pop(self, state):
+        ...
+
+    def get_action(self, quota):
+        ...
+
+    def get_quota(self, action):
         ...
