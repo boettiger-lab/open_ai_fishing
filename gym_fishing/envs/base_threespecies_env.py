@@ -12,11 +12,9 @@ from gym_fishing.envs.shared_env import (
 
 
 class baseThreeSpeciesEnv(gym.Env):
-    varname_index = {"A": 0, "B": 1, "C": 2}
     """
     Don't include dynamic parameters in the params dict.
     """
-
     def __init__(
         self,
         params={
@@ -26,7 +24,7 @@ class baseThreeSpeciesEnv(gym.Env):
         Tmax=100,
         file=None,
     ):
-
+        self.varname_index = {"A": 0, "B": 1, "C": 2}
         self.action_space = spaces.Discrete(self.n_actions)
         self.observation_space = spaces.Box(
             np.array([-1, -1, -1], dtype=np.float32),
@@ -67,7 +65,7 @@ class baseThreeSpeciesEnv(gym.Env):
         return np.array([delA, delB, delC], dtype=np.float32)
 
     def quad_interactions(self, pop, varname):
-        i = varname_index[varname]
+        i = self.varname_index[varname]
         return pop[i] * (pop.dot(self.q_inter))[i]
 
     def logistic_all(self, pop):
@@ -77,11 +75,11 @@ class baseThreeSpeciesEnv(gym.Env):
         return np.array([delA, delB, delC], dtype=np.float32)
 
     def logistic(self, pop, varname):
-        i = varname_index[varname]
+        i = self.varname_index[varname]
         return self.r[i] * pop[i] * (1 - pop[i] / self.K[i])
 
     def rnd(self, varname, pop):
-        i = varname_index[varname]
+        i = self.varname_index[varname]
         return pop[i] * sigmas[i] * np.random.normal(0, 1)
 
     def rnd_all(self, pop):
