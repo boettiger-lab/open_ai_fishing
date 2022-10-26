@@ -41,6 +41,7 @@ class baseThreeSpeciesEnv(gym.Env):
         self.init_state = self.pop_to_state(self.population)
         self.state = self.init_state
         self.set_dynamics()
+        self.bound_popspace()
 
         self.quota = 0
         self.reward = 0
@@ -59,6 +60,20 @@ class baseThreeSpeciesEnv(gym.Env):
         )  # particular values tbd
         self.sigma = 0.05
         self.sigmas = np.array([0.05, 0.05, 0.05], dtype=np.float32)
+
+    def bound_popspace(self) -> None:
+        """
+        Enclose the space of populations in a box with
+        sort-of ad-hoc boundaries. Population is not straightforward to bound
+        in the multi-species case (other populations modify the carrying capacity).
+
+        I will enclose population in a box with bound 3x the single-species carrying
+        capacity. This is artificial, might need to change.
+        """
+        self.bounds = 3 * self.K  # ad-hoc
+        self.boundA = self.bounds[0]
+        self.boundB = self.bounds[1]
+        self.boundC = self.bounds[2]
 
     def reset(self):
         self.state = self.init_state
@@ -129,10 +144,23 @@ class baseThreeSpeciesEnv(gym.Env):
         )
 
     def pop_to_state(self, pop):
-        ...
+        """
+        State components lives in [-1,1].
+        Pop components lives in [0,self.K[i]]
+        """
+        # self.boundA = 3 * self.K[0]
+        # self.boundB = 3 * self.K[1]
+        # self.boundC = 3 * self.K[2]
+
+        stateA = 2 * pop[0] / self.boundA - 1
+        stateB = 2 * pop[1] / self.boundB - 1
+        stateC = 2 * pop[2] / self.boundC - 1
+        return np.array([stateA, stateB, stateC], dtype=np.float32)
 
     def state_to_pop(self, state):
-        ...
+        popA = (state[0] + 1) * self.boundA / 2
+        popB = (state[1] + 1) * self.boundA / 2
+        popC = (state[2] + 1) * self.boundA / 2
 
     def get_action(self, quota):
         ...
