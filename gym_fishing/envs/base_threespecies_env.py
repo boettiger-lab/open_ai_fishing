@@ -174,4 +174,4 @@ class baseThreeSpeciesEnv(gym.Env):
         """
         Inverse of get_quota
         """
-        return round(quota * n_actions)
+        return round(quota * self.n_actions)
