@@ -60,7 +60,7 @@ class baseThreeSpeciesEnv(gym.Env):
         )  # particular values tbd
         self.sigma = 0.05
         self.sigmas = np.array([0.05, 0.05, 0.05], dtype=np.float32)
-        self.complexity = 1. # later on used to 'turn off' model complexity
+        self.complexity = 1.0  # later on used to 'turn off' model complexity
 
     def bound_popspace(self) -> None:
         """
@@ -138,7 +138,7 @@ class baseThreeSpeciesEnv(gym.Env):
         return self.population
 
     def harvest_draw(self, quota):
-        harvest = quota*self.population[0]
+        harvest = quota * self.population[0]
         return (
             self.population - np.array([harvest, 0.0, 0.0], dtype=np.float32),
             harvest,
@@ -168,10 +168,10 @@ class baseThreeSpeciesEnv(gym.Env):
         """
         quota = fraction of population[0] to be fished, in [0,1]
         """
-        return action/self.n_actions
-        
+        return action / self.n_actions
+
     def get_action(self, quota):
         """
         Inverse of get_quota
         """
-        return round(quota*n_actions)
+        return round(quota * n_actions)
