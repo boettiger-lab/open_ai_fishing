@@ -112,6 +112,7 @@ class trophicTriangleEnv(gym.Env):
         quota_normalized = self.get_quota(action)
         quota = 2 * self.Ahalf * quota_normalized
         self.fish_population = self.get_fish_population(self.state)
+        # self.test_state_boundaries()
 
         # Apply harvest and population growth
         self.harvest = self.harvest_draw(quota)
@@ -124,8 +125,6 @@ class trophicTriangleEnv(gym.Env):
         self.reward = max(self.harvest, 0.0)
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
-
-        # self.test_state_boundaries()
 
         if any(x <= 0.0 for x in self.fish_population):
             done = True
