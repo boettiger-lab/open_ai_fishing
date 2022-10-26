@@ -15,6 +15,7 @@ class baseThreeSpeciesEnv(gym.Env):
     """
     Don't include dynamic parameters in the params dict.
     """
+
     def __init__(
         self,
         params={
