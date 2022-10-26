@@ -60,6 +60,7 @@ class baseThreeSpeciesEnv(gym.Env):
         )  # particular values tbd
         self.sigma = 0.05
         self.sigmas = np.array([0.05, 0.05, 0.05], dtype=np.float32)
+        self.complexity = 1. # later on used to 'turn off' model complexity
 
     def bound_popspace(self) -> None:
         """
