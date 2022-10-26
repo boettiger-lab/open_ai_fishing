@@ -161,6 +161,7 @@ class baseThreeSpeciesEnv(gym.Env):
         popA = (state[0] + 1) * self.boundA / 2
         popB = (state[1] + 1) * self.boundA / 2
         popC = (state[2] + 1) * self.boundA / 2
+        return np.array([popA, popB, popC], dtype=np.float32)
 
     def get_action(self, quota):
         ...
