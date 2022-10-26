@@ -81,7 +81,7 @@ class baseThreeSpeciesEnv(gym.Env):
 
     def rnd(self, varname, pop):
         i = self.varname_index[varname]
-        return pop[i] * sigmas[i] * np.random.normal(0, 1)
+        return pop[i] * self.sigmas[i] * np.random.normal(0, 1)
 
     def rnd_all(self, pop):
         delA = self.rnd(pop, "A")
