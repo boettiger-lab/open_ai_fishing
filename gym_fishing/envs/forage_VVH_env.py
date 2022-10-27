@@ -42,12 +42,6 @@ class forageVVH(gym.Env):
     ):
         self.v_ind = {"V1": 0, "V2": 1, "H": 2}
         self.ind_v = {0: "V1", 1: "V2", 2: "H"}
-        self.action_space = spaces.Discrete(self.n_actions)
-        self.observation_space = spaces.Box(
-            np.array([-1, -1, -1], dtype=np.float32),
-            np.array([1, 1, 1], dtype=np.float32),
-            dtype=np.float32,
-        )
 
         self.Tmax = Tmax
         self.n_actions = params["n_actions"]
@@ -60,6 +54,13 @@ class forageVVH(gym.Env):
         self.state = self.init_state
         self.set_dynamics()
         self.bound_popspace()
+        
+        self.action_space = spaces.Discrete(self.n_actions)
+        self.observation_space = spaces.Box(
+            np.array([-1, -1, -1], dtype=np.float32),
+            np.array([1, 1, 1], dtype=np.float32),
+            dtype=np.float32,
+        )
 
         self.quota = np.float32(0)
         self.reward = np.float32(0)
