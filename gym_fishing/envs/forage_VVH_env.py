@@ -221,7 +221,7 @@ class forageVVH(gym.Env):
             v0      = half-saturation point for v
             beta    = foraging intensity
         """
-        return beta * h * (v ^ 2) / (v0 ^ 2 + v ^ 2)
+        return beta * h * (v ** 2) / (v0 ** 2 + v ** 2)
 
     """
     Interconversions:
