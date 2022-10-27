@@ -80,8 +80,8 @@ class forageVVH(gym.Env):
         Use ad hoc beta in that order of magnitude and see what happens - this
         will be particularly good for very small alpha.
         """
-        self.tau12 = np.float32(0.)
-        self.tau21 = np.float32(0.)
+        self.tau12 = np.float32(0.0)
+        self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.05)
         self.sigmas = {
             "V1": np.float32(0.05),
@@ -97,7 +97,7 @@ class forageVVH(gym.Env):
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(self.K["V1"] / 2)
         self.dH = np.float(0.1)
-    
+
     def set_dynamics(self) -> None:
         """
         Only quadratic interactions for this generic class.
