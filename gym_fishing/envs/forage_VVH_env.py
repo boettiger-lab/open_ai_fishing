@@ -247,7 +247,7 @@ class forageVVH(gym.Env):
         popB = (state[1] + 1) * self.boundV2 / 2
         popC = (state[2] + 1) * self.boundH / 2
         return np.array([popA, popB, popC], dtype=np.float32)
-        
+
     def get_quota(self, action):
         """
         quota = fraction of population[0] to be fished, in [0,1]
@@ -259,11 +259,11 @@ class forageVVH(gym.Env):
         Inverse of get_quota
         """
         return round(quota * self.n_actions)
-    
+
     """
     Other testing / helpers
     """
-    
+
     def test_state_boundaries(self) -> None:
         M = max(self.state)
         m = min(self.state)
