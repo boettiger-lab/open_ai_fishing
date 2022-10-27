@@ -148,7 +148,7 @@ class forageVVH(gym.Env):
         """
         harvest = quota * self.pop[0]
         return (
-            self.population - np.array([harvest, 0.0, 0.0], dtype=np.float32),
+            self.pop - np.array([harvest, 0.0, 0.0], dtype=np.float32),
             harvest,
         )
 
