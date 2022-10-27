@@ -127,10 +127,10 @@ class forageVVH(gym.Env):
             1.0
         )  # later on used to 'turn off' model complexity
         self.beta = np.float32(0.5)
-        self.f = np.float(0.5)
+        self.f = np.float32(0.5)
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(self.K["V1"] / 2)
-        self.dH = np.float(0.3)
+        self.dH = np.float32(0.3)
 
     def bound_popspace(self) -> None:
         """
