@@ -51,6 +51,7 @@ class forageVVH(gym.Env):
 
         self.Tmax = Tmax
         self.n_actions = params["n_actions"]
+        self.dt = params["dt"]
         self.init_pop = np.array([0.5, 0.5, 0.5], dtype=np.float32)
         self.pop = self.init_pop
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
