@@ -54,7 +54,7 @@ class forageVVH(gym.Env):
         # -> better do in step function
         self.init_state = self.pop_to_state(self.pop)
         self.state = self.init_state
-        
+
         self.action_space = spaces.Discrete(self.n_actions)
         self.observation_space = spaces.Box(
             np.array([-1, -1, -1], dtype=np.float32),
@@ -221,7 +221,7 @@ class forageVVH(gym.Env):
             v0      = half-saturation point for v
             beta    = foraging intensity
         """
-        return beta * h * (v ** 2) / (v0 ** 2 + v ** 2)
+        return beta * h * (v**2) / (v0**2 + v**2)
 
     """
     Interconversions:
