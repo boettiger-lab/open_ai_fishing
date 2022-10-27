@@ -48,12 +48,12 @@ class forageVVH(gym.Env):
         self.dt = params["dt"]
         self.init_pop = np.array([0.5, 0.5, 0.5], dtype=np.float32)
         self.pop = self.init_pop
+        self.set_dynamics()
+        self.bound_popspace()
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
         # -> better do in step function
         self.init_state = self.pop_to_state(self.pop)
         self.state = self.init_state
-        self.set_dynamics()
-        self.bound_popspace()
         
         self.action_space = spaces.Discrete(self.n_actions)
         self.observation_space = spaces.Box(
