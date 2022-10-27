@@ -1,5 +1,5 @@
-import numpy as np
 import gym
+import numpy as np
 from gym import spaces
 
 from gym_fishing.envs.base_threespecies_env import baseThreeSpeciesEnv
@@ -85,9 +85,9 @@ class forageVVH(gym.Env):
         self.tau21 = np.float32(0.01)
         self.sigma = np.float32(0.05)
         self.sigmas = {
-            "V1": np.float32(0.05), 
-            "V2": np.float32(0.05), 
-            "H": np.float32(0.05), 
+            "V1": np.float32(0.05),
+            "V2": np.float32(0.05),
+            "H": np.float32(0.05),
         }
 
         self.alpha = np.float32(
@@ -132,10 +132,11 @@ class forageVVH(gym.Env):
         }  # copy to pass into dynamics (dyn. starts after harvest draw)
         self.pop = self.population_draw(pop)
         self.state = self.pop_to_state(self.pop)
-        
+
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
-        if any(x==0 for x in self.pop)
+        if any(x <= 0 for x in self.pop):
+            done = True
 
         return self.state, self.reward, done, {}
 
@@ -173,25 +174,27 @@ class forageVVH(gym.Env):
         DeltaPop += self.logistic(pop["V1"], self.K["V1"], self.r["V1"])
         DeltaPop += self.forage(pop["H"], pop["V1"], self.beta, self.V0)
         DeltaPop += self.tau21 * pop["V2"] - self.tau12 * pop["V1"]
-        DeltaPop += pop["V1"] * self.sigmas["V1"] * np.random.normal(0,1)
+        DeltaPop += pop["V1"] * self.sigmas["V1"] * np.random.normal(0, 1)
         DeltaPop = DeltaPop * self.dt
         return np.float32(DeltaPop)
-    
-    def V2_draw(self,pop):
+
+    def V2_draw(self, pop):
         DeltaPop = 0
         DeltaPop += self.logistic(pop["V2"], self.K["V2"], self.r["V2"])
-        DeltaPop += self.D * self.forage(pop["H"], pop["V2"], self.beta, self.V0)
+        DeltaPop += self.D * self.forage(
+            pop["H"], pop["V2"], self.beta, self.V0
+        )
         DeltaPop += self.tau12 * pop["V1"] - self.tau21 * pop["V2"]
-        DeltaPop += pop["V2"] * self.sigmas["V2"] * np.random.normal(0,1)
+        DeltaPop += pop["V2"] * self.sigmas["V2"] * np.random.normal(0, 1)
         DeltaPop = DeltaPop * self.dt
         return np.float32(DeltaPop)
-        
-    def H_draw(self,pop):
+
+    def H_draw(self, pop):
         DeltaPop = 0
         DeltaPop += pop["H"] * (
-            self.f * (pop["V1"]+self.D*pop["V2"]) - self.dH
+            self.f * (pop["V1"] + self.D * pop["V2"]) - self.dH
         )
-        DeltaPop += pop["H"] * self.sigmas["H"] * np.random.normal(0,1)
+        DeltaPop += pop["H"] * self.sigmas["H"] * np.random.normal(0, 1)
         DeltaPop = DeltaPop * self.dt
         return np.float32(DeltaPop)
 
