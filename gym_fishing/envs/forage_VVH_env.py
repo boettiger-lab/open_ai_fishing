@@ -48,7 +48,8 @@ class forageVVH(gym.Env):
         self.dt = params["dt"]
         self.init_pop = np.array([0.5, 0.5, 0.5], dtype=np.float32)
         self.pop = self.init_pop
-        self.set_dynamics()
+        # self.set_dynamics()
+        self.set_May_dynamics()
         self.bound_popspace()
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
         # -> better do in step function
@@ -67,6 +68,36 @@ class forageVVH(gym.Env):
         self.harvest = 0
         self.years_passed = 0
 
+    def set_May_dynamics(self) -> None:
+        self.K = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
+        self.r = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
+        """
+        Using K(V1) = r(V1) = 1, to reproduce May we need 
+        
+        gamma:=beta*H in {0.35 (high - after tipping), 0.22 (mid - close
+        to tipping), 0.10 (low - far from tipping)}.
+        
+        Use ad hoc beta in that order of magnitude and see what happens - this
+        will be particularly good for very small alpha.
+        """
+        self.tau12 = np.float32(0.)
+        self.tau21 = np.float32(0.)
+        self.sigma = np.float32(0.05)
+        self.sigmas = {
+            "V1": np.float32(0.05),
+            "V2": np.float32(0.05),
+            "H": np.float32(0.05),
+        }
+
+        self.alpha = np.float32(
+            0.00001
+        )  # later on used to 'turn off' model complexity
+        self.beta = np.float32(0.2)
+        self.f = np.float(0.5)
+        self.D = np.float32(1.0)  # no discrepancy for now!
+        self.V0 = np.float32(self.K["V1"] / 2)
+        self.dH = np.float(0.1)
+    
     def set_dynamics(self) -> None:
         """
         Only quadratic interactions for this generic class.
@@ -100,7 +131,6 @@ class forageVVH(gym.Env):
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(self.K["V1"] / 2)
         self.dH = np.float(0.3)
-        self.f = np.float(1)
 
     def bound_popspace(self) -> None:
         """
