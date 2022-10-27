@@ -240,7 +240,53 @@ class forageVVH(gym.Env):
         return np.array([stateA, stateB, stateC], dtype=np.float32)
 
     def state_to_pop(self, state):
+        """
+        Inverse of pop_to_state
+        """
         popA = (state[0] + 1) * self.boundV1 / 2
         popB = (state[1] + 1) * self.boundV2 / 2
         popC = (state[2] + 1) * self.boundH / 2
         return np.array([popA, popB, popC], dtype=np.float32)
+        
+    def get_quota(self, action):
+        """
+        quota = fraction of population[0] to be fished, in [0,1]
+        """
+        return action / self.n_actions
+
+    def get_action(self, quota):
+        """
+        Inverse of get_quota
+        """
+        return round(quota * self.n_actions)
+    
+    """
+    Other testing / helpers
+    """
+    
+    def test_state_boundaries(self) -> None:
+        M = max(self.state)
+        m = min(self.state)
+        if -1 <= m <= M <= 1:
+            return None
+        else:
+            print(
+                """
+            #
+            #
+            #
+            #
+            Following state is out of bounds: {}
+                
+            The state boundaries used by this environment are artificial and do not
+            follow naturally from the dynamics of the system.
+                
+            Consider increasing the magnitude of these boundaries.
+            #
+            #
+            #
+            #
+            """.format(
+                    self.state
+                )
+            )
