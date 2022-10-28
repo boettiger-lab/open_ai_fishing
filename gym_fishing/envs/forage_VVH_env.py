@@ -313,6 +313,8 @@ class forageVVH(gym.Env):
                 
             The state boundaries used by this environment are artificial and do not
             follow naturally from the dynamics of the system.
+            
+            Current boundaries are: boundV1 = {}, boundV2 = {}, boundH = {}
                 
             Consider increasing the magnitude of these boundaries.
             #
@@ -320,6 +322,9 @@ class forageVVH(gym.Env):
             #
             #
             """.format(
-                    self.state
+                    self.state,
+                    self.boundV1,
+                    self.boundV2,
+                    self.boundH,
                 )
             )
