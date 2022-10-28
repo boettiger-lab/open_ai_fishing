@@ -138,12 +138,19 @@ class forageVVH(gym.Env):
         sort-of ad-hoc boundaries. Population is not straightforward to bound
         in the multi-species case (other populations modify the carrying capacity).
 
-        I will enclose population in a box with bound 3x the single-species carrying
-        capacity for vegetations and simply choose a very high value for H.
+        I will enclose population in a box with bound equal to the single-species 
+        carrying capacity for vegetations. For H, I numerically tested (by evolving
+        with a constant action, for different values of self.alpha between 0 and 1)
+        and found that 2. is a good enough bound. These evolutions also give evidence
+        that the carrying capacity bounds are not exceeded (i.e. that there is no
+        overshooting above the carrying capacity).
+        
+        All of these are still pending to change if new data shows they're not large
+        enough.
         """
         self.boundV1 = 1 * self.K["V1"]
         self.boundV2 = 1 * self.K["V2"]
-        self.boundH = np.float32(10.0)
+        self.boundH = np.float32(2.0) 
 
     def reset(self):
         self.state = self.init_state
@@ -159,6 +166,7 @@ class forageVVH(gym.Env):
         Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
         Ie. I call population_draw self.dt^-1 times.
         """
+        thresh = 1e-5
         quota = self.get_quota(action)
         self.pop, self.reward = self.harvest_draw(quota)
         STEP = round(self.dt ** (-1))
@@ -174,7 +182,7 @@ class forageVVH(gym.Env):
 
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
-        if any(x <= 0 for x in self.pop):
+        if any(x <= thresh for x in self.pop):
             done = True
 
         return self.state, self.reward, done, {}
