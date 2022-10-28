@@ -234,7 +234,7 @@ class forageVVH(gym.Env):
             self.f * (pop["V1"] + self.D * pop["V2"]) - self.dH
         )
         DeltaPop += pop["H"] * self.sigmas["H"] * np.random.normal(0, 1)
-        DeltaPop = self.alpha*DeltaPop * self.dt
+        DeltaPop = self.alpha * DeltaPop * self.dt
         return np.float32(DeltaPop)
 
     """
@@ -306,39 +306,36 @@ class forageVVH(gym.Env):
     def find_fixed_points(self, beta):
         self.beta = beta
         incr = 0.01
-        steps = round( incr ** -1 )
+        steps = round(incr**-1)
         prev = ""
         curr = ""
         for i in range(steps):
             self.reset()
-            self.pop[0] = incr*i
+            self.pop[0] = incr * i
             pop = {
                 "V1": self.pop[0],
                 "V2": self.pop[1],
                 "H": self.pop[2],
-            } 
+            }
             pop_prime = self.population_draw(pop)
             if pop_prime[0] - pop["V1"] > 0:
                 curr = "+"
                 if curr != prev:
-                    print(pop["V1"],end="")
+                    print(pop["V1"], end="")
                 else:
-                    print("+",end="")
+                    print("+", end="")
             if pop_prime[0] - pop["V1"] < 0:
                 curr = "-"
                 if curr != prev:
-                    print(pop["V1"],end="")
+                    print(pop["V1"], end="")
                 else:
-                    print("-",end="")
+                    print("-", end="")
             if pop_prime[0] == pop["V1"]:
                 curr = prev
-                print(pop["V1"],end="")
+                print(pop["V1"], end="")
             prev = curr
         print("\n")
-                
-            
-        
-    
+
     def test_state_boundaries(self) -> None:
         M = max(self.state)
         m = min(self.state)
