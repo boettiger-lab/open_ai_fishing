@@ -161,8 +161,8 @@ class forageVVH(gym.Env):
         """
         quota = self.get_quota(action)
         self.pop, self.reward = self.harvest_draw(quota)
-        STEP = round(self.dt**(-1))
-        for _ in range(STEP)
+        STEP = round(self.dt ** (-1))
+        for _ in range(STEP):
             pop = {
                 "V1": self.pop[0],
                 "V2": self.pop[1],
