@@ -155,16 +155,22 @@ class forageVVH(gym.Env):
         return self.state
 
     def step(self, action):
+        """
+        Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
+        Ie. I call population_draw self.dt^-1 times.
+        """
         quota = self.get_quota(action)
         self.pop, self.reward = self.harvest_draw(quota)
-        pop = {
-            "V1": self.pop[0],
-            "V2": self.pop[1],
-            "H": self.pop[2],
-        }  # copy to pass into dynamics (dyn. starts after harvest draw)
-        self.pop = self.population_draw(pop)
-        self.state = self.pop_to_state(self.pop)
-        self.test_state_boundaries()
+        STEP = round(self.dt**(-1))
+        for _ in range(STEP)
+            pop = {
+                "V1": self.pop[0],
+                "V2": self.pop[1],
+                "H": self.pop[2],
+            }  # copy to pass into dynamics (dyn. starts after harvest draw)
+            self.pop = self.population_draw(pop)
+            self.state = self.pop_to_state(self.pop)
+            self.test_state_boundaries()
 
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
@@ -205,7 +211,7 @@ class forageVVH(gym.Env):
     def V1_draw(self, pop):
         DeltaPop = 0
         DeltaPop += self.logistic(pop["V1"], self.K["V1"], self.r["V1"])
-        DeltaPop += self.forage(pop["H"], pop["V1"], self.beta, self.V0)
+        DeltaPop -= self.forage(pop["H"], pop["V1"], self.beta, self.V0)
         DeltaPop += self.tau21 * pop["V2"] - self.tau12 * pop["V1"]
         DeltaPop += pop["V1"] * self.sigmas["V1"] * np.random.normal(0, 1)
         DeltaPop = DeltaPop * self.dt
@@ -214,7 +220,7 @@ class forageVVH(gym.Env):
     def V2_draw(self, pop):
         DeltaPop = 0
         DeltaPop += self.logistic(pop["V2"], self.K["V2"], self.r["V2"])
-        DeltaPop += self.D * self.forage(
+        DeltaPop -= self.D * self.forage(
             pop["H"], pop["V2"], self.beta, self.V0
         )
         DeltaPop += self.tau12 * pop["V1"] - self.tau21 * pop["V2"]
