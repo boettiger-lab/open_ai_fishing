@@ -141,9 +141,9 @@ class forageVVH(gym.Env):
         I will enclose population in a box with bound 3x the single-species carrying
         capacity for vegetations and simply choose a very high value for H.
         """
-        self.boundV1 = 10 * self.K["V1"]
-        self.boundV2 = 10 * self.K["V2"]
-        self.boundH = np.float32(1000.0)
+        self.boundV1 = 50 * self.K["V1"]
+        self.boundV2 = 50 * self.K["V2"]
+        self.boundH = np.float32(5000.0)
 
     def reset(self):
         self.state = self.init_state
