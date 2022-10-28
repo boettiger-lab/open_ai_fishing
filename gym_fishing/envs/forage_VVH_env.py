@@ -46,7 +46,7 @@ class forageVVH(gym.Env):
         self.Tmax = Tmax
         self.n_actions = params["n_actions"]
         self.dt = params["dt"]
-        self.init_pop = np.array([0.5, 0.5, 0.5], dtype=np.float32)
+        self.init_pop = np.array([0.7, 0.7, 0.5], dtype=np.float32)
         self.pop = self.init_pop
         # self.set_dynamics()
         self.set_May_dynamics()
@@ -92,7 +92,7 @@ class forageVVH(gym.Env):
         self.alpha = np.float32(
             0.0
         )  # later on used to 'turn off' model complexity
-        self.beta = np.float32(0.2)
+        self.beta = np.float32(0.4)
         self.f = np.float32(0.5)
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
@@ -141,9 +141,9 @@ class forageVVH(gym.Env):
         I will enclose population in a box with bound 3x the single-species carrying
         capacity for vegetations and simply choose a very high value for H.
         """
-        self.boundV1 = 50 * self.K["V1"]
-        self.boundV2 = 50 * self.K["V2"]
-        self.boundH = np.float32(5000.0)
+        self.boundV1 = 1 * self.K["V1"]
+        self.boundV2 = 1 * self.K["V2"]
+        self.boundH = np.float32(10.0)
 
     def reset(self):
         self.state = self.init_state
@@ -234,7 +234,7 @@ class forageVVH(gym.Env):
             self.f * (pop["V1"] + self.D * pop["V2"]) - self.dH
         )
         DeltaPop += pop["H"] * self.sigmas["H"] * np.random.normal(0, 1)
-        DeltaPop = DeltaPop * self.dt
+        DeltaPop = self.alpha*DeltaPop * self.dt
         return np.float32(DeltaPop)
 
     """
@@ -303,6 +303,42 @@ class forageVVH(gym.Env):
     Other testing / helpers
     """
 
+    def find_fixed_points(self, beta):
+        self.beta = beta
+        incr = 0.01
+        steps = round( incr ** -1 )
+        prev = ""
+        curr = ""
+        for i in range(steps):
+            self.reset()
+            self.pop[0] = incr*i
+            pop = {
+                "V1": self.pop[0],
+                "V2": self.pop[1],
+                "H": self.pop[2],
+            } 
+            pop_prime = self.population_draw(pop)
+            if pop_prime[0] - pop["V1"] > 0:
+                curr = "+"
+                if curr != prev:
+                    print(pop["V1"],end="")
+                else:
+                    print("+",end="")
+            if pop_prime[0] - pop["V1"] < 0:
+                curr = "-"
+                if curr != prev:
+                    print(pop["V1"],end="")
+                else:
+                    print("-",end="")
+            if pop_prime[0] == pop["V1"]:
+                curr = prev
+                print(pop["V1"],end="")
+            prev = curr
+        print("\n")
+                
+            
+        
+    
     def test_state_boundaries(self) -> None:
         M = max(self.state)
         m = min(self.state)
