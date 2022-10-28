@@ -90,7 +90,7 @@ class forageVVH(gym.Env):
         }
 
         self.alpha = np.float32(
-            0.00001
+            0.0
         )  # later on used to 'turn off' model complexity
         self.beta = np.float32(0.2)
         self.f = np.float32(0.5)
