@@ -154,13 +154,18 @@ class forageVVH(gym.Env):
         self.boundH = np.float32(2.0)
 
     def reset(self):
-        self.state = self.init_state
-        self.pop = self.init_pop
-
+        rand_part = np.array([0, 0, 0], dtype=np.float32)
         if self.randomize_reset == True:
-            cova = np.eye(3)
-            mean = np.zeros(3)
-            self.state += 0.05 * np.random.multivariate_normal(mean, cov)
+            rand_part = 0.1 * np.array(
+                [
+                    (1 - self.init_state[0])  # bound away from +1 boundary
+                    * np.random.normal(0, 1),
+                    (1 - self.init_state[1]) * np.random.normal(0, 1),
+                    (1 - self.init_state[2]) * np.random.normal(0, 1),
+                ],
+                dtype=np.float32,
+            )
+            self.state = self.init_state + rand_part
             self.pop = self.state_to_pop(self.state)
 
         self.reward = 0
