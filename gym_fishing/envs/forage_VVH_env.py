@@ -139,28 +139,28 @@ class forageVVH(gym.Env):
         sort-of ad-hoc boundaries. Population is not straightforward to bound
         in the multi-species case (other populations modify the carrying capacity).
 
-        I will enclose population in a box with bound equal to the single-species 
+        I will enclose population in a box with bound equal to the single-species
         carrying capacity for vegetations. For H, I numerically tested (by evolving
         with a constant action, for different values of self.alpha between 0 and 1)
         and found that 2. is a good enough bound. These evolutions also give evidence
         that the carrying capacity bounds are not exceeded (i.e. that there is no
         overshooting above the carrying capacity).
-        
+
         All of these are still pending to change if new data shows they're not large
         enough.
         """
         self.boundV1 = 1 * self.K["V1"]
         self.boundV2 = 1 * self.K["V2"]
-        self.boundH = np.float32(2.0) 
+        self.boundH = np.float32(2.0)
 
     def reset(self):
         self.state = self.init_state
         self.pop = self.init_pop
-        
+
         if self.randomize_reset == True:
             cova = np.eye(3)
             mean = np.zeros(3)
-            self.state += 0.05*np.random.multivariate_normal(mean,cov)
+            self.state += 0.05 * np.random.multivariate_normal(mean, cov)
             self.pop = self.state_to_pop(self.state)
 
         self.reward = 0
@@ -317,10 +317,10 @@ class forageVVH(gym.Env):
     """
     Other testing / helpers
     """
-    
+
     def save_fixed_points(self):
         incr = 0.001
-        steps = 6*round(incr**-1) # to go from beta=0 to 6
+        steps = 6 * round(incr**-1)  # to go from beta=0 to 6
 
     def find_fixed_points(self, beta):
         self.beta = beta
