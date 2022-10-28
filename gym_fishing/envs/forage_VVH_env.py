@@ -51,6 +51,7 @@ class forageVVH(gym.Env):
         # self.set_dynamics()
         self.set_May_dynamics()
         self.bound_popspace()
+        self.randomize_reset = True
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
         # -> better do in step function
         self.init_state = self.pop_to_state(self.pop)
@@ -155,6 +156,12 @@ class forageVVH(gym.Env):
     def reset(self):
         self.state = self.init_state
         self.pop = self.init_pop
+        
+        if self.randomize_reset == True:
+            cova = np.eye(3)
+            mean = np.zeros(3)
+            self.state += 0.05*np.random.multivariate_normal(mean,cov)
+            self.pop = self.state_to_pop(self.state)
 
         self.reward = 0
         self.harvest = 0
@@ -310,6 +317,10 @@ class forageVVH(gym.Env):
     """
     Other testing / helpers
     """
+    
+    def save_fixed_points(self):
+        incr = 0.001
+        steps = 6*round(incr**-1) # to go from beta=0 to 6
 
     def find_fixed_points(self, beta):
         self.beta = beta
@@ -317,6 +328,7 @@ class forageVVH(gym.Env):
         steps = round(incr**-1)
         prev = ""
         curr = ""
+        fixed_points = []
         for i in range(steps):
             self.reset()
             self.pop[0] = incr * i
@@ -330,19 +342,23 @@ class forageVVH(gym.Env):
                 curr = "+"
                 if curr != prev:
                     print(pop["V1"], end="")
+                    fixed_points.append(pop["V1"])
                 else:
                     print("+", end="")
             if pop_prime[0] - pop["V1"] < 0:
                 curr = "-"
                 if curr != prev:
                     print(pop["V1"], end="")
+                    fixed_points.append(pop["V1"])
                 else:
                     print("-", end="")
             if pop_prime[0] == pop["V1"]:
                 curr = prev
                 print(pop["V1"], end="")
+                fixed_points.append(pop["V1"])
             prev = curr
         print("\n")
+        return fixed_points
 
     def test_state_boundaries(self) -> None:
         M = max(self.state)
