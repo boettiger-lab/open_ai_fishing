@@ -164,6 +164,7 @@ class forageVVH(gym.Env):
         }  # copy to pass into dynamics (dyn. starts after harvest draw)
         self.pop = self.population_draw(pop)
         self.state = self.pop_to_state(self.pop)
+        self.test_state_boundaries()
 
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
