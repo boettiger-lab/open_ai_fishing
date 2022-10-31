@@ -165,7 +165,7 @@ class forageVVH(gym.Env):
                 ],
                 dtype=np.float32,
             )
-        
+
         self.state = self.init_state + rand_part
         self.pop = self.state_to_pop(self.state)
         self.reward = 0
@@ -323,9 +323,20 @@ class forageVVH(gym.Env):
     Other testing / helpers
     """
 
+    def scan_fixed_points(self):
+        fixed_point_table = {}
+        grain = 50
+        for i in range(1, grain + 1):
+            beta = i * (grain ** (-1))
+            fixed_point_table[beta] = self.find_fixed_points(beta)
+        print(fixed_point_table)
+        return fixed_point_table
+
     def save_fixed_points(self):
-        incr = 0.001
-        steps = 6 * round(incr**-1)  # to go from beta=0 to 6
+        self.fixed_points = self.find_fixed_points(self.beta)
+        """
+        List at the bottom for a variety of beta values.
+        """
 
     def find_fixed_points(self, beta):
         self.beta = beta
@@ -334,7 +345,8 @@ class forageVVH(gym.Env):
         prev = ""
         curr = ""
         fixed_points = []
-        for i in range(steps):
+        skip = False
+        for i in range(1, steps):
             self.reset()
             self.pop[0] = incr * i
             pop = {
@@ -345,24 +357,24 @@ class forageVVH(gym.Env):
             pop_prime = self.population_draw(pop)
             if pop_prime[0] - pop["V1"] > 0:
                 curr = "+"
-                if curr != prev:
-                    print(pop["V1"], end="")
+                if curr != prev and prev != "0" and i > 1:
+                    # print(pop["V1"], end="")
                     fixed_points.append(pop["V1"])
-                else:
-                    print("+", end="")
+                # else:
+                # print("+", end="")
             if pop_prime[0] - pop["V1"] < 0:
                 curr = "-"
-                if curr != prev:
-                    print(pop["V1"], end="")
+                if curr != prev and prev != "0" and i > 1:
+                    # print(pop["V1"], end="")
                     fixed_points.append(pop["V1"])
-                else:
-                    print("-", end="")
+                # else:
+                # print("-", end="")
             if pop_prime[0] == pop["V1"]:
-                curr = prev
-                print(pop["V1"], end="")
+                curr = "0"
+                # print(pop["V1"], end="")
                 fixed_points.append(pop["V1"])
             prev = curr
-        print("\n")
+        # print("\n")
         return fixed_points
 
     def test_state_boundaries(self) -> None:
@@ -396,3 +408,46 @@ class forageVVH(gym.Env):
                     self.boundH,
                 )
             )
+
+
+"""
+TABLE OF FIXED POINTS
+
+beta:    array of fixed points
+==============================
+0.04:    [0.98]
+0.06:    [0.97]
+0.08:    [0.96]
+0.10:    [0.95]
+0.12:    [0.94]
+0.14:    [0.93]
+0.16:    [0.92]
+0.18:    [0.91]
+0.20:    [0.89]
+0.22:    [0.88]
+0.24:    [0.87]
+0.26:    [0.85]
+0.28:    [0.84]
+0.30:    [0.82]
+0.32:    [0.81]
+0.34:    [0.79]
+0.36:    [0.1, 0.13, 0.78]
+0.38:    [0.08, 0.18, 0.76]
+0.40:    [0.07, 0.2, 0.74]
+0.42:    [0.07, 0.23, 0.71]
+0.44:    [0.06, 0.26, 0.69]
+0.46:    [0.06, 0.29, 0.66]
+0.48:    [0.05, 0.33, 0.63]
+0.50:    [0.05, 0.37, 0.59]
+0.52:    [0.05, 0.46, 0.5]
+0.54:    [0.05]
+0.56:    [0.04]
+0.58:    [0.04]
+0.60:    [0.04]
+0.62:    [0.04]
+0.64:    [0.04]
+0.66:    [0.04]
+0.68:    [0.04]
+0.70:    [0.04]
+0.72:    [0.03]
+"""
