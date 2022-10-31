@@ -345,7 +345,6 @@ class forageVVH(gym.Env):
         prev = ""
         curr = ""
         fixed_points = []
-        skip = False
         for i in range(1, steps):
             self.reset()
             self.pop[0] = incr * i
