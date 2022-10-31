@@ -165,9 +165,9 @@ class forageVVH(gym.Env):
                 ],
                 dtype=np.float32,
             )
-            self.state = self.init_state + rand_part
-            self.pop = self.state_to_pop(self.state)
-
+        
+        self.state = self.init_state + rand_part
+        self.pop = self.state_to_pop(self.state)
         self.reward = 0
         self.harvest = 0
         self.years_passed = 0
