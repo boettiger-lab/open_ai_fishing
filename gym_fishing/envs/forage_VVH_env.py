@@ -51,7 +51,7 @@ class forageVVH(gym.Env):
         # self.set_dynamics()
         self.set_May_dynamics()
         self.bound_popspace()
-        self.randomize_reset = True
+        self.randomize_reset = False
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
         # -> better do in step function
         self.init_state = self.pop_to_state(self.pop)
