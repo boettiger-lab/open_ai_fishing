@@ -96,10 +96,12 @@ class forageVVH(gym.Env):
         
         """
         The failure thresh is the value of the lower fixed point
-        (see fixed point table at the end of file).
+        (see fixed point table at the end of file). I use 1.1 times
+        the FP value to be able to more quickly "catch" these cases
+        and not have to wait long times for convergence.
         """
         self.beta = np.float32(0.4)
-        self.failure_thresh = np.float32(0.07)
+        self.failure_thresh = np.float32(0.07 * 1.1)
         
         self.f = np.float32(0.5)
         self.D = np.float32(1.0)  # no discrepancy for now!
@@ -184,8 +186,12 @@ class forageVVH(gym.Env):
         """
         Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
         Ie. I call population_draw self.dt^-1 times.
+        
+        Done: if V1 decays to lower equilibrium, or, if V2 or H go near-extinct.
         """
-        thresh = 1e-5
+        thresh = 1e-4
+        thres_arr = [self.failure_threshold, thresh, thresh]
+        
         quota = self.get_quota(action)
         self.pop, self.reward = self.harvest_draw(quota)
         STEP = round(self.dt ** (-1))
@@ -201,7 +207,7 @@ class forageVVH(gym.Env):
 
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
-        if any(x <= thresh for x in self.pop):
+        if any(self.pop[i] <= thresh_arr[i] for i in range(3)):
             done = True
 
         return self.state, self.reward, done, {}
