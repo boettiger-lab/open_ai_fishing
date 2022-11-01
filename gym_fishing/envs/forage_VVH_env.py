@@ -165,7 +165,7 @@ class forageVVH(gym.Env):
     def reset(self):
         rand_part = np.array([0, 0, 0], dtype=np.float32)
         if self.randomize_reset == True:
-            rand_part = 0.02 * np.array(
+            rand_part = 0.05 * np.array(
                 [
                     np.random.normal(0, 1),
                     np.random.normal(0, 1),
