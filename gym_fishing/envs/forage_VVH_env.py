@@ -83,11 +83,11 @@ class forageVVH(gym.Env):
         """
         self.tau12 = np.float32(0.0)
         self.tau21 = np.float32(0.0)
-        self.sigma = np.float32(0.0)
+        self.sigma = np.float32(0.001)
         self.sigmas = {
-            "V1": np.float32(0.0),
-            "V2": np.float32(0.0),
-            "H": np.float32(0.0),
+            "V1": np.float32(0.001),
+            "V2": np.float32(0.001),
+            "H": np.float32(0.001),
         }
 
         self.alpha = np.float32(
