@@ -190,7 +190,7 @@ class forageVVH(gym.Env):
         Done: if V1 decays to lower equilibrium, or, if V2 or H go near-extinct.
         """
         thresh = 1e-4
-        thres_arr = [self.failure_thresh, thresh, thresh]
+        thresh_arr = [self.failure_thresh, thresh, thresh]
         
         quota = self.get_quota(action)
         self.pop, self.reward = self.harvest_draw(quota)
