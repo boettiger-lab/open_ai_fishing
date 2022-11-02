@@ -1,6 +1,7 @@
 import gym
 import numpy as np
 from gym import spaces
+import time
 
 from gym_fishing.envs.base_threespecies_env import baseThreeSpeciesEnv
 from gym_fishing.envs.shared_env import (
@@ -348,6 +349,7 @@ class forageVVH(gym.Env):
             l2 = (s2-1)*" " + "x" + (30-s2)*" " + " | "
             l3 = (s3-1)*" " + "x" + (30-s3)*" " + " | "
             print(l1+l2+l3, end="\r")
+            time.sleep(0.1)
         self.reset()
 
     def scan_fixed_points(self):
