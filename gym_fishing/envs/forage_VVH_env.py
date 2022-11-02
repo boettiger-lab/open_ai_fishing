@@ -37,7 +37,7 @@ class forageVVH(gym.Env):
             "n_actions": 100,
             "dt": 0.05,
         },
-        Tmax=300,  # TBD: increase this considerably, see if result changes w/ timescale
+        Tmax=300,
         file=None,
     ):
         self.v_ind = {"V1": 0, "V2": 1, "H": 2}
@@ -91,7 +91,7 @@ class forageVVH(gym.Env):
         }
 
         self.alpha = np.float32(
-            0.001
+            0.01
         )  # later on used to 'turn off' model complexity
 
         """
