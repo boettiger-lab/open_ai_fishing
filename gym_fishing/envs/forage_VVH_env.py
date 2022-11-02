@@ -339,7 +339,7 @@ class forageVVH(gym.Env):
         self.reset()
         for t in range(T):
             self.step(0)
-            print(f"State: [{self.state[0]:.2f},  {self.state[1]:.2f}, {self.state[2]:.2f}], Reward: {self.reward:.2f}")
+            print(f"Pop: [{self.pop[0]:.2f},  {self.pop[1]:.2f}, {self.pop[2]:.2f}]")
         self.reset()
 
     def scan_fixed_points(self):
