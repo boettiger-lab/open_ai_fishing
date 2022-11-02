@@ -107,6 +107,7 @@ class forageVVH(gym.Env):
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
         self.dH = np.float32(0.6)
+        
 
     def set_dynamics(self) -> None:
         """
@@ -339,7 +340,14 @@ class forageVVH(gym.Env):
         self.reset()
         for t in range(T):
             self.step(0)
-            print(f"Pop: [{self.pop[0]:.2f},  {self.pop[1]:.2f}, {self.pop[2]:.2f}]")
+            # print(f"Pop: [{self.pop[0]:.2f},  {self.pop[1]:.2f}, {self.pop[2]:.2f}]")
+            s1 = round(30*self.pop[0])
+            s2 = round(30*self.pop[1])
+            s3 = round(30*self.pop[2])
+            l1 = (s1-1)*" " + "x" + (30-s1)*" || "
+            l2 = (s2-1)*" " + "x" + (30-s2)*" || "
+            l3 = (s3-1)*" " + "x" + (30-s3)*" || "
+            print(l1+l2+l3, end="\r")
         self.reset()
 
     def scan_fixed_points(self):
