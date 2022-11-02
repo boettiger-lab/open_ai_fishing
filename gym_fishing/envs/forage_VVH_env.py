@@ -334,6 +334,13 @@ class forageVVH(gym.Env):
     """
     Other testing / helpers
     """
+    
+    def uncontrolled_dynamics(self, T) -> None:
+        self.reset()
+        for t in range(T):
+            state, reward, done, {} = self.step(0)
+            print(f"State: [{state[0]:.2f},  {state[0]:.2f}, {state[0]:.2f}], Reward: {reward:.2f}")
+        self.reset()
 
     def scan_fixed_points(self):
         fixed_point_table = {}
