@@ -37,7 +37,7 @@ class forageVVH(gym.Env):
             "n_actions": 100,
             "dt": 0.05,
         },
-        Tmax=300, # TBD: increase this considerably, see if result changes w/ timescale
+        Tmax=300,  # TBD: increase this considerably, see if result changes w/ timescale
         file=None,
     ):
         self.v_ind = {"V1": 0, "V2": 1, "H": 2}
@@ -93,7 +93,7 @@ class forageVVH(gym.Env):
         self.alpha = np.float32(
             0.001
         )  # later on used to 'turn off' model complexity
-        
+
         """
         The failure thresh is the value of the lower fixed point
         (see fixed point table at the end of file). I use 1.1 times
@@ -102,7 +102,7 @@ class forageVVH(gym.Env):
         """
         self.beta = np.float32(0.4)
         self.failure_thresh = np.float32(0.07 * 1.1)
-        
+
         self.f = np.float32(0.5)
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
@@ -185,12 +185,12 @@ class forageVVH(gym.Env):
         """
         Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
         Ie. I call population_draw self.dt^-1 times.
-        
+
         Done: if V1 decays to lower equilibrium, or, if V2 or H go near-extinct.
         """
         thresh = 1e-4
         thresh_arr = [self.failure_thresh, thresh, thresh]
-        
+
         quota = self.get_quota(action)
         self.pop, self.reward = self.harvest_draw(quota)
         STEP = round(self.dt ** (-1))
