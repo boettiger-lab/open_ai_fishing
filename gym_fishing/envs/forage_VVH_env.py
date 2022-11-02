@@ -106,7 +106,7 @@ class forageVVH(gym.Env):
         self.f = np.float32(0.5)
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
-        self.dH = np.float32(1.)
+        self.dH = np.float32(0.7)
 
     def set_dynamics(self) -> None:
         """
