@@ -349,7 +349,7 @@ class forageVVH(gym.Env):
             l2 = (s2-1)*" " + "x" + (30-s2)*" " + " | "
             l3 = (s3-1)*" " + "x" + (30-s3)*" " + " | "
             print(l1+l2+l3, end="\r")
-            time.sleep(0.1)
+            time.sleep(0.03)
         self.reset()
 
     def scan_fixed_points(self):
