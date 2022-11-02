@@ -338,8 +338,8 @@ class forageVVH(gym.Env):
     def uncontrolled_dynamics(self, T) -> None:
         self.reset()
         for t in range(T):
-            state, reward, done, {} = self.step(0)
-            print(f"State: [{state[0]:.2f},  {state[0]:.2f}, {state[0]:.2f}], Reward: {reward:.2f}")
+            self.step(0)
+            print(f"State: [{self.state[0]:.2f},  {self.state[1]:.2f}, {self.state[2]:.2f}], Reward: {self.reward:.2f}")
         self.reset()
 
     def scan_fixed_points(self):
