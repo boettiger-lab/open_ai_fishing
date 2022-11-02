@@ -37,7 +37,7 @@ class forageVVH(gym.Env):
             "n_actions": 100,
             "dt": 0.05,
         },
-        Tmax=300, # TBD: increase this considerably, see if result changes w/ timescale
+        Tmax=100, # TBD: increase this considerably, see if result changes w/ timescale
         file=None,
     ):
         self.v_ind = {"V1": 0, "V2": 1, "H": 2}
