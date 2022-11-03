@@ -361,7 +361,7 @@ class forageVVH(gym.Env):
         # V1 = self.pop[0]
         if self.pop[0] > 0.5:
             # harvest up to V1 = 0.5
-            return (self.pop[0]-0.5)/self.pop[0]
+            return 0.4
         else:
             return 0.
     
