@@ -345,8 +345,8 @@ class forageVVH(gym.Env):
         l1 = (s1-1)*" " + "x" + (30-s1)*" " + " | "
         l2 = (s2-1)*" " + "x" + (30-s2)*" " + " | "
         l3 = (s3-1)*" " + "x" + (30-s3)*" " + " | "
-        l4 = 
-        print(l0+l1+l2+l3, end="\r")
+        l4 = f"{self.reward:.2f}"
+        print(l0+l1+l2+l3+l4, end="\r")
     
     def uncontrolled_dynamics(self, T) -> None:
         self.reset()
