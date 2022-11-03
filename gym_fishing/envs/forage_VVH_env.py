@@ -337,21 +337,42 @@ class forageVVH(gym.Env):
     Other testing / helpers
     """
     
+    def print_pop(self) -> None:
+        s1 = round(30*self.pop[0])
+        s2 = round(30*self.pop[1])
+        s3 = round(30*self.pop[2])
+        l1 = (s1-1)*" " + "x" + (30-s1)*" " + " | "
+        l2 = (s2-1)*" " + "x" + (30-s2)*" " + " | "
+        l3 = (s3-1)*" " + "x" + (30-s3)*" " + " | "
+        print(l1+l2+l3, end="\r")
+    
     def uncontrolled_dynamics(self, T) -> None:
         self.reset()
         for t in range(T):
             self.step(0)
             # print(f"Pop: [{self.pop[0]:.2f},  {self.pop[1]:.2f}, {self.pop[2]:.2f}]")
-            s1 = round(30*self.pop[0])
-            s2 = round(30*self.pop[1])
-            s3 = round(30*self.pop[2])
-            l1 = (s1-1)*" " + "x" + (30-s1)*" " + " | "
-            l2 = (s2-1)*" " + "x" + (30-s2)*" " + " | "
-            l3 = (s3-1)*" " + "x" + (30-s3)*" " + " | "
-            print(l1+l2+l3, end="\r")
+            self.print_pop()
             time.sleep(0.03)
         self.reset()
-
+    
+    def simple_control(self):
+        # V1 = self.pop[0]
+        if self.pop[0] > 0.5:
+            # harvest up to V1 = 0.5
+            return (self.pop[0]-0.5)/self.pop[0]
+        else:
+            return 0.
+    
+    def controlled_dynamics(self,T) -> None:
+        self.reset()
+        for t in range(T):
+            harv = self.simple_control()
+            act = round( harv * self.n_actions )
+            self.step(act)
+            self.print_pop()
+            time.sleep(0.03)
+        self.reset()
+        
     def scan_fixed_points(self):
         fixed_point_table = {}
         grain = 100
