@@ -86,15 +86,15 @@ class forageVVH(gym.Env):
         """
         self.tau12 = np.float32(0.0)
         self.tau21 = np.float32(0.0)
-        self.sigma = np.float32(0.01)
+        self.sigma = np.float32(0.1)
         self.sigmas = {
-            "V1": np.float32(0.01),
-            "V2": np.float32(0.0),
-            "H": np.float32(0.0),
+            "V1": np.float32(0.1),
+            "V2": np.float32(0.1),
+            "H": np.float32(0.1),
         }
 
         self.alpha = np.float32(
-            0.1
+            1.
         )  # later on used to 'turn off' model complexity
 
         """
@@ -104,12 +104,12 @@ class forageVVH(gym.Env):
         and not have to wait long times for convergence.
         """
         self.beta = np.float32(0.4)
-        self.failure_thresh = np.float32(0.07 * 1.1)
+        self.failure_thresh = np.float32(0.01)
 
         self.f = np.float32(0.5)
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
-        self.dH = np.float32(0.6)
+        self.dH = np.float32(0.5)
 
     def set_dynamics(self) -> None:
         """
