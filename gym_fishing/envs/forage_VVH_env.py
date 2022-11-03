@@ -1,7 +1,8 @@
+import time
+
 import gym
 import numpy as np
 from gym import spaces
-import time
 
 from gym_fishing.envs.base_threespecies_env import baseThreeSpeciesEnv
 from gym_fishing.envs.shared_env import (
@@ -67,6 +68,7 @@ class forageVVH(gym.Env):
 
         self.quota = np.float32(0)
         self.reward = np.float32(0)
+        self.tot_reward = 0.0
         self.harvest = 0
         self.years_passed = 0
 
@@ -108,7 +110,6 @@ class forageVVH(gym.Env):
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
         self.dH = np.float32(0.6)
-        
 
     def set_dynamics(self) -> None:
         """
@@ -336,18 +337,52 @@ class forageVVH(gym.Env):
     """
     Other testing / helpers
     """
-    
+
     def print_pop(self) -> None:
-        s1 = round(30*self.pop[0])
-        s2 = round(30*self.pop[1])
-        s3 = round(30*self.pop[2])
-        l0 = " | "
-        l1 = (s1-1)*" " + "x" + (30-s1)*" " + " | "
-        l2 = (s2-1)*" " + "x" + (30-s2)*" " + " | "
-        l3 = (s3-1)*" " + "x" + (30-s3)*" " + " | "
-        l4 = f"{self.reward:.2f}"
-        print(l0+l1+l2+l3+l4, end="\r")
-    
+        # for pretty printing
+        LINE_UP = "\033[1A"
+        LINE_CLEAR = "\x1b[2K"
+
+        s1 = round(30 * self.pop[0])
+        s2 = round(30 * self.pop[1])
+        s3 = round(30 * self.pop[2])
+        l1 = (
+            " | "
+            + (s1 - 1) * " "
+            + "x"
+            + (30 - s1) * " "
+            + " | "
+            + f"{self.pop[0]:.2f}"
+        )
+        l2 = (
+            " | "
+            + (s2 - 1) * " "
+            + "x"
+            + (30 - s2) * " "
+            + " | "
+            + f"{self.pop[1]:.2f}"
+        )
+        l3 = (
+            " | "
+            + (s3 - 1) * " "
+            + "x"
+            + (30 - s3) * " "
+            + " | "
+            + f"{self.pop[2]:.2f}"
+        )
+
+        print(l1)
+        print(l2)
+        print(l3)
+        print(f"{self.tot_reward:.2f}")
+        print(LINE_UP, end=LINE_CLEAR)
+        print(LINE_UP, end=LINE_CLEAR)
+        print(LINE_UP, end=LINE_CLEAR)
+        print(LINE_UP, end=LINE_CLEAR)
+
+        # l4 = f"{self.reward:.2f}"
+        # print(l0+l1+l2+l3+l4, end="\r")
+
     def uncontrolled_dynamics(self, T) -> None:
         self.reset()
         for t in range(T):
@@ -356,25 +391,30 @@ class forageVVH(gym.Env):
             self.print_pop()
             time.sleep(0.03)
         self.reset()
-    
+
     def simple_control(self):
         # V1 = self.pop[0]
-        if self.pop[0] > 0.5:
+        self.simple_bang = 0.5
+        if self.pop[0] > self.simple_bang:
             # harvest up to V1 = 0.5
             return 0.4
         else:
-            return 0.
-    
-    def controlled_dynamics(self,T) -> None:
+            return 0.0
+
+    def controlled_dynamics(self, T, verbose=True):
         self.reset()
+        self.tot_reward = 0.0
         for t in range(T):
             harv = self.simple_control()
-            act = round( harv * self.n_actions )
+            act = round(harv * self.n_actions)
             self.step(act)
-            self.print_pop()
-            time.sleep(0.03)
+            self.tot_reward += self.reward
+            if verbose:
+                self.print_pop()
+                time.sleep(0.03)
         self.reset()
-        
+        return self.tot_reward
+
     def scan_fixed_points(self):
         fixed_point_table = {}
         grain = 100
