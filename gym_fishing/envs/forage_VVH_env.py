@@ -162,7 +162,7 @@ class forageVVH(gym.Env):
         enough.
         """
         self.boundV1 = 1 * self.K["V1"]
-        self.boundV2 = 1 * self.K["V2"]
+        self.boundV2 = 1.5 * self.K["V2"]
         self.boundH = np.float32(2.0)
 
     def reset(self):
