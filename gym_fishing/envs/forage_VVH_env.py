@@ -86,15 +86,15 @@ class forageVVH(gym.Env):
         """
         self.tau12 = np.float32(0.0)
         self.tau21 = np.float32(0.0)
-        self.sigma = np.float32(0.1)
+        self.sigma = np.float32(0.0)
         self.sigmas = {
-            "V1": np.float32(0.1),
-            "V2": np.float32(0.1),
-            "H": np.float32(0.1),
+            "V1": np.float32(0.),
+            "V2": np.float32(0.),
+            "H": np.float32(0.),
         }
 
         self.alpha = np.float32(
-            1.
+            0.
         )  # later on used to 'turn off' model complexity
 
         """
