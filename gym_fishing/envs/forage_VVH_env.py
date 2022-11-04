@@ -409,6 +409,7 @@ class forageVVH(gym.Env):
             pop = {"V1": v1, "V2": self.pop[1], "H": self.pop[2]}
             growth[v1] = V1_draw(self, pop)[0]
             # V1_draw outputs the 'delta', the growth.
+        self.sigmas = sigmas # return to previous state
         return max(growth, key=growth.get)  # returns optimal key (v1)
 
     def msy_control(self):
