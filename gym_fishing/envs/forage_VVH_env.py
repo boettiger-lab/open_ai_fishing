@@ -104,7 +104,7 @@ class forageVVH(gym.Env):
         and not have to wait long times for convergence.
         """
         self.beta = np.float32(0.4)
-        self.failure_thresh = np.float32(0.01)
+        self.failure_thresh = np.float32(0.07*1.1)
 
         self.f = np.float32(0.5)
         self.D = np.float32(1.0)  # no discrepancy for now!
