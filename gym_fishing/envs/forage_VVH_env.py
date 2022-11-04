@@ -392,6 +392,35 @@ class forageVVH(gym.Env):
             time.sleep(0.03)
         self.reset()
 
+    def find_msy(self):
+        """
+        Logic: each year, people estimate v1, v2, and h, and calculate which is the msy 
+        level for v1 assuming h and v2 are constant. (In fact, the msy in this constant
+        picture only depends on h, not on v2, since v2 doesn't appear directly in v1's eq.
+        """
+        # first turn off noise to find maximum yield:
+        sigmas = self.sigmas
+        self.sigmas = {"V1": 0., "V2": 0., "H": 0.}
+        
+        # now scan over the space of v1 possibilities.
+        v1space = np.linspace(0,1,500)
+        growth = {}
+        for v1 in v1space:
+            pop = {"V1": v1, "V2": self.pop[1], "H": self.pop[2]}
+            growth[v1]=V1_draw(self, pop)[0]
+            # V1_draw outputs the 'delta', the growth.
+        return max(growth, key=growth.get) # returns optimal key (v1)
+    
+    def msy_control(self):
+        msy = self.find_msy()
+        if msy <= 0:
+            print("Problem: MSY isn't positive, it's {}".format(msy))
+            return 0.
+        if self.pop[0] > msy:
+            return (self.pop[0] - msy)/self.pop[0]
+        else:
+            return 0.
+    
     def simple_control(self):
         # V1 = self.pop[0]
         self.simple_bang = 0.5
@@ -401,11 +430,20 @@ class forageVVH(gym.Env):
         else:
             return 0.0
 
-    def controlled_dynamics(self, T, verbose=True):
+    def controlled_dynamics(self, T, verbose=True, ctrl = "simple"):
         self.reset()
         self.tot_reward = 0.0
+        #
+        if ctrl == "simple":
+            ctrl_fn = self.simple_control
+        if ctrl == "msy":
+            ctrl_fn = self.msy_control
+        else:
+            print("ctrl variable can only be = 'simple' or 'msy'")
+            return None
+        #
         for t in range(T):
-            harv = self.simple_control()
+            harv = ctrl_fn()
             act = round(harv * self.n_actions)
             self.step(act)
             self.tot_reward += self.reward
@@ -467,7 +505,7 @@ class forageVVH(gym.Env):
             prev = curr
         # print("\n")
         return fixed_points
-
+    
     def test_state_boundaries(self) -> None:
         M = max(self.state)
         m = min(self.state)
