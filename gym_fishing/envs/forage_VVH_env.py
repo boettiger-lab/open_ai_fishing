@@ -339,6 +339,9 @@ class forageVVH(gym.Env):
     Other testing / helpers
     """
 
+    def save_state_csv(self) -> None:
+        ...
+    
     def print_pop(self) -> None:
         # for pretty printing
         LINE_UP = "\033[1A"
@@ -413,7 +416,37 @@ class forageVVH(gym.Env):
         self.sigmas = sigmas  # return to previous state
         return max(growth, key=growth.get)  # returns optimal key (v1)
 
+    
     def msy_control(self):
+        """
+        Constant effort, quota proportional to V1 s.t. quota at msy is 
+        delta_V1(V1=msy) = growth_V1('V_1 = msy')
+        
+        line from dV1/dt=0, V1=0 to dV1/dt|_msy V1=msy is 
+        
+        l(V1) = (dV1/dt)|_msy * V1/msy
+        """
+        msy = self.find_msy()
+        if msy <= 0:
+            print("Problem: MSY isn't positive, it's {}".format(msy))
+            return 0.0
+        pop = {"V1": msy, "V2": self.pop[1], "H": self.pop[2]}
+        deltaV1 = self.V1_draw(pop)
+        return deltaV1*self.pop[0]/msy
+    
+    def tac_control(self, thumb=0.1):
+        """
+        Like msy but a bit more conservative. TBD: what was the acronym for?
+        """
+        desired_v1 = min(self.find_msy() + thumb, self.boundV1)
+        if desired_v1 <= 0:
+            print("Problem: MSY isn't positive, it's {}".format(msy))
+            return 0.0
+        pop = {"V1": desired_v1, "V2": self.pop[1], "H": self.pop[2]}
+        deltaV1 = self.V1_draw(pop)
+        return min(deltaV1*self.pop[0]/desired_v1, 0)
+    
+    def escapement_control(self):
         msy = self.find_msy()
         if msy <= 0:
             print("Problem: MSY isn't positive, it's {}".format(msy))
@@ -438,12 +471,17 @@ class forageVVH(gym.Env):
         #
         if ctrl == "simple":
             ctrl_fn = self.simple_control
+        if ctrl == "escapement":
+            ctrl_fn = self.escapement_control
         if ctrl == "msy":
             ctrl_fn = self.msy_control
-        else:
-            print("ctrl variable can only be = 'simple' or 'msy'")
-            return None
+        if ctrl == "tac":
+            ctrl_fn = self.tac_control
+        # else:
+        #     print("ctrl variable can only be = 'simple', 'escapement', 'msy' or 'tac'")
+        #     return None
         #
+        print(ctrl)
         for t in range(T):
             harv = ctrl_fn()
             act = round(harv * self.n_actions)
