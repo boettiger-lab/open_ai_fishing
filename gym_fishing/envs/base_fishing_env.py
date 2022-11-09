@@ -98,7 +98,7 @@ class BaseFishingEnv(gym.Env):
             self.write_obj.close()
 
     def simulate(env, model, reps=1):
-        return simulate_mdp(env, model, reps)
+        return simulate_ppo(env, model, reps)
 
     def plot(self, df, output="results.png"):
         return plot_mdp(self, df, output)

@@ -54,6 +54,37 @@ def df_entry_vec(df, env, rep, obs, action, reward, t):
 #     df = DataFrame(row, columns=["time", "state", "action", "reward", "rep"])
 #     return df
 
+def simulate_ppo(env, model, reps=1):
+    """
+    simulate_mdp didn't work for PPOTrainer agent since the agent doesn't
+    have an attribute 'predict.' I'm using the 'compute_single_action' method
+    here instead.
+    """
+    row = []
+    for rep in range(reps):
+        obs = env.reset()
+        quota = 0.0
+        reward = 0.0
+        for t in range(env.Tmax):
+            # record
+            fish_population = env.get_fish_population(obs)
+            row.append([t, fish_population, quota, reward, int(rep)])
+
+            # Predict and implement action
+            action = model.compute_single_Action(obs)
+            obs, reward, done, info = env.step(action)
+
+            # discrete actions are not arrays, but cts actions are
+            if isinstance(action, np.ndarray):
+                action = action[0]
+            if isinstance(reward, np.ndarray):
+                reward = reward[0]
+            quota = env.get_quota(action)
+
+            if done:
+                break
+    df = DataFrame(row, columns=["time", "state", "action", "reward", "rep"])
+    return df
 
 def simulate_mdp(env, model, reps=1):
     row = []
