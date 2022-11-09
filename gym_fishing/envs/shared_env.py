@@ -83,7 +83,7 @@ def simulate_ppo(env, model, reps=1):
 
             if done:
                 break
-    df = DataFrame(row, columns=["time", "state", "action", "reward", "rep"])
+    df = DataFrame(row, columns=["time", "pop", "action", "reward", "rep"])
     return df
 
 def simulate_mdp(env, model, reps=1):
@@ -177,8 +177,8 @@ def plot_3d(self, df, output="results.png"):
         axs[3].plot(results.time, results.action, color="blue", alpha=0.3)
         axs[4].plot(results.time, episode_reward, color="blue", alpha=0.3)
     axs[0].set_ylabel("V1")
-    axs[0].set_ylabel("V2")
-    axs[0].set_ylabel("H")
+    axs[1].set_ylabel("V2")
+    axs[2].set_ylabel("H")
     axs[3].set_ylabel("action")
     axs[4].set_ylabel("reward")
     fig.tight_layout()

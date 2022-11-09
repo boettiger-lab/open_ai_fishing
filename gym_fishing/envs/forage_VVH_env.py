@@ -602,7 +602,7 @@ class forageVVH(gym.Env):
     """
     
     def get_fish_population(self, obs):
-        return self.pop_to_state(obs)
+        return self.state_to_pop(obs)
 
 
 """
