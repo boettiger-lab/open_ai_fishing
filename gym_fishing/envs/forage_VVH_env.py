@@ -581,6 +581,13 @@ class forageVVH(gym.Env):
                 )
             )
 
+    """
+    Wrappers
+    """
+    
+    def get_fish_population(obs):
+        return self.pop_to_state(obs)
+
 
 """
 TABLE OF FIXED POINTS: 
