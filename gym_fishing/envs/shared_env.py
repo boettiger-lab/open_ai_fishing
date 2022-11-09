@@ -68,7 +68,16 @@ def simulate_ppo(env, model, reps=1):
         for t in range(env.Tmax):
             # record
             fish_population = env.get_fish_population(obs)
-            row.append([t, fish_population, quota, reward, int(rep)])
+            row.append(
+                [t, 
+                fish_population[0], 
+                fish_population[1], 
+                fish_population[2],
+                quota, 
+                reward, 
+                int(rep),
+                ]
+            )
 
             # Predict and implement action
             action = model.compute_single_action(obs)
@@ -83,7 +92,7 @@ def simulate_ppo(env, model, reps=1):
 
             if done:
                 break
-    df = DataFrame(row, columns=["time", "pop", "action", "reward", "rep"])
+    df = DataFrame(row, columns=["time", "pop0", "pop1", "pop2", "action", "reward", "rep"])
     return df
 
 def simulate_mdp(env, model, reps=1):
@@ -171,9 +180,9 @@ def plot_3d(self, df, output="results.png"):
     for i in np.unique(df.rep):
         results = df[df.rep == i]
         episode_reward = np.cumsum(results.reward)
-        axs[0].plot(results.time, results.pop[0], color="blue", alpha=0.3)
-        axs[1].plot(results.time, results.pop[1], color="blue", alpha=0.3)
-        axs[2].plot(results.time, results.pop[2], color="blue", alpha=0.3)
+        axs[0].plot(results.time, results.pop0, color="blue", alpha=0.3)
+        axs[1].plot(results.time, results.pop1, color="blue", alpha=0.3)
+        axs[2].plot(results.time, results.pop2, color="blue", alpha=0.3)
         axs[3].plot(results.time, results.action, color="blue", alpha=0.3)
         axs[4].plot(results.time, episode_reward, color="blue", alpha=0.3)
     axs[0].set_ylabel("V1")
