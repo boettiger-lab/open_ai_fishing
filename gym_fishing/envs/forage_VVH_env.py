@@ -338,8 +338,11 @@ class forageVVH(gym.Env):
     """
     Other testing / helpers
     """
-
-    def save_state_csv(self) -> None:
+    
+    def simulate(env, model, reps=1):
+        return simulate_mdp(env, model, reps)
+    
+    def save_state_history_csv(self) -> None:
         ...
     
     def print_pop(self) -> None:
