@@ -585,7 +585,7 @@ class forageVVH(gym.Env):
     Wrappers
     """
     
-    def get_fish_population(obs):
+    def get_fish_population(self, obs):
         return self.pop_to_state(obs)
 
 
