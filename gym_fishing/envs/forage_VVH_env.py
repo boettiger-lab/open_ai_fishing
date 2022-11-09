@@ -12,6 +12,7 @@ from gym_fishing.envs.shared_env import (
     plot_policyfn,
     simulate_mdp,
     simulate_ppo,
+    plot_3d,
 )
 
 
