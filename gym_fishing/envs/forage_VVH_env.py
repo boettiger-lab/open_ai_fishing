@@ -3,6 +3,7 @@ import time
 import gym
 import numpy as np
 from gym import spaces
+from pandas import DataFrame
 
 from gym_fishing.envs.base_threespecies_env import baseThreeSpeciesEnv
 from gym_fishing.envs.shared_env import (
@@ -147,6 +148,7 @@ class forageVVH(gym.Env):
         self.D = np.float32(1.0)  # no discrepancy for now!
         self.V0 = np.float32(self.K["V1"] / 2)
         self.dH = np.float32(0.3)
+        self.cV = 0 # competition parameter between V1 and V2
 
     def bound_popspace(self) -> None:
         """
@@ -250,6 +252,7 @@ class forageVVH(gym.Env):
         DeltaPop = 0
         DeltaPop += self.logistic(pop["V1"], self.K["V1"], self.r["V1"])
         DeltaPop -= self.forage(pop["H"], pop["V1"], self.beta, self.V0)
+        DeltaPop -= self.cV*pop["V1"]*pop["V2"]
         DeltaPop += self.tau21 * pop["V2"] - self.tau12 * pop["V1"]
         DeltaPop += pop["V1"] * self.sigmas["V1"] * np.random.normal(0, 1)
         DeltaPop = DeltaPop * self.dt
@@ -261,6 +264,7 @@ class forageVVH(gym.Env):
         DeltaPop -= self.D * self.forage(
             pop["H"], pop["V2"], self.beta, self.V0
         )
+        DeltaPop -= self.cV*pop["V1"]*pop["V2"]
         DeltaPop += self.tau12 * pop["V1"] - self.tau21 * pop["V2"]
         DeltaPop += pop["V2"] * self.sigmas["V2"] * np.random.normal(0, 1)
         DeltaPop = DeltaPop * self.dt
@@ -472,17 +476,27 @@ class forageVVH(gym.Env):
         #     print("ctrl variable can only be = 'simple', 'escapement', 'msy' or 'tac'")
         #     return None
         #
-        print(ctrl)
+        row = []
         for t in range(T):
             harv = ctrl_fn()
             act = round(harv * self.n_actions)
+            row.append([
+                t, 
+                self.pop[0], 
+                self.pop[1], 
+                self.pop[2],
+                act,
+                self.reward,
+                0,
+            ])
             self.step(act)
             self.tot_reward += self.reward
             if verbose:
                 self.print_pop()
                 time.sleep(0.03)
         self.reset()
-        return self.tot_reward
+        df = DataFrame(row, columns=["time", "pop0", "pop1", "pop2", "action", "reward", "rep"])
+        return df
 
     """
     Static properties:
