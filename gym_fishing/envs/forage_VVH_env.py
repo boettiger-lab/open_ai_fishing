@@ -337,14 +337,11 @@ class forageVVH(gym.Env):
         return round(quota * self.n_actions)
 
     """
-    Other testing / helpers
+    Visualization
     """
     
-    def simulate(env, model, reps=1):
-        return simulate_ppo(env, model, reps)
-    
-    def save_state_history_csv(self) -> None:
-        ...
+    def plot(self, df, output="results.png"):
+        return plot_3d(self, df, output)
     
     def print_pop(self) -> None:
         # for pretty printing
@@ -391,6 +388,16 @@ class forageVVH(gym.Env):
         # l4 = f"{self.reward:.2f}"
         # print(l0+l1+l2+l3+l4, end="\r")
 
+    """
+    Dynamics:
+    """
+    
+    def simulate(env, model, reps=1):
+        """
+        Simulates the interaction of agent model with env
+        """
+        return simulate_ppo(env, model, reps)
+    
     def uncontrolled_dynamics(self, T) -> None:
         self.reset()
         for t in range(T):
@@ -399,27 +406,6 @@ class forageVVH(gym.Env):
             self.print_pop()
             time.sleep(0.03)
         self.reset()
-
-    def find_msy(self):
-        """
-        Logic: each year, people estimate v1, v2, and h, and calculate which is the msy
-        level for v1 assuming h and v2 are constant. (In fact, the msy in this constant
-        picture only depends on h, not on v2, since v2 doesn't appear directly in v1's eq.
-        """
-        # first turn off noise to find maximum yield:
-        sigmas = self.sigmas
-        self.sigmas = {"V1": 0.0, "V2": 0.0, "H": 0.0}
-
-        # now scan over the space of v1 possibilities.
-        v1space = np.linspace(0, 1, 500)
-        growth = {}
-        for v1 in v1space:
-            pop = {"V1": v1, "V2": self.pop[1], "H": self.pop[2]}
-            growth[v1] = self.V1_draw(pop)
-            # V1_draw outputs the 'delta', the growth.
-        self.sigmas = sigmas  # return to previous state
-        return max(growth, key=growth.get)  # returns optimal key (v1)
-
     
     def msy_control(self):
         """
@@ -497,6 +483,30 @@ class forageVVH(gym.Env):
         self.reset()
         return self.tot_reward
 
+    """
+    Static properties:
+    """
+    
+    def find_msy(self):
+        """
+        Logic: each year, people estimate v1, v2, and h, and calculate which is the msy
+        level for v1 assuming h and v2 are constant. (In fact, the msy in this constant
+        picture only depends on h, not on v2, since v2 doesn't appear directly in v1's eq.
+        """
+        # first turn off noise to find maximum yield:
+        sigmas = self.sigmas
+        self.sigmas = {"V1": 0.0, "V2": 0.0, "H": 0.0}
+
+        # now scan over the space of v1 possibilities.
+        v1space = np.linspace(0, 1, 500)
+        growth = {}
+        for v1 in v1space:
+            pop = {"V1": v1, "V2": self.pop[1], "H": self.pop[2]}
+            growth[v1] = self.V1_draw(pop)
+            # V1_draw outputs the 'delta', the growth.
+        self.sigmas = sigmas  # return to previous state
+        return max(growth, key=growth.get)  # returns optimal key (v1)
+    
     def scan_fixed_points(self):
         fixed_point_table = {}
         grain = 100
@@ -549,7 +559,11 @@ class forageVVH(gym.Env):
             prev = curr
         # print("\n")
         return fixed_points
-
+    
+    """
+    Testing:
+    """
+    
     def test_state_boundaries(self) -> None:
         M = max(self.state)
         m = min(self.state)

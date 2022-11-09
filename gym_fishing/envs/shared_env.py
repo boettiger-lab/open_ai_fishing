@@ -163,6 +163,27 @@ def estimate_policyfn(env, model, reps=1, n=50):
     df = DataFrame(row, columns=["state", "action", "rep"])
     return df
 
+def plot_3d(self, df, output="results.png"):
+    """
+    Similar to plot_mdp but handles 3D state spaces
+    """
+    fig, axs = plt.subplots(5, 1)
+    for i in np.unique(df.rep):
+        results = df[df.rep == i]
+        episode_reward = np.cumsum(results.reward)
+        axs[0].plot(results.time, results.state[0], color="blue", alpha=0.3)
+        axs[1].plot(results.time, results.state[1], color="blue", alpha=0.3)
+        axs[2].plot(results.time, results.state[2], color="blue", alpha=0.3)
+        axs[3].plot(results.time, results.action, color="blue", alpha=0.3)
+        axs[4].plot(results.time, episode_reward, color="blue", alpha=0.3)
+    axs[0].set_ylabel("V1")
+    axs[0].set_ylabel("V2")
+    axs[0].set_ylabel("H")
+    axs[3].set_ylabel("action")
+    axs[4].set_ylabel("reward")
+    fig.tight_layout()
+    plt.savefig(output)
+    plt.close("all")
 
 def plot_mdp(self, df, output="results.png"):
     fig, axs = plt.subplots(3, 1)
