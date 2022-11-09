@@ -108,7 +108,7 @@ class forageVVH(gym.Env):
         THIS DOESNT HOLD
         """
         self.beta = np.float32(0.4)
-        self.failure_thresh = np.float32(0.05)
+        self.failure_thresh = np.float32(0.01)
 
         self.f = np.float32(0.5)
         self.D = np.float32(1.1)  # no discrepancy for now!
