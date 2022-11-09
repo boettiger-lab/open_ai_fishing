@@ -91,9 +91,9 @@ class forageVVH(gym.Env):
         self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.)
         self.sigmas = {
-            "V1": np.float32(0.),
-            "V2": np.float32(0.),
-            "H": np.float32(0.),
+            "V1": np.float32(0.1),
+            "V2": np.float32(0.1),
+            "H": np.float32(0.1),
         }
 
         self.alpha = np.float32(
@@ -108,12 +108,13 @@ class forageVVH(gym.Env):
         THIS DOESNT HOLD
         """
         self.beta = np.float32(0.4)
-        self.failure_thresh = np.float32(0.01)
+        self.failure_thresh = np.float32(0.05)
 
         self.f = np.float32(0.5)
-        self.D = np.float32(1.0)  # no discrepancy for now!
+        self.D = np.float32(1.1)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
-        self.dH = np.float32(0.45)
+        self.dH = np.float32(0.5)
+        self.cV = 0.5 # competition parameter between V1 and V2
 
     def set_dynamics(self) -> None:
         """
