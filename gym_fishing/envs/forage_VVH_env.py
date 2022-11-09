@@ -11,6 +11,7 @@ from gym_fishing.envs.shared_env import (
     plot_mdp,
     plot_policyfn,
     simulate_mdp,
+    simulate_ppo,
 )
 
 
@@ -340,7 +341,7 @@ class forageVVH(gym.Env):
     """
     
     def simulate(env, model, reps=1):
-        return simulate_mdp(env, model, reps)
+        return simulate_ppo(env, model, reps)
     
     def save_state_history_csv(self) -> None:
         ...
