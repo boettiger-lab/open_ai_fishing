@@ -171,9 +171,9 @@ def plot_3d(self, df, output="results.png"):
     for i in np.unique(df.rep):
         results = df[df.rep == i]
         episode_reward = np.cumsum(results.reward)
-        axs[0].plot(results.time, results.state[0], color="blue", alpha=0.3)
-        axs[1].plot(results.time, results.state[1], color="blue", alpha=0.3)
-        axs[2].plot(results.time, results.state[2], color="blue", alpha=0.3)
+        axs[0].plot(results.time, results.pop[0], color="blue", alpha=0.3)
+        axs[1].plot(results.time, results.pop[1], color="blue", alpha=0.3)
+        axs[2].plot(results.time, results.pop[2], color="blue", alpha=0.3)
         axs[3].plot(results.time, results.action, color="blue", alpha=0.3)
         axs[4].plot(results.time, episode_reward, color="blue", alpha=0.3)
     axs[0].set_ylabel("V1")
