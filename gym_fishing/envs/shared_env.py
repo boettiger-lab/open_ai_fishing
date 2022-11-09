@@ -71,7 +71,7 @@ def simulate_ppo(env, model, reps=1):
             row.append([t, fish_population, quota, reward, int(rep)])
 
             # Predict and implement action
-            action = model.compute_single_Action(obs)
+            action = model.compute_single_action(obs)
             obs, reward, done, info = env.step(action)
 
             # discrete actions are not arrays, but cts actions are
