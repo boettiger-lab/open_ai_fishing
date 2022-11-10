@@ -51,7 +51,7 @@ class forageVVH(gym.Env):
         self.Tmax = Tmax
         self.n_actions = params["n_actions"]
         self.dt = params["dt"]
-        self.init_pop = np.array([0.7, 0.7, 0.5], dtype=np.float32)
+        self.init_pop = np.array([0.25, 0.7, 0.5], dtype=np.float32)
         self.pop = self.init_pop
         # self.set_dynamics()
         self.set_May_dynamics()
@@ -108,7 +108,7 @@ class forageVVH(gym.Env):
         THIS DOESNT HOLD
         """
         self.beta = np.float32(0.4)
-        self.failure_thresh = np.float32(0.12)
+        self.failure_thresh = np.float32(0.09)
 
         self.f = np.float32(0.5)
         self.D = np.float32(1.1)  # no discrepancy for now!
