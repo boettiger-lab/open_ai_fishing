@@ -1,4 +1,5 @@
 import time
+import math
 
 import gym
 import numpy as np
@@ -217,7 +218,10 @@ class forageVVH(gym.Env):
         done = bool(self.years_passed > self.Tmax)
         if any(self.pop[i] <= thresh_arr[i] for i in range(3)):
             done = True
-            self.reward -= 1/self.years_passed
+            # self.reward -= 1/(1+math.log(self.years_passed)) 
+            # didn't use the logarithmic reward -> too slow decay
+            # self.reward -= 1/self.years_passed
+            self.reward -= (self.Tmax - self.years_passed)/self.Tmax
 
         return self.state, self.reward, done, {}
 
