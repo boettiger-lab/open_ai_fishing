@@ -51,7 +51,7 @@ class forageVVH(gym.Env):
         self.Tmax = Tmax
         self.n_actions = params["n_actions"]
         self.dt = params["dt"]
-        self.init_pop = np.array([0.25, 0.7, 0.5], dtype=np.float32)
+        self.init_pop = np.array([0.7, 0.7, 0.5], dtype=np.float32)
         self.pop = self.init_pop
         # self.set_dynamics()
         self.set_May_dynamics()
@@ -91,9 +91,9 @@ class forageVVH(gym.Env):
         self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.)
         self.sigmas = {
-            "V1": np.float32(0.1),
-            "V2": np.float32(0.1),
-            "H": np.float32(0.1),
+            "V1": np.float32(0.2),
+            "V2": np.float32(0.2),
+            "H": np.float32(0.2),
         }
 
         self.alpha = np.float32(
@@ -108,7 +108,7 @@ class forageVVH(gym.Env):
         THIS DOESNT HOLD
         """
         self.beta = np.float32(0.4)
-        self.failure_thresh = np.float32(0.09)
+        self.failure_thresh = np.float32(0.06)
 
         self.f = np.float32(0.5)
         self.D = np.float32(1.1)  # no discrepancy for now!
@@ -217,6 +217,7 @@ class forageVVH(gym.Env):
         done = bool(self.years_passed > self.Tmax)
         if any(self.pop[i] <= thresh_arr[i] for i in range(3)):
             done = True
+            self.reward -= 1/self.years_passed
 
         return self.state, self.reward, done, {}
 
