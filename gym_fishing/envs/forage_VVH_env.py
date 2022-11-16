@@ -468,7 +468,7 @@ class forageVVH(gym.Env):
         else:
             return 0.0
 
-    def controlled_dynamics(self, T, verbose=True, ctrl="simple", reps=1):
+    def controlled_dynamics(self, T, verbose=False, ctrl="simple", reps=1):
         row = []
         for rep in range(reps):
             self.reset()
