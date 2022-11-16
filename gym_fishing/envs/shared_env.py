@@ -179,7 +179,7 @@ def plot_3d(self, df, output="results.png"):
     fig, axs = plt.subplots(5, 1)
     for i in np.unique(df.rep):
         results = df[df.rep == i]
-        episode_reward = np.cumsum(results.reward)
+        episode_reward = np.cumsum(results.reward) # already tot_reward in this column
         axs[0].plot(results.time, results.pop0, color="blue", alpha=0.3)
         axs[1].plot(results.time, results.pop1, color="blue", alpha=0.3)
         axs[2].plot(results.time, results.pop2, color="blue", alpha=0.3)

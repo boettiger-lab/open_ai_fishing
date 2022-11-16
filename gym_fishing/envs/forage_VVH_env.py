@@ -223,7 +223,7 @@ class forageVVH(gym.Env):
             # self.reward -= 1/self.years_passed
             # self.reward -= (self.Tmax - self.years_passed)/self.Tmax
             # didn't use this linear increase -> doesn't foment learning
-            self.reward -= 1/self.years_passed + 1/math.sqrt(self.years_passed)
+            # self.reward -= 1/self.years_passed + 1/math.sqrt(self.years_passed)
 
         return self.state, self.reward, done, {}
 
@@ -468,42 +468,47 @@ class forageVVH(gym.Env):
         else:
             return 0.0
 
-    def controlled_dynamics(self, T, verbose=True, ctrl="simple"):
-        self.reset()
-        self.tot_reward = 0.0
-        #
-        if ctrl == "simple":
-            ctrl_fn = self.simple_control
-        if ctrl == "escapement":
-            ctrl_fn = self.escapement_control
-        if ctrl == "msy":
-            ctrl_fn = self.msy_control
-        if ctrl == "tac":
-            ctrl_fn = self.tac_control
-        # else:
-        #     print("ctrl variable can only be = 'simple', 'escapement', 'msy' or 'tac'")
-        #     return None
-        #
+    def controlled_dynamics(self, T, verbose=True, ctrl="simple", reps=1):
         row = []
-        for t in range(T):
-            harv = ctrl_fn()
-            act = round(harv * self.n_actions)
-            row.append([
-                t, 
-                self.pop[0], 
-                self.pop[1], 
-                self.pop[2],
-                act,
-                self.reward,
-                0,
-            ])
-            self.step(act)
-            self.tot_reward += self.reward
-            if verbose:
-                self.print_pop()
-                time.sleep(0.03)
+        for rep in range(reps):
+            self.reset()
+            self.tot_reward = 0.0
+            #
+            if ctrl == "simple":
+                ctrl_fn = self.simple_control
+            if ctrl == "escapement":
+                ctrl_fn = self.escapement_control
+            if ctrl == "msy":
+                ctrl_fn = self.msy_control
+            if ctrl == "tac":
+                ctrl_fn = self.tac_control
+            # else:
+            #     print("ctrl variable can only be = 'simple', 'escapement', 'msy' or 'tac'")
+            #     return None
+            #
+            for t in range(T):
+                harv = ctrl_fn()
+                act = round(harv * self.n_actions)
+                self.tot_reward += self.reward
+                row.append([
+                    t, 
+                    self.pop[0], 
+                    self.pop[1], 
+                    self.pop[2],
+                    act,
+                    self.reward,
+                    int(rep),
+                ])
+                self.step(act)
+                if verbose:
+                    self.print_pop()
+                    time.sleep(0.03)
         self.reset()
-        df = DataFrame(row, columns=["time", "pop0", "pop1", "pop2", "action", "reward", "rep"])
+        df = DataFrame(
+            row, 
+            columns=["time", "pop0", "pop1", "pop2", "action", "reward", "rep"],
+            # index=[i for i in range(index_start, index_start+T)],
+        )
         return df
 
     """
