@@ -425,9 +425,13 @@ class forageVVH(gym.Env):
         Constant effort, quota proportional to V1 s.t. quota at msy is 
         delta_V1(V1=msy) = growth_V1('V_1 = msy')
         
-        line from dV1/dt=0, V1=0 to dV1/dt|_msy V1=msy is 
+        So, actions form a line from 
         
-        l(V1) = (dV1/dt)|_msy * V1/msy
+            (a, V1) = (0, 0)   to   (a, V1) = (delta_V1(msy), msy).
+        
+        Thus,
+        
+        a(V1) = V1 * delta_V1(msy)/msy
         """
         msy = self.find_msy()
         if msy <= 0:
@@ -435,7 +439,11 @@ class forageVVH(gym.Env):
             return 0.0
         pop = {"V1": msy, "V2": self.pop[1], "H": self.pop[2]}
         deltaV1 = self.V1_draw(pop)
-        return max(deltaV1*self.pop[0]/msy, 0)
+        """
+        When I call (step -> pop_harvest), I multiply this harvest output (rounded
+        to the 100 actions) by pop[0].
+        """
+        return max(deltaV1/msy, 0)
             
     def tac_control(self, thumb=0.1):
         """
