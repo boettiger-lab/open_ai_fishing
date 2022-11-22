@@ -435,8 +435,8 @@ class forageVVH(gym.Env):
             return 0.0
         pop = {"V1": msy, "V2": self.pop[1], "H": self.pop[2]}
         deltaV1 = self.V1_draw(pop)
-        return deltaV1*self.pop[0]/msy
-    
+        return max(deltaV1*self.pop[0]/msy, 0)
+            
     def tac_control(self, thumb=0.1):
         """
         Like msy but a bit more conservative. TBD: what was the acronym for?
