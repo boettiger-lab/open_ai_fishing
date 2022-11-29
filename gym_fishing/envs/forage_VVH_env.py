@@ -55,7 +55,7 @@ class forageVVH(gym.Env):
         self.init_pop = np.array([0.7, 0.7, 0.5], dtype=np.float32)
         self.pop = self.init_pop
         # self.set_dynamics()
-        self.set_dynamics()
+        self.set_May_dynamics()
         self.bound_popspace()
         self.randomize_reset = True
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
@@ -76,7 +76,7 @@ class forageVVH(gym.Env):
         self.harvest = 0
         self.years_passed = 0
 
-    def set_dynamics(self) -> None:
+    def set_May_dynamics(self) -> None:
         self.K = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
         self.r = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
         """
@@ -92,13 +92,13 @@ class forageVVH(gym.Env):
         self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.)
         self.sigmas = {
-            "V1": np.float32(0.),
-            "V2": np.float32(0.),
-            "H": np.float32(0.),
+            "V1": np.float32(0.2),
+            "V2": np.float32(0.2),
+            "H": np.float32(0.2),
         }
 
         self.alpha = np.float32(
-            0.0
+            1.0
         )  # later on used to 'turn off' model complexity
 
         """
@@ -112,12 +112,15 @@ class forageVVH(gym.Env):
         self.failure_thresh = np.float32(0.06)
 
         self.f = np.float32(0.5)
-        self.D = np.float32(1.1)
+        self.D = np.float32(1.1)  # no discrepancy for now!
         self.V0 = np.float32(0.1 * self.K["V1"])
         self.dH = np.float32(0.5)
         self.cV = 0.5 # competition parameter between V1 and V2
 
-    def set_May_dynamics(self) -> None:
+    def set_dynamics(self) -> None:
+        """
+        Only quadratic interactions for this generic class.
+        """
         self.K = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
         self.r = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
         #
