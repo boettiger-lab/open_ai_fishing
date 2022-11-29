@@ -123,16 +123,7 @@ class forageVVH(gym.Env):
         """
         self.K = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
         self.r = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
-        #
-        # quad. interactions: only quad. interaction term is the one
-        # on H's equation coming from the fact that H forages both Vi.
-        #
-        # Recall that interaction is pop*q_inter, where pop is a row
-        # vector.
-        # self.q_inter = np.array(
-        #     [[0.0, 0.0, 0.5], [0.0, 0.0, 0.5], [0.0, 0.0, 0.0]],
-        #     dtype=np.float32,
-        # )  # particular values tbd
+
         self.tau12 = np.float32(0.0)
         self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.0)
