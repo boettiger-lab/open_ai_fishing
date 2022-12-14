@@ -107,7 +107,7 @@ class forageVVH(gym.Env):
         """
         For training: value below which, if V1 dips, the episode ends.
         """
-        self.failure_thresh = np.float32(0.02)
+        self.failure_thresh = np.float32(0.03)
 
     def set_May_dynamics(self) -> None:
         """
