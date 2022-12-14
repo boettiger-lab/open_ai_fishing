@@ -249,6 +249,7 @@ class forageVVH(gym.Env):
             [Delta_V1, Delta_V2, Delta_H],
             dtype=np.float32,
         )
+        self.pop = np.where(self.pop<0, 0, self.pop) # don't let it go negative
         return self.pop
 
     def V1_draw(self, pop):
@@ -257,7 +258,7 @@ class forageVVH(gym.Env):
         DeltaPop -= self.forage(pop["H"], pop["V1"], self.beta, self.V0)
         DeltaPop -= self.cV*pop["V1"]*pop["V2"]
         DeltaPop += self.tau21 * pop["V2"] - self.tau12 * pop["V1"]
-        DeltaPop += pop["V1"] * self.sigmas["V1"] * np.random.normal(0, 1)
+        DeltaPop += pop["V1"] * self.sigmas["V1"] * np.random.normal(0, 1) 
         DeltaPop = DeltaPop * self.dt
         return np.float32(DeltaPop)
 
@@ -269,7 +270,7 @@ class forageVVH(gym.Env):
         )
         DeltaPop -= self.cV*pop["V1"]*pop["V2"]
         DeltaPop += self.tau12 * pop["V1"] - self.tau21 * pop["V2"]
-        DeltaPop += pop["V2"] * self.sigmas["V2"] * np.random.normal(0, 1)
+        DeltaPop += pop["V2"] * self.sigmas["V2"] * np.random.normal(0, 1) 
         DeltaPop = DeltaPop * self.dt
         return np.float32(DeltaPop)
 
