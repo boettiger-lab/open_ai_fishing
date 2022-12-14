@@ -348,6 +348,7 @@ class forageVVH(gym.Env):
         r = K = 1,    beta = {self.beta:.2f},    V0 = {self.V0:.2f},
         cV = {self.cV:.2f},    tau12 = {self.tau12:.2f},   tau21 = {self.tau21:.2f}
         D = {self.D:.2f},     dH = {self.dH:.2f},      f = {self.f:.2f},
+        alpha = {self.alpha:.2f}
                
                V1,   V2,   H
         Noise: {self.sigmas["V1"]:.2f}, {self.sigmas["V2"]:.2f}, {self.sigmas["H"]:.2f}
@@ -609,10 +610,7 @@ class forageVVH(gym.Env):
             print(
                 """
             #
-            #
-            #
-            #
-            Following state is out of bounds: {}
+            Following population is out of bounds: {}
                 
             The state boundaries used by this environment are artificial and do not
             follow naturally from the dynamics of the system.
@@ -621,11 +619,8 @@ class forageVVH(gym.Env):
                 
             Consider increasing the magnitude of these boundaries.
             #
-            #
-            #
-            #
             """.format(
-                    self.state,
+                    self.pop,
                     self.boundV1,
                     self.boundV2,
                     self.boundH,
