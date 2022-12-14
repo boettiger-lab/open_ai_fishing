@@ -120,15 +120,15 @@ class forageVVH(gym.Env):
         self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.0)
         self.sigmas = {
-            "V1": np.float32(0.0),
-            "V2": np.float32(0.0),
-            "H": np.float32(0.0),
+            "V1": np.float32(0.1),
+            "V2": np.float32(0.1),
+            "H": np.float32(0.1),
         }
 
         self.alpha = np.float32(
             0.0
         )  # later on used to 'turn off' model complexity
-        self.beta = np.float32(0.5)
+        self.beta = np.float32(0.3)
         self.f = np.float32(0.0)
         self.D = np.float32(0.0)  # no discrepancy for now!
         self.V0 = np.float32(self.K["V1"] / 2)
