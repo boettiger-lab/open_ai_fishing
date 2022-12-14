@@ -79,45 +79,35 @@ class forageVVH(gym.Env):
         self.years_passed = 0
 
     def set_dynamics(self) -> None:
+        """ V1 and V2 """
         self.K = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
         self.r = {"V1": np.float32(1.0), "V2": np.float32(1.0)}
-        """
-        Using K(V1) = r(V1) = 1, to reproduce May we need 
-        
-        gamma:=beta*H in {0.35 (high - after tipping), 0.22 (mid - close
-        to tipping), 0.10 (low - far from tipping)}.
-        
-        Use ad hoc beta in that order of magnitude and see what happens - this
-        will be particularly good for very small alpha.
-        """
+        self.beta = np.float32(0.3)
+        self.V0 = np.float32(0.1 * self.K["V1"])
+        self.D = np.float32(1.1)
+        # not really used for now:
         self.tau12 = np.float32(0.0)
         self.tau21 = np.float32(0.0)
-        self.sigma = np.float32(0.)
+        
+        """ H """
+        self.f = np.float32(0.5)
+        self.dH = np.float32(0.5)
+        self.cV = 0.5 # competition parameter between V1 and V2
+        self.alpha = np.float32(
+            1.0
+        ) 
+        
+        """ Noise """
         self.sigmas = {
             "V1": np.float32(0.1),
             "V2": np.float32(0.1),
             "H": np.float32(0.1),
         }
 
-        self.alpha = np.float32(
-            1.0
-        )  # later on used to 'turn off' model complexity
-
         """
-        The failure thresh is the value of the lower fixed point
-        (see fixed point table at the end of file). I use 1.1 times
-        the FP value to be able to more quickly "catch" these cases
-        and not have to wait long times for convergence. -> FOR ALPHA = 1
-        THIS DOESNT HOLD
+        For training: value below which, if V1 dips, the episode ends.
         """
-        self.beta = np.float32(0.3)
         self.failure_thresh = np.float32(0.06)
-
-        self.f = np.float32(0.5)
-        self.D = np.float32(1.1)  # no discrepancy for now!
-        self.V0 = np.float32(0.1 * self.K["V1"])
-        self.dH = np.float32(0.5)
-        self.cV = 0.5 # competition parameter between V1 and V2
 
     def set_May_dynamics(self) -> None:
         """
