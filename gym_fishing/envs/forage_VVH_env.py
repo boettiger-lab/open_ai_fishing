@@ -41,7 +41,7 @@ class forageVVH(gym.Env):
         self,
         params={
             "n_actions": 100,
-            "dt": 0.05,
+            "dt": 1.,
         },
         Tmax=200,
         file=None,
