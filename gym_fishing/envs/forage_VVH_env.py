@@ -159,9 +159,9 @@ class forageVVH(gym.Env):
         All of these are still pending to change if new data shows they're not large
         enough.
         """
-        self.boundV1 = 5. * self.K["V1"]
-        self.boundV2 = 5. * self.K["V2"]
-        self.boundH = np.float32(5.0)
+        self.boundV1 = 100. * self.K["V1"]
+        self.boundV2 = 100. * self.K["V2"]
+        self.boundH = np.float32(100.0)
 
     def reset(self):
         rand_part = np.array([0, 0, 0], dtype=np.float32)
@@ -356,9 +356,9 @@ class forageVVH(gym.Env):
         LINE_UP = "\033[1A"
         LINE_CLEAR = "\x1b[2K"
 
-        s1 = round(30 * self.pop[0])
-        s2 = round(30 * self.pop[1])
-        s3 = round(30 * self.pop[2])
+        s1 = round(30 * self.pop[0]/self.boundV1)
+        s2 = round(30 * self.pop[1]/self.boundV2)
+        s3 = round(30 * self.pop[2]/self.boundH)
         l1 = (
             " | "
             + (s1 - 1) * " "
