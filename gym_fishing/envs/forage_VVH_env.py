@@ -46,6 +46,8 @@ class forageVVH(gym.Env):
         Tmax=200,
         file=None,
     ):
+        self.training=True # manually set to false for non-training (e.g. for controlled_dynamics)
+        
         self.v_ind = {"V1": 0, "V2": 1, "H": 2}
         self.ind_v = {0: "V1", 1: "V2", 2: "H"}
 
@@ -211,7 +213,7 @@ class forageVVH(gym.Env):
 
         self.years_passed += 1
         done = bool(self.years_passed > self.Tmax)
-        if any(self.pop[i] <= thresh_arr[i] for i in range(3)):
+        if any(self.pop[i] <= thresh_arr[i] for i in range(3)) and self.training:
             done = True
             # self.reward -= 1/(1+math.log(self.years_passed)) 
             # didn't use the logarithmic reward -> too slow decay
