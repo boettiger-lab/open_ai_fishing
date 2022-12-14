@@ -94,9 +94,9 @@ class forageVVH(gym.Env):
         self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.)
         self.sigmas = {
-            "V1": np.float32(0.2),
-            "V2": np.float32(0.2),
-            "H": np.float32(0.2),
+            "V1": np.float32(0.1),
+            "V2": np.float32(0.1),
+            "H": np.float32(0.1),
         }
 
         self.alpha = np.float32(
@@ -110,7 +110,7 @@ class forageVVH(gym.Env):
         and not have to wait long times for convergence. -> FOR ALPHA = 1
         THIS DOESNT HOLD
         """
-        self.beta = np.float32(0.4)
+        self.beta = np.float32(0.3)
         self.failure_thresh = np.float32(0.06)
 
         self.f = np.float32(0.5)
