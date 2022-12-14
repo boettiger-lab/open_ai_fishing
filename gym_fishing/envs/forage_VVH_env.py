@@ -107,7 +107,7 @@ class forageVVH(gym.Env):
         """
         For training: value below which, if V1 dips, the episode ends.
         """
-        self.failure_thresh = np.float32(0.06)
+        self.failure_thresh = np.float32(0.02)
 
     def set_May_dynamics(self) -> None:
         """
@@ -343,7 +343,12 @@ class forageVVH(gym.Env):
     
     def print_params(self) -> None:
         print(f"""
-        Parameter values:
+        Numerics Parameters:
+        --------------------
+        dt = {self.dt:.2f},    failure_thresh = {self.failure_thresh:.2f}
+        Bounds = {self.boundV1}, {self.boundV2}, {self.boundH}.
+        
+        Dynamical Parameters:
         -----------------
         r = K = 1,    beta = {self.beta:.2f},    V0 = {self.V0:.2f},
         cV = {self.cV:.2f},    tau12 = {self.tau12:.2f},   tau21 = {self.tau21:.2f}
