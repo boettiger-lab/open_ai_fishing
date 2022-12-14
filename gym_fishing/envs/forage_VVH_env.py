@@ -419,12 +419,26 @@ class forageVVH(gym.Env):
     
     def uncontrolled_dynamics(self, T) -> None:
         self.reset()
+        row = []
         for t in range(T):
             self.step(0)
             # print(f"Pop: [{self.pop[0]:.2f},  {self.pop[1]:.2f}, {self.pop[2]:.2f}]")
+            row.append([
+                t, 
+                self.pop[0], 
+                self.pop[1], 
+                self.pop[2],
+                self.pop[0] < self.failure_thresh,
+            ])
             self.print_pop()
             time.sleep(0.03)
         self.reset()
+        df = DataFrame(
+            row, 
+            columns=["time", "pop0", "pop1", "pop2", "Low pop0"],
+            # index=[i for i in range(index_start, index_start+T)],
+        )
+        return df
     
     def msy_control(self):
         """
