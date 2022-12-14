@@ -351,6 +351,18 @@ class forageVVH(gym.Env):
     Visualization
     """
     
+    def print_params(self) -> None:
+        print(f"""
+        Parameter values:
+        -----------------
+        r = K = 1,    beta = {self.beta:.2f},    V0 = {self.v0:.2f},
+        cV = {self.cV:.2f},    tau12 = {self.tau12:.2f},   tau21 = {self.tau21:.2f}
+        D = {self.D:.2f},     dH = {self.dH:.2f},       f = {self.f:.2f},
+               
+                V1,   V2,   H
+        Noise: {self.sigmas["V1"]:.2f}, {self.sigmas["V2"]:.2f}, {self.sigmas["H"]:.2f}
+        """)
+    
     def plot(self, df, output="results.png"):
         return plot_3d(self, df, output)
     
