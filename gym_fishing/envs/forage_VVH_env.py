@@ -159,9 +159,9 @@ class forageVVH(gym.Env):
         All of these are still pending to change if new data shows they're not large
         enough.
         """
-        self.boundV1 = 1.5 * self.K["V1"]
-        self.boundV2 = 1.5 * self.K["V2"]
-        self.boundH = np.float32(2.0)
+        self.boundV1 = 5 * self.K["V1"]
+        self.boundV2 = 5 * self.K["V2"]
+        self.boundH = np.float32(5.0)
 
     def reset(self):
         rand_part = np.array([0, 0, 0], dtype=np.float32)
