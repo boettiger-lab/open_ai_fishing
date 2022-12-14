@@ -159,7 +159,7 @@ class forageVVH(gym.Env):
         All of these are still pending to change if new data shows they're not large
         enough.
         """
-        self.boundV1 = 1 * self.K["V1"]
+        self.boundV1 = 1.5 * self.K["V1"]
         self.boundV2 = 1.5 * self.K["V2"]
         self.boundH = np.float32(2.0)
 
