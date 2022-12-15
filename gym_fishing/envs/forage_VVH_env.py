@@ -211,7 +211,10 @@ class forageVVH(gym.Env):
             # self.reward -= (self.Tmax - self.years_passed)/self.Tmax
             # didn't use this linear increase -> doesn't foment learning
             # self.reward -= 1/self.years_passed + 1/math.sqrt(self.years_passed)
-            self.reward -= 50 / (self.years_passed ** (1) )
+            self.reward -= (
+                50 / (self.years_passed ** (1) )
+                + 50 / (self.years_passed ** (0.5) )
+            )
 
         return self.state, self.reward, done, {}
 
