@@ -91,23 +91,23 @@ class forageVVH(gym.Env):
         
         """ H """
         self.f = np.float32(0.5)
-        self.dH = np.float32(0.5)
+        self.dH = np.float32(0.45)
         self.cV = 0.5 # competition parameter between V1 and V2
         self.alpha = np.float32(
-            1.0
+            0.3
         ) 
         
         """ Noise """
         self.sigmas = {
-            "V1": np.float32(0.1),
-            "V2": np.float32(0.1),
-            "H": np.float32(0.1),
+            "V1": np.float32(0.15),
+            "V2": np.float32(0.15),
+            "H": np.float32(0.15),
         }
 
         """
         For training: value below which, if V1 dips, the episode ends.
         """
-        self.failure_thresh = np.float32(0.04)
+        self.failure_thresh = np.float32(0.03)
 
     def set_May_dynamics(self) -> None:
         """
@@ -211,7 +211,7 @@ class forageVVH(gym.Env):
             # self.reward -= (self.Tmax - self.years_passed)/self.Tmax
             # didn't use this linear increase -> doesn't foment learning
             # self.reward -= 1/self.years_passed + 1/math.sqrt(self.years_passed)
-            self.reward -= 10/self.years_passed
+            self.reward -= 30/self.years_passed
 
         return self.state, self.reward, done, {}
 
