@@ -182,8 +182,6 @@ class forageVVH(gym.Env):
         """
         Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
         Ie. I call population_draw self.dt^-1 times.
-
-        Done: if V1 decays to lower equilibrium, or, if V2 or H go near-extinct.
         """
         thresh = 1e-4
         thresh_arr = [self.failure_thresh, thresh, thresh]
