@@ -35,8 +35,8 @@ class forageVVHcont(forageVVH):
         self.state = self.init_state
 
         self.action_space = spaces.Box(
-            0,
-            1,
+            np.array(0, dtype=np.float32),
+            np.array([1], dtype=np.float32),
             dtype = np.float32
         )
         self.observation_space = spaces.Box(
@@ -55,13 +55,13 @@ class forageVVHcont(forageVVH):
         """
         now action and quota are the same thing
         """
-        return action 
+        return action[0]
 
     def get_action(self, quota):
         """
         as above
         """
-        return quota
+        return np.array([quota], dtype=np.float32)
     
     def controlled_dynamics(self, T, verbose=False, ctrl="simple", reps=1):
         row = []
