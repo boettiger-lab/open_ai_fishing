@@ -35,8 +35,8 @@ class forageVVHcont(forageVVH):
         self.state = self.init_state
 
         self.action_space = spaces.Box(
-            np.array([0], dtype=np.float32),
-            np.array([1], dtype=np.float32),
+            0,
+            1,
             dtype = np.float32
         )
         self.observation_space = spaces.Box(
