@@ -8,7 +8,6 @@ from gym_fishing.envs.fishing_cts_env import FishingCtsEnv
 from gym_fishing.envs.fishing_env import FishingEnv
 from gym_fishing.envs.fishing_model_error import FishingModelError
 from gym_fishing.envs.fishing_tipping_env import FishingTippingEnv
-from gym_fishing.envs.forage_VVH_env import forageVVH
 from gym_fishing.envs.growth_models import (
     Allen,
     BevertonHolt,
@@ -23,6 +22,8 @@ from gym_fishing.envs.trophic_triangle_jconst_env import (
     trophicTriangleJConstEnv,
 )
 from gym_fishing.envs.trophic_triangle_rand_env import trophicTriangleRandEnv
+from gym_fishing.envs.forage_VVH_env import forageVVH
+from gym_fishing.envs.forage_VVH_cont_env import forageVVHcont
 
 register(
     id="threeFishing-v0",
@@ -32,6 +33,11 @@ register(
 register(
     id="threeFishing-v1",
     entry_point="gym_fishing.envs:forageVVH",
+)
+
+register(
+    id="threeFishing-v2",
+    entry_point="gym_fishing.envs:forageVVHcont",
 )
 
 register(
