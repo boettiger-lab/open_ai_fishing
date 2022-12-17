@@ -3,6 +3,8 @@ but with a continuous action space """
 
 from gym_fishing.envs.forage_VVH_env import forageVVH
 import numpy as np
+from gym import spaces
+from pandas import DataFrame
 
 class forageVVHcont(forageVVH):
     """ continuous action space """
