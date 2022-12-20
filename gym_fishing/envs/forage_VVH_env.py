@@ -160,7 +160,7 @@ class forageVVH(gym.Env):
         dist_left = min(self.init_state - [- 1, - 1, - 1])
         dist_right = min([1, 1, 1] - self.init_state)
         min_dist = min(dist_left, dist_right)
-        reset_sigma = min(0.2*min_dist, 0.00001)
+        reset_sigma = min(0.2*min_dist, 0.0001)
         if self.randomize_reset == True:
             rand_part = reset_sigma * np.array(
                 [
@@ -414,11 +414,10 @@ class forageVVH(gym.Env):
         """
         return simulate_ppo(env, model, reps)
     
-    def uncontrolled_dynamics(self, T) -> None:
+    def uncontrolled_dynamics(self, T, verbose=False) -> None:
         self.reset()
         row = []
         for t in range(T):
-            self.step(0)
             # print(f"Pop: [{self.pop[0]:.2f},  {self.pop[1]:.2f}, {self.pop[2]:.2f}]")
             row.append([
                 t, 
@@ -428,7 +427,9 @@ class forageVVH(gym.Env):
                 self.pop[0] < self.failure_thresh,
             ])
             self.print_pop()
-            time.sleep(0.03)
+            if verbose:
+                time.sleep(0.03)
+                self.step(0)
         self.reset()
         df = DataFrame(
             row, 
