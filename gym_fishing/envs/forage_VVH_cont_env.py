@@ -55,7 +55,9 @@ class forageVVHcont(forageVVH):
         """
         now action and quota are the same thing
         """
-        return action[0]
+        if isinstance(action, np.ndarray):
+            action = action[0]
+        return action
 
     def get_action(self, quota):
         """
