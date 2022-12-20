@@ -23,7 +23,7 @@ class forageVVHcont(forageVVH):
 
         self.Tmax = Tmax
         self.dt = params["dt"]
-        self.init_pop = np.array([0.7, 0.7, 0.5], dtype=np.float32)
+        self.init_pop = np.array([0.7921041547384046, 0.18899622296518745, 0.2281360434110448], dtype=np.float32) # a fixed point for current param values
         self.pop = self.init_pop
         self.set_dynamics()
         # self.set_May_dynamics()
