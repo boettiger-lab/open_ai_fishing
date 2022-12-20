@@ -27,6 +27,7 @@ class forageVVHcont(forageVVH):
         self.pop = self.init_pop
         self.set_dynamics()
         # self.set_May_dynamics()
+        self.set_randomness()
         self.bound_popspace()
         self.randomize_reset = True
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
