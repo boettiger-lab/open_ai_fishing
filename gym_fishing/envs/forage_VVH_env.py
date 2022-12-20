@@ -54,7 +54,7 @@ class forageVVH(gym.Env):
         self.Tmax = Tmax
         self.n_actions = params["n_actions"]
         self.dt = params["dt"]
-        self.init_pop = np.array([0.7, 0.7, 0.5], dtype=np.float32)
+        self.init_pop = np.array([0.7921041547384046, 0.18899622296518745, 0.2281360434110448], dtype=np.float32) # a fixed point for current param values
         self.pop = self.init_pop
         self.set_dynamics()
         # self.set_May_dynamics()
@@ -160,7 +160,7 @@ class forageVVH(gym.Env):
         dist_left = min(self.init_state - [- 1, - 1, - 1])
         dist_right = min([1, 1, 1] - self.init_state)
         min_dist = min(dist_left, dist_right)
-        reset_sigma = min(0.2*min_dist, 0.05)
+        reset_sigma = min(0.2*min_dist, 0.00001)
         if self.randomize_reset == True:
             rand_part = reset_sigma * np.array(
                 [
