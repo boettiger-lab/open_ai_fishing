@@ -54,7 +54,7 @@ class forageVVH(gym.Env):
         self.Tmax = Tmax
         self.n_actions = params["n_actions"]
         self.dt = params["dt"]
-        self.init_pop = np.array([0.7921041547384046, 0.18899622296518745, 0.2281360434110448], dtype=np.float32) # a fixed point for current param values
+        self.init_pop = np.array([0.8396102377828771, 0.05489978383850558, 0.3773367609828674], dtype=np.float32) # a fixed point for current param values
         self.pop = self.init_pop
         self.set_dynamics()
         # self.set_May_dynamics()
