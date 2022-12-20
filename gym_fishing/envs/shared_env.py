@@ -81,11 +81,12 @@ def simulate_ppo(env, model, reps=1):
 
             # Predict and implement action
             action = model.compute_single_action(obs)
-            obs, reward, done, info = env.step(action)
-
             # discrete actions are not arrays, but cts actions are
             if isinstance(action, np.ndarray):
                 action = action[0]
+            obs, reward, done, info = env.step(action)
+
+            # discrete actions are not arrays, but cts actions are
             if isinstance(reward, np.ndarray):
                 reward = reward[0]
             quota = env.get_quota(action)
