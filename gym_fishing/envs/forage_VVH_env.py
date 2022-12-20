@@ -58,6 +58,7 @@ class forageVVH(gym.Env):
         self.pop = self.init_pop
         self.set_dynamics()
         # self.set_May_dynamics()
+        self.set_randomness()
         self.bound_popspace()
         self.randomize_reset = True
         # self.pop_dict = {self.ind_v[i]: self.pop[i] for i in range(3)}
@@ -97,12 +98,12 @@ class forageVVH(gym.Env):
             0.3
         ) 
         
-        """ Noise """
-        self.sigmas = {
-            "V1": np.float32(0.15),
-            "V2": np.float32(0.15),
-            "H": np.float32(0.15),
-        }
+        """ Noise ==> now in set_randomness""" 
+        # self.sigmas = {
+        #     "V1": np.float32(0.15),
+        #     "V2": np.float32(0.15),
+        #     "H": np.float32(0.15),
+        # }
 
         """
         For training: value below which, if V1 dips, the episode ends.
@@ -118,12 +119,12 @@ class forageVVH(gym.Env):
 
         self.tau12 = np.float32(0.0)
         self.tau21 = np.float32(0.0)
-        self.sigma = np.float32(0.0)
-        self.sigmas = {
-            "V1": np.float32(0.15),
-            "V2": np.float32(0.15),
-            "H": np.float32(0.15),
-        }
+        # self.sigma = np.float32(0.0)
+        # self.sigmas = {
+        #     "V1": np.float32(0.15),
+        #     "V2": np.float32(0.15),
+        #     "H": np.float32(0.15),
+        # }
 
         self.alpha = np.float32(
             0.0
@@ -135,6 +136,13 @@ class forageVVH(gym.Env):
         self.dH = np.float32(0.0)
         self.cV = 0
 
+    def set_randomness(self):
+        self.sigmas = {
+            "V1": np.float32(0.05),
+            "V2": np.float32(0.05),
+            "H": np.float32(0.05),
+        }
+    
     def bound_popspace(self) -> None:
         """
         Enclose the space of populations in a box with
