@@ -120,9 +120,9 @@ class forageVVH(gym.Env):
         self.tau21 = np.float32(0.0)
         self.sigma = np.float32(0.0)
         self.sigmas = {
-            "V1": np.float32(0.1),
-            "V2": np.float32(0.1),
-            "H": np.float32(0.1),
+            "V1": np.float32(0.15),
+            "V2": np.float32(0.15),
+            "H": np.float32(0.15),
         }
 
         self.alpha = np.float32(
@@ -429,7 +429,7 @@ class forageVVH(gym.Env):
             self.print_pop()
             if verbose:
                 time.sleep(0.03)
-                self.step(0)
+            self.step(0)
         self.reset()
         df = DataFrame(
             row, 
