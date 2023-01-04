@@ -193,7 +193,8 @@ class forageVVH(gym.Env):
         """
         thresh = 1e-4
         thresh_arr = [self.failure_thresh, thresh, thresh]
-
+        
+        action = np.clip(action, [0], [1])
         quota = self.get_quota(action)
         self.pop, self.reward = self.harvest_draw(quota)
         STEP = round(self.dt ** (-1))
