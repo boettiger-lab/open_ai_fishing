@@ -43,7 +43,7 @@ class forageVVH(gym.Env):
             "n_actions": 100,
             "dt": 1.,
         },
-        Tmax=200,
+        Tmax=600,
         file=None,
     ):
         self.training=True # manually set to false for non-training (e.g. for controlled_dynamics)
@@ -197,8 +197,7 @@ class forageVVH(gym.Env):
         action = np.clip(action, [0], [1])
         quota = self.get_quota(action)
         self.pop, harvest = self.harvest_draw(quota)
-        
-        self.reward = harvest - 5 * quota ** 2
+        self.reward = harvest - 2 * quota ** 2
         STEP = round(self.dt ** (-1))
         for _ in range(STEP):
             pop = {
