@@ -23,7 +23,7 @@ class forageVVH_v3(forageVVHcont):
 		self.pop, self.harvest = self.harvest_draw(quota)
 
 		self.quadratic_coeff = 1
-		self.reward = self.harvest - self.quadratic_coeff * (action ** 2)
+		self.reward = self.harvest - self.quadratic_coeff * (quota ** 2)
 
 		STEP = round(self.dt ** (-1))
 		for _ in range(STEP):
