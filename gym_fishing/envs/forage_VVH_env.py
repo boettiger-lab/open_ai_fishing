@@ -95,10 +95,10 @@ class forageVVH(gym.Env):
         self.dH = np.float32(0.45)
         self.cV = 0.5 # competition parameter between V1 and V2
         self.alpha = np.float32(
-            0.1
+            0.3
         ) 
         self.alphaV2 = np.float32(
-            0.1
+            1.
         ) 
         
         """ Noise ==> now in set_randomness""" 
