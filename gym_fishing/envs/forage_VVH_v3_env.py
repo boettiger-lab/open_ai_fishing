@@ -8,16 +8,13 @@ from pandas import DataFrame
 
 class forageVVH_v3(forageVVHcont):
 	def step(self, action):
-        """
-        Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
-        Ie. I call population_draw self.dt^-1 times.
-
-        	reward = harvest - (coeff) * (effort) ** 2,
-
-        where effort = action = harvest / population, so,
-
-        	reward = action * population - coeff * (action ** 2).
-        """
+	    """
+	    Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
+	    Ie. I call population_draw self.dt^-1 times.
+	    reward = harvest - (coeff) * (effort) ** 2,
+	    where effort = action = harvest / population, so,
+	   	reward = action * population - coeff * (action ** 2).
+	    """
         thresh = 1e-4
         thresh_arr = [self.failure_thresh, thresh, thresh]
         
