@@ -196,7 +196,9 @@ class forageVVH(gym.Env):
         
         action = np.clip(action, [0], [1])
         quota = self.get_quota(action)
-        self.pop, self.reward = self.harvest_draw(quota)
+        self.pop, harvest = self.harvest_draw(quota)
+        
+        self.reward = harvest - 5 * quota ** 2
         STEP = round(self.dt ** (-1))
         for _ in range(STEP):
             pop = {
