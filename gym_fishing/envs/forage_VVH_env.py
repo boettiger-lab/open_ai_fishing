@@ -95,7 +95,10 @@ class forageVVH(gym.Env):
         self.dH = np.float32(0.45)
         self.cV = 0.5 # competition parameter between V1 and V2
         self.alpha = np.float32(
-            0.3
+            0.1
+        ) 
+        self.alphaV2 = np.float32(
+            0.1
         ) 
         
         """ Noise ==> now in set_randomness""" 
@@ -269,7 +272,7 @@ class forageVVH(gym.Env):
         DeltaPop -= self.cV*pop["V1"]*pop["V2"]
         DeltaPop += self.tau12 * pop["V1"] - self.tau21 * pop["V2"]
         DeltaPop += pop["V2"] * self.sigmas["V2"] * np.random.normal(0, 1) 
-        DeltaPop = DeltaPop * self.dt
+        DeltaPop = self.alphaV2 * DeltaPop * self.dt
         return np.float32(DeltaPop)
 
     def H_draw(self, pop):
