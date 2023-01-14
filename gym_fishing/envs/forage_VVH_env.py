@@ -139,8 +139,8 @@ class forageVVH(gym.Env):
     def set_randomness(self):
         self.sigmas = {
             "V1": np.float32(0.05),
-            "V2": np.float32(0.05),
-            "H": np.float32(0.05),
+            "V2": np.float32(0.1),
+            "H": np.float32(0.1),
         }
     
     def bound_popspace(self) -> None:
@@ -197,7 +197,7 @@ class forageVVH(gym.Env):
         action = np.clip(action, [0], [1])
         quota = self.get_quota(action)
         self.pop, harvest = self.harvest_draw(quota)
-        self.reward = harvest - 2 * quota ** 2
+        self.reward = harvest # - 2 * quota ** 2
         STEP = round(self.dt ** (-1))
         for _ in range(STEP):
             pop = {
