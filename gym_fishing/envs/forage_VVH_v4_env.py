@@ -84,7 +84,7 @@ class forageVVHv4(forageVVHcont):
 		# self.K["V2"] += sigma * self.K["V2"] * np.random.normal()
 		# self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
 		# self.cV += sigma * self.cV * np.random.normal()
-		
+
 	def step(self, action):
 		"""
 		Steps will be 1 full t step (i.e. self.dt^-1 individual time steps).
@@ -112,3 +112,5 @@ class forageVVHv4(forageVVHcont):
 		if any(self.pop[i] <= thresh_arr[i] for i in range(3)) and self.training:
 			done = True
 			self.reward -= self.Tmax/self.years_passed
+			
+		return self.state, self.reward, done, {}
