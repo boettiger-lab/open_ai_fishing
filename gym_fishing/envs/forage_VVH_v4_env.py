@@ -22,15 +22,21 @@ class forageVVHv4(forageVVHcont):
 		self.harvest = 0
 		self.years_passed = 0
 
+		self.set_dynamics()
 		self.parametric_noise(sigma = 0.1)
 
 		return self.state
 
-	def parametric_noise(self, sigma = 0.1):
+	def parametric_noise(self, sigma = 0.05):
 		"""
 		Parameters:
 		r1, K1, r2, K2, cV, beta, dH, D, f
 
 		I'll start by varying one parameter at a time
 		"""
-		self.cV += sigma * self.cV * np.random.normal()
+		# self.r["V1"] += sigma * self.r["V1"] * np.random.normal()
+		# self.beta += sigma * self.beta * np.random.normal()
+		# self.r["V2"] += sigma * self.r["V2"] * np.random.normal()
+		# self.K["V2"] += sigma * self.K["V2"] * np.random.normal()
+		self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
+		# self.cV += sigma * self.cV * np.random.normal()
