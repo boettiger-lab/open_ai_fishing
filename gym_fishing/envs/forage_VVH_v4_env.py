@@ -67,7 +67,7 @@ class forageVVHv4(forageVVHcont):
 		self.years_passed = 0
 
 		self.set_dynamics()
-		self.parametric_noise(sigma = 0.1)
+		self.parametric_noise(sigma = 0.05)
 
 		return self.state
 
