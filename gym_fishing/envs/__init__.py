@@ -25,6 +25,7 @@ from gym_fishing.envs.trophic_triangle_rand_env import trophicTriangleRandEnv
 from gym_fishing.envs.forage_VVH_env import forageVVH
 from gym_fishing.envs.forage_VVH_cont_env import forageVVHcont
 from gym_fishing.envs.forage_VVH_v3_env import forageVVH_v3
+from gym_fishing.envs.forage_VVH_v4_env import forageVVHv4
 from gym_fishing.envs.test_env import testContEnv
 
 register(
@@ -50,6 +51,11 @@ register(
 register(
     id="threeFishing-v3",
     entry_point="gym_fishing.envs:forageVVH_v3",
+)
+
+register(
+    id="threeFishing-v4",
+    entry_point="gym_fishing.envs:forageVVHv4",
 )
 
 register(
