@@ -80,9 +80,9 @@ class forageVVHv4(forageVVHcont):
 		"""
 		# self.r["V1"] += sigma * self.r["V1"] * np.random.normal()
 		# self.beta += sigma * self.beta * np.random.normal()
-		self.r["V2"] += sigma * self.r["V2"] * np.random.normal()
+		# self.r["V2"] += sigma * self.r["V2"] * np.random.normal()
 		# self.K["V2"] += sigma * self.K["V2"] * np.random.normal()
-		# self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
+		self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
 		# self.cV += sigma * self.cV * np.random.normal()
 
 	def step(self, action):
