@@ -23,7 +23,7 @@ class forageVVHv4(forageVVHcont):
 		self.years_passed = 0
 
 		self.set_dynamics()
-		self.parametric_noise(sigma = 0.1)
+		self.parametric_noise(sigma = 0.05)
 
 		return self.state
 
@@ -36,7 +36,7 @@ class forageVVHv4(forageVVHcont):
 		"""
 		# self.r["V1"] += sigma * self.r["V1"] * np.random.normal()
 		# self.beta += sigma * self.beta * np.random.normal()
-		# self.r["V2"] += sigma * self.r["V2"] * np.random.normal()
+		self.r["V2"] += sigma * self.r["V2"] * np.random.normal()
 		# self.K["V2"] += sigma * self.K["V2"] * np.random.normal()
-		self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
+		# self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
 		# self.cV += sigma * self.cV * np.random.normal()
