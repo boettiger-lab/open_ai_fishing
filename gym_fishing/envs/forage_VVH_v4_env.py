@@ -78,11 +78,12 @@ class forageVVHv4(forageVVHcont):
 
 		I'll start by varying one parameter at a time
 		"""
+		...
 		# self.r["V1"] += sigma * self.r["V1"] * np.random.normal()
 		# self.beta += sigma * self.beta * np.random.normal()
 		# self.r["V2"] += sigma * self.r["V2"] * np.random.normal()
 		# self.K["V2"] += sigma * self.K["V2"] * np.random.normal()
-		self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
+		# self.K["V1"] += sigma * self.K["V1"] * np.random.normal()
 		# self.cV += sigma * self.cV * np.random.normal()
 
 	def step(self, action):
@@ -95,7 +96,7 @@ class forageVVHv4(forageVVHcont):
 
 		action = np.clip(action, [0], [1])
 		quota = self.get_quota(action)
-		
+
 		STEP = round(self.dt ** (-1))
 		for _ in range(STEP):
 			pop = {
