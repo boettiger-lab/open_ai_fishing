@@ -1,5 +1,10 @@
 """ The gym.env class forageVVHv4 which is the same as forageVVHcont
-but with parametric noise on reset. """
+but with parametric noise on reset. 
+
+Now includes an aggressive quadratic cost to actions (in the style of
+VVH_v3).
+
+Also more aggressive early episode penalty: Tmax/(years_passed ** 0.8)"""
 
 from gym_fishing.envs.forage_VVH_cont_env import forageVVHcont
 import numpy as np
@@ -97,6 +102,7 @@ class forageVVHv4(forageVVHcont):
 		action = np.clip(action, [0], [1])
 		quota = self.get_quota(action)
 
+		# Natural dynamics
 		STEP = round(self.dt ** (-1))
 		for _ in range(STEP):
 			pop = {
@@ -107,12 +113,17 @@ class forageVVHv4(forageVVHcont):
 			self.pop = self.population_draw(pop)
 			self.state = self.pop_to_state(self.pop)
 			self.test_state_boundaries()
-		self.pop, self.reward = self.harvest_draw(quota)
+		
+		# Harvested dynamics
+		self.pop, self.harvest = self.harvest_draw(quota)
+		self.quadratic_coeff = 2
+		self.reward = self.harvest - self.quadratic_coeff * (quota ** 2)
 
+		# Time / done conditions
 		self.years_passed += 1
 		done = bool(self.years_passed > self.Tmax)
 		if any(self.pop[i] <= thresh_arr[i] for i in range(3)) and self.training:
 			done = True
-			self.reward -= self.Tmax/self.years_passed
+			self.reward -= self.Tmax/(self.years_passed ** 0.8)
 
 		return self.state, self.reward, done, {}
