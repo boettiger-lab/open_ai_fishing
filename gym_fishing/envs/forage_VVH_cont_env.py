@@ -13,7 +13,7 @@ class forageVVHcont(forageVVH):
         params={
             "dt": 1.,
         },
-        Tmax=600,
+        Tmax=200,
         file=None,
     ):
         self.training=True # manually set to false for non-training (e.g. for controlled_dynamics)
