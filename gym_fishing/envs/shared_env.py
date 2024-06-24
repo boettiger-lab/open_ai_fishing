@@ -42,9 +42,9 @@ def simulate_mdp(env, model, reps=1):
             obs, reward, done, info = env.step(action)
 
             # discrete actions are not arrays, but cts actions are
-            if isinstance(action, np.ndarray):
+            if isinstance(action, np.ndarray) and action.ndim>0:
                 action = action[0]
-            if isinstance(reward, np.ndarray):
+            if isinstance(reward, np.ndarray) and reward.ndim>0:
                 reward = reward[0]
             quota = env.get_quota(action)
 
@@ -92,7 +92,7 @@ def estimate_policyfn(env, model, reps=1, n=50):
     for rep in range(reps):
         for obs in state_range:
             action, _state = model.predict(obs, deterministic=True)
-            if isinstance(action, np.ndarray):
+            if isinstance(action, np.ndarray) and action.ndim>0:
                 action = action[0]
 
             fish_population = env.get_fish_population(obs)
